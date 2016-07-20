@@ -1,0 +1,12 @@
+#!/bin/bash
+
+#Remove any existing file
+rm /mnt/disk1/dvb/dd_module.sh
+
+#Grab master file
+wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/dd_module.sh -P /mnt/disk1/dvb/
+
+#Change permissions
+chmod +x /mnt/disk1/dvb/dd_module.sh
+
+#Execute script
