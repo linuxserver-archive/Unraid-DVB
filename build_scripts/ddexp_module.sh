@@ -29,7 +29,7 @@ make install
 #wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/files/ddbridge.conf
 
 #Copy firmware to bzroot
-rsync -av $D/media_build_experimental/ddbridge.conf $D/bzroot-ddexp/etc/modprobe.d/ddbridge.conf
+#rsync -av $D/media_build_experimental/ddbridge.conf $D/bzroot-ddexp/etc/modprobe.d/ddbridge.conf
 find /lib/modules/$(uname -r) -type f -exec cp -r --parents '{}' $D/bzroot-ddexp/ \;
 find /lib/firmware/ -type f -exec cp -r --parents '{}' $D/bzroot-ddexp/ \;
 
