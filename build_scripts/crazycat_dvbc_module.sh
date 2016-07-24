@@ -20,11 +20,10 @@ rsync -avr $D/bzroot-master-$VERSION/ $D/bzroot-crazy-dvbc
 
 ##Crazy Cat DVB-C build
 cd $D
-mkdir tbs-drivers
-cd $D/tbs-drivers
+mkdir tbs-drivers-crazycat
+cd $D/tbs-drivers-crazycat
 wget -nc https://bitbucket.org/CrazyCat/linux-tbs-drivers/get/master.tar.bz2
-tar xjvf master.tar.bz2
-cd linux-tbs-drivers
+tar xjvf master.tar.bz2 -C $D/tbs-drivers-crazycat/ --strip-components=1
 ./v4l/tbs-x86_64.sh
 ./v4l/tbs-dvbc-x86_64.sh
 make -j $(nproc)
