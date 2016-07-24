@@ -18,7 +18,7 @@ rsync -av $D/lib/firmware/ /lib/firmware/
 #Create bzroot-tbs files from master
 rsync -avr $D/bzroot-master-$VERSION/ $D/bzroot-crazy-dvbst
 
-##Crazy Cat DVB build
+##Crazy Cat DVB-ST build
 cd $D
 mkdir tbs-drivers
 cd $D/tbs-drivers
