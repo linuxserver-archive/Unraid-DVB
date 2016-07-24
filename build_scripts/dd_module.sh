@@ -39,7 +39,7 @@ echo 'search extra updates built-in' | tee /etc/depmod.d/extra.conf
 depmod -a
 
 #Symlink ddbridge.conf
-ln -s /boot/config/plugins/UnraidDVB/ddbridge.conf $D/bzroot-dd/etc/modprobe.d/ddbridge.conf
+#ln -s /boot/config/plugins/UnraidDVB/ddbridge.conf $D/bzroot-dd/etc/modprobe.d/ddbridge.conf
 
 #Copy firmware to bzroot
 find /lib/modules/$(uname -r) -type f -exec cp -r --parents '{}' $D/bzroot-dd/ \;
