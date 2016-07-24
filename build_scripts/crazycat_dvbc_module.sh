@@ -16,9 +16,9 @@ rsync -av $D/lib/modules/$(uname -r)/ /lib/modules/$(uname -r)/
 rsync -av $D/lib/firmware/ /lib/firmware/
 
 #Create bzroot-tbs files from master
-rsync -avr $D/bzroot-master-$VERSION/ $D/bzroot-crazy-dvbst
+rsync -avr $D/bzroot-master-$VERSION/ $D/bzroot-crazy-dvbc
 
-##Crazy Cat DVB build
+##Crazy Cat DVB-C build
 cd $D
 mkdir tbs-drivers
 cd $D/tbs-drivers
@@ -26,33 +26,34 @@ wget -nc https://bitbucket.org/CrazyCat/linux-tbs-drivers/get/master.tar.bz2
 tar xjvf master.tar.bz2
 cd linux-tbs-drivers
 ./v4l/tbs-x86_64.sh
+./v4l/tbs-dvbc-x86_64.sh
 make -j $(nproc)
 make install
 
 #Copy firmware to bzroot
-find /lib/modules/$(uname -r) -type f -exec cp -r --parents '{}' $D/bzroot-crazy-dvbst/ \;
-find /lib/firmware/ -type f -exec cp -r --parents '{}' $D/bzroot-crazy-dvbst/ \;
+find /lib/modules/$(uname -r) -type f -exec cp -r --parents '{}' $D/bzroot-crazy-dvbc/ \;
+find /lib/firmware/ -type f -exec cp -r --parents '{}' $D/bzroot-crazy-dvbc/ \;
 
 #Create /etc/unraid-media to identify type of mediabuild and copy to bzroot
-echo base=\"crazy-dvbst\" > $D/bzroot-crazy-dvbst/etc/unraid-media
-echo driver=\"$DATE\" >> $D/bzroot-crazy-dvbst/etc/unraid-media
+echo base=\"crazy\" > $D/bzroot-crazy-dvbc/etc/unraid-media
+echo driver=\"$DATE\" >> $D/bzroot-crazy-dvbc/etc/unraid-media
 
 #Copy /etc/unraid-media to identify type of mediabuild to destination folder
-mkdir -p $D/$VERSION/crazy-dvbst/
-cp $D/bzroot-tbs/etc/unraid-media $D/$VERSION/crazy-dvbst/
+mkdir -p $D/$VERSION/crazy-dvbc/
+cp $D/bzroot-tbs/etc/unraid-media $D/$VERSION/crazy-dvbc/
 
 #Package Up bzroot
-cd $D/bzroot-crazy-dvbst
-find . | cpio -o -H newc | xz --format=lzma > $D/$VERSION/crazy-dvbst/bzroot
+cd $D/bzroot-crazy-dvbc
+find . | cpio -o -H newc | xz --format=lzma > $D/$VERSION/crazy-dvbc/bzroot
 
 #Package Up bzimage
-cp -f $D/kernel/arch/x86/boot/bzImage $D/$VERSION/crazy-dvbst/bzimage
+cp -f $D/kernel/arch/x86/boot/bzImage $D/$VERSION/crazy-dvbc/bzimage
 
 #Copy default bzroot-gui
-cp -f $D/unraid/bzroot-gui $D/$VERSION/crazy-dvbst/bzroot-gui
+cp -f $D/unraid/bzroot-gui $D/$VERSION/crazy-dvbc/bzroot-gui
 
 #MD5 calculation of files
-cd $D/$VERSION/crazy-dvbst/
+cd $D/$VERSION/crazy-dvbc/
 md5sum bzroot > bzroot.md5
 md5sum bzimage > bzimage.md5
 md5sum bzroot-gui > bzroot-gui.md5
