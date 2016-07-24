@@ -38,7 +38,7 @@ echo driver=\"$DATE\" >> $D/bzroot-crazy-dvbst/etc/unraid-media
 
 #Copy /etc/unraid-media to identify type of mediabuild to destination folder
 mkdir -p $D/$VERSION/crazy-dvbst/
-cp $D/bzroot-tbs/etc/unraid-media $D/$VERSION/crazy-dvbst/
+cp $D/bzroot-crazy-dvbst/etc/unraid-media $D/$VERSION/crazy-dvbst/
 
 #Package Up bzroot
 cd $D/bzroot-crazy-dvbst
