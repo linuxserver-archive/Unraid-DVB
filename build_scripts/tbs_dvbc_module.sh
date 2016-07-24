@@ -3,7 +3,7 @@
 ###Run kernel_compile.sh prior to running a module###
 
 ##Pull variables from github 
-wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/files/variables.sh
+wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/V6.0.0-V6.1.9/files/variables.sh
 . "$(dirname "$(readlink -f ${BASH_SOURCE[0]})")"/variables.sh
 
 ##Remove any files remaining in /lib/modules/ & /lib/firmware/
@@ -50,14 +50,10 @@ find . | cpio -o -H newc | xz --format=lzma > $D/$VERSION/tbs-dvbc/bzroot
 #Package Up bzimage
 cp -f $D/kernel/arch/x86/boot/bzImage $D/$VERSION/tbs-dvbc/bzimage
 
-#Copy default bzroot-gui
-cp -f $D/unraid/bzroot-gui $D/$VERSION/tbs-dvbc/bzroot-gui
-
 #MD5 calculation of files
 cd $D/$VERSION/tbs-dvbc/
 md5sum bzroot > bzroot.md5
 md5sum bzimage > bzimage.md5
-md5sum bzroot-gui > bzroot-gui.md5
 
 #Return to original directory
 cd $D

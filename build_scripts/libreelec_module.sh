@@ -18,7 +18,7 @@ rsync -av $D/lib/firmware/ /lib/firmware/
 #Create bzroot-libreelec files from master
 rsync -avr $D/bzroot-master-$VERSION/ $D/bzroot-libreelec
 
-##libreelec Mediabuild
+##LibreELEC Mediabuild
 cd $D
 mkdir libreelec-drivers
 cd libreelec-drivers
@@ -47,14 +47,10 @@ find . | cpio -o -H newc | xz --format=lzma > $D/$VERSION/libreelec/bzroot
 #Package Up bzimage
 cp -f $D/kernel/arch/x86/boot/bzImage $D/$VERSION/libreelec/bzimage
 
-#Copy default bzroot-gui
-cp -f $D/unraid/bzroot-gui $D/$VERSION/libreelec/bzroot-gui
-
 #MD5 calculation of files
 cd $D/$VERSION/libreelec/
 md5sum bzroot > bzroot.md5
 md5sum bzimage > bzimage.md5
-md5sum bzroot-gui > bzroot-gui.md5
 
 #Return to original directory
 cd $D

@@ -49,14 +49,10 @@ find . | cpio -o -H newc | xz --format=lzma > $D/$VERSION/tbs/bzroot
 #Package Up bzimage
 cp -f $D/kernel/arch/x86/boot/bzImage $D/$VERSION/tbs/bzimage
 
-#Copy default bzroot-gui
-cp -f $D/unraid/bzroot-gui $D/$VERSION/tbs/bzroot-gui
-
-#MD5 calculation of files
+##MD5 calculation of files
 cd $D/$VERSION/tbs/
 md5sum bzroot > bzroot.md5
 md5sum bzimage > bzimage.md5
-md5sum bzroot-gui > bzroot-gui.md5
 
 #Return to original directory
 cd $D

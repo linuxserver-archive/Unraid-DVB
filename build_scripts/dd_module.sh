@@ -3,7 +3,7 @@
 ###Run kernel_compile.sh prior to running a module###
 
 ##Pull variables from github 
-wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/files/variables.sh
+wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/V6.0.0-V6.1.9/files/variables.sh
 . "$(dirname "$(readlink -f ${BASH_SOURCE[0]})")"/variables.sh
 
 ##Remove any files remaining in /lib/modules/ & /lib/firmware/
@@ -20,18 +20,9 @@ rsync -avr $D/bzroot-master-$VERSION/ $D/bzroot-dd
 
 ##Digital Devices Github
 cd /usr/src/
-
-##Pull release from Digital Devices
-#wget https://github.com/DigitalDevices/dddvb/archive/$DD.tar.gz
-#tar -xf $DD.tar.gz
-#cd dddvb-$DD
-
-##Pull release from my fork
-wget https://github.com/CHBMB/dddvb/archive/master.zip
-unzip master.zip
-cd dddvb-master
-
-##Common to both
+wget https://github.com/DigitalDevices/dddvb/archive/$DD.tar.gz
+tar -xf $DD.tar.gz
+cd dddvb-$DD
 make
 make install
 mkdir -p /etc/depmod.d

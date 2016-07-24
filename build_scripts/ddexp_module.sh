@@ -18,16 +18,12 @@ rsync -av $D/lib/firmware/ /lib/firmware/
 #Create bzroot-ddexp files from master
 rsync -avr $D/bzroot-master-$VERSION/ $D/bzroot-ddexp
 
-#Get ddexp-patch.tar to build on kernel 4.3+
-wget -nc https://github.com/CHBMB/Unraid-DVB/raw/master/files/ddexp-patch.zip
-
 ##Mediabuild Experimental
 cd $D
 hg clone http://linuxtv.org/hg/~endriss/media_build_experimental/
 cd media_build_experimental
 make download
 make untar
-unzip -o $D/ddexp-patch.zip
 make -j $(nproc)
 make install
 #wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/files/ddbridge.conf
@@ -52,14 +48,10 @@ find . | cpio -o -H newc | xz --format=lzma > $D/$VERSION/ddexp/bzroot
 #Package Up bzimage
 cp -f $D/kernel/arch/x86/boot/bzImage $D/$VERSION/ddexp/bzimage
 
-#Copy default bzroot-gui
-cp -f $D/unraid/bzroot-gui $D/$VERSION/ddexp/bzroot-gui
-
 #MD5 calculation of files
 cd $D/$VERSION/ddexp/
 md5sum bzroot > bzroot.md5
 md5sum bzimage > bzimage.md5
-md5sum bzroot-gui > bzroot-gui.md5
 
 #Return to original directory
 cd $D

@@ -22,8 +22,8 @@ rsync -avr $D/bzroot-master-$VERSION/ $D/bzroot-openelec
 cd $D
 mkdir openelec-drivers
 cd openelec-drivers
-wget -nc https://github.com/CvH/dvb-firmware/archive/CvH-$OE.tar.gz
-tar xvf CvH-$OE.tar.gz
+wget -nc http://www.mycvh.de/openelec/dvb-firmware/dvb-firmware-CvH-$OE.tar.xz
+tar xvf dvb-firmware-CvH-$OE.tar.xz
 
 #Copy firmware to bzroot
 find /lib/modules/$(uname -r) -type f -exec cp -r --parents '{}' $D/bzroot-openelec/ \;
@@ -47,14 +47,10 @@ find . | cpio -o -H newc | xz --format=lzma > $D/$VERSION/openelec/bzroot
 #Package Up bzimage
 cp -f $D/kernel/arch/x86/boot/bzImage $D/$VERSION/openelec/bzimage
 
-#Copy default bzroot-gui
-cp -f $D/unraid/bzroot-gui $D/$VERSION/openelec/bzroot-gui
-
 #MD5 calculation of files
 cd $D/$VERSION/openelec/
 md5sum bzroot > bzroot.md5
 md5sum bzimage > bzimage.md5
-md5sum bzroot-gui > bzroot-gui.md5
 
 #Return to original directory
 cd $D
