@@ -30,7 +30,7 @@ make untar
 unzip -o $D/ddexp-patch.zip
 make -j $(nproc)
 make install
-wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/files/ddbridge.conf
+#wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/files/ddbridge.conf
 
 #Copy firmware to bzroot
 rsync -av $D/media_build_experimental/ddbridge.conf $D/bzroot-ddexp/etc/modprobe.d/ddbridge.conf
