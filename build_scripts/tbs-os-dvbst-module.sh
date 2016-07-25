@@ -16,43 +16,42 @@ rsync -av $D/lib/modules/$(uname -r)/ /lib/modules/$(uname -r)/
 rsync -av $D/lib/firmware/ /lib/firmware/
 
 #Create bzroot-tbs files from master
-rsync -avr $D/bzroot-master-$VERSION/ $D/bzroot-crazy-dvbc
+rsync -avr $D/bzroot-master-$VERSION/ $D/bzroot-tbs-os-dvbst
 
-##Crazy Cat DVB-C build
+##Open Source DVB-ST build
 cd $D
-mkdir tbs-drivers-crazycat
-cd $D/tbs-drivers-crazycat
-wget -nc https://bitbucket.org/CrazyCat/linux-tbs-drivers/get/master.tar.bz2
-tar xjvf master.tar.bz2 -C $D/tbs-drivers-crazycat/ --strip-components=1
-./v4l/tbs-x86_64.sh
-./v4l/tbs-dvbc-x86_64.sh
-make -j $(nproc)
+git clone https://github.com/ljalves/media_build.git
+git clone --depth=1 https://github.com/ljalves/linux_media.git -b latest ./media
+cd media_build
+make dir DIR=../media
+make distclean
+make
 make install
 
 #Copy firmware to bzroot
-find /lib/modules/$(uname -r) -type f -exec cp -r --parents '{}' $D/bzroot-crazy-dvbc/ \;
-find /lib/firmware/ -type f -exec cp -r --parents '{}' $D/bzroot-crazy-dvbc/ \;
+find /lib/modules/$(uname -r) -type f -exec cp -r --parents '{}' $D/bzroot-tbs-os-dvbst/ \;
+find /lib/firmware/ -type f -exec cp -r --parents '{}' $D/bzroot-tbs-os-dvbstdvbst/ \;
 
 #Create /etc/unraid-media to identify type of mediabuild and copy to bzroot
-echo base=\"TBS \(CrazyCat\) DVB-C\" > $D/bzroot-crazy-dvbc/etc/unraid-media
-echo driver=\"$DATE\" >> $D/bzroot-crazy-dvbc/etc/unraid-media
+echo base=\"TBS \(Open Source\) DVB-S\(2\) \& DVB-T\(2\)\" > $D/bzroot-tbs-os-dvbst/etc/unraid-media
+echo driver=\"$DATE\" >> $D/bzroot-tbs-os-dvbst/etc/unraid-media
 
 #Copy /etc/unraid-media to identify type of mediabuild to destination folder
-mkdir -p $D/$VERSION/crazy-dvbc/
-cp $D/bzroot-crazy-dvbc/etc/unraid-media $D/$VERSION/crazy-dvbc/
+mkdir -p $D/$VERSION/tbs-os-dvbst/
+cp $D/bzroot-tbs-os-dvbst/etc/unraid-media $D/$VERSION/tbs-os-dvbst/
 
 #Package Up bzroot
-cd $D/bzroot-crazy-dvbc
-find . | cpio -o -H newc | xz --format=lzma > $D/$VERSION/crazy-dvbc/bzroot
+cd $D/bzroot-tbs-os-dvbst
+find . | cpio -o -H newc | xz --format=lzma > $D/$VERSION/tbs-os-dvbst/bzroot
 
 #Package Up bzimage
-cp -f $D/kernel/arch/x86/boot/bzImage $D/$VERSION/crazy-dvbc/bzimage
+cp -f $D/kernel/arch/x86/boot/bzImage $D/$VERSION/tbs-os-dvbst/bzimage
 
 #Copy default bzroot-gui
-cp -f $D/unraid/bzroot-gui $D/$VERSION/crazy-dvbc/bzroot-gui
+cp -f $D/unraid/bzroot-gui $D/$VERSION/tbs-os-dvbst/bzroot-gui
 
 #MD5 calculation of files
-cd $D/$VERSION/crazy-dvbc/
+cd $D/$VERSION/tbs-os-dvbst/
 md5sum bzroot > bzroot.md5
 md5sum bzimage > bzimage.md5
 md5sum bzroot-gui > bzroot-gui.md5

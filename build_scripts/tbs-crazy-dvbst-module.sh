@@ -16,7 +16,7 @@ rsync -av $D/lib/modules/$(uname -r)/ /lib/modules/$(uname -r)/
 rsync -av $D/lib/firmware/ /lib/firmware/
 
 #Create bzroot-tbs files from master
-rsync -avr $D/bzroot-master-$VERSION/ $D/bzroot-crazy-dvbst
+rsync -avr $D/bzroot-master-$VERSION/ $D/bzroot-tbs-crazy-dvbst
 
 ##Crazy Cat DVB-ST build
 cd $D
@@ -29,29 +29,29 @@ make -j $(nproc)
 make install
 
 #Copy firmware to bzroot
-find /lib/modules/$(uname -r) -type f -exec cp -r --parents '{}' $D/bzroot-crazy-dvbst/ \;
-find /lib/firmware/ -type f -exec cp -r --parents '{}' $D/bzroot-crazy-dvbst/ \;
+find /lib/modules/$(uname -r) -type f -exec cp -r --parents '{}' $D/bzroot-tbs-crazy-dvbst/ \;
+find /lib/firmware/ -type f -exec cp -r --parents '{}' $D/bzroot-tbs-crazy-dvbst/ \;
 
 #Create /etc/unraid-media to identify type of mediabuild and copy to bzroot
-echo base=\"TBS \(CrazyCat\) DVB-S\(2\) \& DVB-T\(2\)\" > $D/bzroot-crazy-dvbst/etc/unraid-media
-echo driver=\"$DATE\" >> $D/bzroot-crazy-dvbst/etc/unraid-media
+echo base=\"TBS \(CrazyCat\) DVB-S\(2\) \& DVB-T\(2\)\" > $D/bzroot-tbs-crazy-dvbst/etc/unraid-media
+echo driver=\"$DATE\" >> $D/bzroot-tbs-crazy-dvbst/etc/unraid-media
 
 #Copy /etc/unraid-media to identify type of mediabuild to destination folder
-mkdir -p $D/$VERSION/crazy-dvbst/
-cp $D/bzroot-crazy-dvbst/etc/unraid-media $D/$VERSION/crazy-dvbst/
+mkdir -p $D/$VERSION/tbs-crazy-dvbst/
+cp $D/bzroot-tbs-crazy-dvbst/etc/unraid-media $D/$VERSION/tbs-crazy-dvbst/
 
 #Package Up bzroot
-cd $D/bzroot-crazy-dvbst
-find . | cpio -o -H newc | xz --format=lzma > $D/$VERSION/crazy-dvbst/bzroot
+cd $D/bzroot-tbs-crazy-dvbst
+find . | cpio -o -H newc | xz --format=lzma > $D/$VERSION/tbs-crazy-dvbst/bzroot
 
 #Package Up bzimage
-cp -f $D/kernel/arch/x86/boot/bzImage $D/$VERSION/crazy-dvbst/bzimage
+cp -f $D/kernel/arch/x86/boot/bzImage $D/$VERSION/tbs-crazy-dvbst/bzimage
 
 #Copy default bzroot-gui
-cp -f $D/unraid/bzroot-gui $D/$VERSION/crazy-dvbst/bzroot-gui
+cp -f $D/unraid/bzroot-gui $D/$VERSION/tbs-crazy-dvbst/bzroot-gui
 
 #MD5 calculation of files
-cd $D/$VERSION/crazy-dvbst/
+cd $D/$VERSION/tbs-crazy-dvbst/
 md5sum bzroot > bzroot.md5
 md5sum bzimage > bzimage.md5
 md5sum bzroot-gui > bzroot-gui.md5

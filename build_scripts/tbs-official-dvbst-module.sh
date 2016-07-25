@@ -16,45 +16,44 @@ rsync -av $D/lib/modules/$(uname -r)/ /lib/modules/$(uname -r)/
 rsync -av $D/lib/firmware/ /lib/firmware/
 
 #Create bzroot-tbs files from master
-rsync -avr $D/bzroot-master-$VERSION/ $D/bzroot-tbs-dvbc
+rsync -avr $D/bzroot-master-$VERSION/ $D/bzroot-tbs-official-dvbst
 
 ##TBS Mediabuild
 cd $D
-mkdir tbs-drivers-dvbc
-cd $D/tbs-drivers-dvbc
+mkdir tbs-drivers-dvbst
+cd $D/tbs-drivers-dvbst
 wget -nc http://www.tbsdtv.com/download/document/common/tbs-linux-drivers_v$TBS.zip
 unzip tbs-linux-drivers_v$TBS.zip
 tar jxf linux-tbs-drivers.tar.bz2
 cd linux-tbs-drivers
 ./v4l/tbs-x86_64.sh
-./v4l/tbs-dvbc-x86_64.sh
 make -j $(nproc)
 make install
 
 #Copy firmware to bzroot
-find /lib/modules/$(uname -r) -type f -exec cp -r --parents '{}' $D/bzroot-tbs-dvbc/ \;
-find /lib/firmware/ -type f -exec cp -r --parents '{}' $D/bzroot-tbs-dvbc/ \;
+find /lib/modules/$(uname -r) -type f -exec cp -r --parents '{}' $D/bzroot-tbs-official-dvbst/ \;
+find /lib/firmware/ -type f -exec cp -r --parents '{}' $D/bzroot-tbs-official-dvbst/ \;
 
 #Create /etc/unraid-media to identify type of mediabuild and copy to bzroot
-echo base=\"TBS \(Official\) DVB-C\" > $D/bzroot-tbs-dvbc/etc/unraid-media
-echo driver=\"$TBS\" >> $D/bzroot-tbs-dvbc/etc/unraid-media
+echo base=\"TBS \(Official\) DVB-S\(2\) \& DVB-T\(2\)\" > $D/bzroot-tbs-official-dvbst/etc/unraid-media
+echo driver=\"$TBS\" >> $D/bzroot-tbs-official-dvbst/etc/unraid-media
 
 #Copy /etc/unraid-media to identify type of mediabuild to destination folder
-mkdir -p $D/$VERSION/tbs-dvbc/
-cp $D/bzroot-tbs-dvbc/etc/unraid-media $D/$VERSION/tbs-dvbc/
+mkdir -p $D/$VERSION/tbs-official-dvbst/
+cp $D/bzroot-tbs-dvbst/etc/unraid-media $D/$VERSION/tbs-official-dvbst/
 
 #Package Up bzroot
-cd $D/bzroot-tbs-dvbc
-find . | cpio -o -H newc | xz --format=lzma > $D/$VERSION/tbs-dvbc/bzroot
+cd $D/bzroot-tbs-official-dvbst
+find . | cpio -o -H newc | xz --format=lzma > $D/$VERSION/tbs-official-dvbst/bzroot
 
 #Package Up bzimage
-cp -f $D/kernel/arch/x86/boot/bzImage $D/$VERSION/tbs-dvbc/bzimage
+cp -f $D/kernel/arch/x86/boot/bzImage $D/$VERSION/tbs-official-dvbst/bzimage
 
 #Copy default bzroot-gui
-cp -f $D/unraid/bzroot-gui $D/$VERSION/tbs-dvbc/bzroot-gui
+cp -f $D/unraid/bzroot-gui $D/$VERSION/tbs-official-dvbst/bzroot-gui
 
 #MD5 calculation of files
-cd $D/$VERSION/tbs-dvbc/
+cd $D/$VERSION/tbs-official-dvbst/
 md5sum bzroot > bzroot.md5
 md5sum bzimage > bzimage.md5
 md5sum bzroot-gui > bzroot-gui.md5
