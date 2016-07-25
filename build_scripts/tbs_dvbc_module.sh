@@ -36,7 +36,7 @@ find /lib/modules/$(uname -r) -type f -exec cp -r --parents '{}' $D/bzroot-tbs-d
 find /lib/firmware/ -type f -exec cp -r --parents '{}' $D/bzroot-tbs-dvbc/ \;
 
 #Create /etc/unraid-media to identify type of mediabuild and copy to bzroot
-echo base=\"TBS DVB-C\" > $D/bzroot-tbs-dvbc/etc/unraid-media
+echo base=\"TBS \(Official\) DVB-C\" > $D/bzroot-tbs-dvbc/etc/unraid-media
 echo driver=\"$TBS\" >> $D/bzroot-tbs-dvbc/etc/unraid-media
 
 #Copy /etc/unraid-media to identify type of mediabuild to destination folder

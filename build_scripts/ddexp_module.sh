@@ -38,7 +38,7 @@ find /lib/modules/$(uname -r) -type f -exec cp -r --parents '{}' $D/bzroot-ddexp
 find /lib/firmware/ -type f -exec cp -r --parents '{}' $D/bzroot-ddexp/ \;
 
 #Create /etc/unraid-media to identify type of mediabuild and copy to bzroot
-echo base=\"Digital Devices Experimental\" > $D/bzroot-ddexp/etc/unraid-media
+echo base=\"Digital Devices \(Experimental\)\" > $D/bzroot-ddexp/etc/unraid-media
 echo driver=\"$DATE\" >> $D/bzroot-ddexp/etc/unraid-media
 
 #Copy /etc/unraid-media to identify type of mediabuild to destination folder

@@ -33,7 +33,7 @@ find /lib/firmware/ -type f -exec cp -r --parents '{}' $D/bzroot-openelec/ \;
 rsync -av $D/openelec-drivers/dvb-firmware-CvH-$OE/firmware/ $D/bzroot-openelec/lib/firmware/
 
 #Create /etc/unraid-media to identify type of mediabuild and copy to bzroot
-echo base=\"OpenElec\" > $D/bzroot-openelec/etc/unraid-media
+echo base=\"OpenELEC\" > $D/bzroot-openelec/etc/unraid-media
 echo driver=\"$OE\" >> $D/bzroot-openelec/etc/unraid-media
 
 #Copy /etc/unraid-media to identify type of mediabuild to destination folder
