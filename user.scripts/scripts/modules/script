@@ -1,0 +1,18 @@
+#!/bin/bash
+
+#Remove any existing file
+rm /mnt/disk1/dvb/dd-module.sh
+
+#Grab master files
+wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/dd-module.sh -P /mnt/disk1/dvb/
+wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/libreelec-module.sh -P /mnt/disk1/dvb/
+wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/tbs-crazy-dvbst-module.sh -P /mnt/disk1/dvb/
+wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/tbs-official-dvbc-module.sh -P /mnt/disk1/dvb/
+wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/tbs-official-dvbst-module.sh -P /mnt/disk1/dvb/
+wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/tbs-os-dvbst-module.sh -P /mnt/disk1/dvb/
+wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/other_scripts/ftp.sh -P /mnt/disk1/dvb/
+
+#Change permissions
+chmod +x /mnt/disk1/dvb/*.sh
+
+
