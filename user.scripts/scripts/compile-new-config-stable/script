@@ -10,7 +10,7 @@ wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/ker
 chmod +x /mnt/disk1/dvb/kernel_compile_module.sh
 
 #Uncomment new config lines
-sed -i '35,36 s|#||' /mnt/disk1/dvb/kernel_compile_module.sh
+sed -i '43,44 s|#||' /mnt/disk1/dvb/kernel_compile_module.sh
 
 #Uncomment stable line
-sed -i '55 s|#||' /mnt/disk1/dvb/kernel_compile_module.sh
+sed -i '63 s|#||' /mnt/disk1/dvb/kernel_compile_module.sh

@@ -30,7 +30,7 @@ make install
 
 #Copy firmware to bzroot
 find /lib/modules/$(uname -r) -type f -exec cp -r --parents '{}' $D/bzroot-tbs-os-dvbst/ \;
-find /lib/firmware/ -type f -exec cp -r --parents '{}' $D/bzroot-tbs-os-dvbstdvbst/ \;
+find /lib/firmware/ -type f -exec cp -r --parents '{}' $D/bzroot-tbs-os-dvbst/ \;
 
 #Create /etc/unraid-media to identify type of mediabuild and copy to bzroot
 echo base=\"TBS \(Open Source\) DVB-S\(2\) \& DVB-T\(2\)\" > $D/bzroot-tbs-os-dvbst/etc/unraid-media

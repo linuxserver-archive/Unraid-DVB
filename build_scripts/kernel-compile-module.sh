@@ -10,13 +10,21 @@ rm -rf $D/bzroot-ddexp $D/bzroot-master-* $D/bzroot-libreelec $D/bzroot-tbs $D/b
 ##Pull slackware64-current FILE_LIST to get packages
 wget -nc http://mirrors.slackware.com/slackware/slackware64-current/slackware64/FILE_LIST
 
+#Download patchutils
+cd $D/packages
+wget -nc https://github.com/CHBMB/Unraid-DVB/raw/master/files/patchutils-0.3.4-x86_64-1.tgz
+
+##Instal perl-process-table for CrazyCat
+export PERL_MM_USE_DEFAULT=1
+cpan> install Proc::ProcessTable
+
 #Change to current directory
 cd $D
 
 ##Install pkg modules
 [ ! -d "$D/packages" ] && mkdir $D/packages
   wget -nc -P $D/packages -i $D/URLS
-  installpkg $D/packages/*.txz
+  installpkg $D/packages/*.*
   
 ##Download and Install Kernel
 [[ $(uname -r) =~ ([0-9.]*) ]] &&  KERNEL=${BASH_REMATCH[1]} || return 1
