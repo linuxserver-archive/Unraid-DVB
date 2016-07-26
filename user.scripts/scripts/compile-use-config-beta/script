@@ -1,16 +1,16 @@
 #!/bin/bash
 
 #Remove any existing file
-rm /mnt/disk1/dvb/kernel_compile_module.sh
+rm /mnt/disk1/dvb/kernel-compile-module.sh
 
 #Grab master file
-wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/kernel_compile_module.sh -P /mnt/disk1/dvb/
+wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/kernel-compile-module.sh -P /mnt/disk1/dvb/
 
 #Change permissions
-chmod +x /mnt/disk1/dvb/kernel_compile_module.sh
+chmod +x /mnt/disk1/dvb/kernel-compile-module.sh
 
 #Uncomment old config lines
-sed -i '47,51 s|#||' /mnt/disk1/dvb/kernel_compile_module.sh
+sed -i '47,51 s|#||' /mnt/disk1/dvb/kernel-compile-module.sh
 
 #Uncomment beta line
-sed -i '64 s|#||' /mnt/disk1/dvb/kernel_compile_module.sh
+sed -i '64 s|#||' /mnt/disk1/dvb/kernel-compile-module.sh
