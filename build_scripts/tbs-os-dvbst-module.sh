@@ -20,13 +20,16 @@ rsync -avr $D/bzroot-master-$VERSION/ $D/bzroot-tbs-os-dvbst
 
 ##Open Source DVB-ST build
 cd $D
-git clone https://github.com/ljalves/media_build.git
-git clone --depth=1 https://github.com/ljalves/linux_media.git -b latest ./media
+git clone https://github.com/tbsdtv/media_build.git
+git clone --depth=1 https://github.com/tbsdtv/linux_media.git -b latest ./media
 cd media_build
 make dir DIR=../media
 make distclean
 make
 make install
+
+##Firmware from Current TBS Closed Source Drivers
+
 
 #Copy firmware to bzroot
 find /lib/modules/$(uname -r) -type f -exec cp -r --parents '{}' $D/bzroot-tbs-os-dvbst/ \;
