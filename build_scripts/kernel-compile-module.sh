@@ -11,6 +11,7 @@ rm -rf $D/bzroot-ddexp $D/bzroot-master-* $D/bzroot-libreelec $D/bzroot-tbs $D/b
 wget -nc http://mirrors.slackware.com/slackware/slackware64-current/slackware64/FILE_LIST
 
 #Download patchutils
+mkdir $D/packages
 cd $D/packages
 wget -nc https://github.com/CHBMB/Unraid-DVB/raw/master/files/patchutils-0.3.4-x86_64-1.tgz
 
@@ -44,11 +45,11 @@ cd $D
 #make menuconfig
  
 ##Use preconfigured .config rather than going through make menuconfig
-#cd $D
-#wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/files/.config
-#cd $D/kernel
-#rm -f .config
-#rsync $D/.config $D/kernel/.config
+cd $D
+wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/files/.config
+cd $D/kernel
+rm -f .config
+rsync $D/.config $D/kernel/.config
 
 ##Compile Kernel
 cd $D/kernel
@@ -61,7 +62,7 @@ make all modules_install install
 ##Download Unraid Comment/Uncomment for Beta/Stable
 cd $D
 #wget -nc http://dnld.lime-technology.com/stable/unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip
-#wget -nc http://dnld.lime-technology.com/beta/unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip
+wget -nc http://dnld.lime-technology.com/beta/unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip
 unzip unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip -d $D/unraid
 
 ##Extract bzroot
