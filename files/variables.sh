@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # set our package list
-slack_package_list=(autoconf automake bc binutils cpio flex gc gcc gcc-g++ glibc glibc-solibs guile kernel-headers kernel-modules libcgroup libgudev libmpc libtool libunistring m4 make mercurial mpfr ncurses patch perl pkg-config sqlite)
+slack_package_list=(autoconf automake bc binutils cpio flex gc gcc gcc-g++ glibc glibc-solibs guile kernel-headers kernel-modules lftp libcgroup libgudev libmpc libtool libunistring m4 make mercurial mpfr ncurses patch perl pkg-config sqlite)
 
 # current TBS Drivers See http://www.tbsdtv.com/download/
 TBS="160630"
