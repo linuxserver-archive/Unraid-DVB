@@ -41,7 +41,7 @@ echo driver=\"$TBS\" >> $D/bzroot-tbs-official-dvbc/etc/unraid-media
 
 #Copy /etc/unraid-media to identify type of mediabuild to destination folder
 mkdir -p $D/$VERSION/tbs-official-dvbc/
-cp $D/bzroot-tbs-dvbc/etc/unraid-media $D/$VERSION/tbs-official-dvbc/
+cp $D/bzroot-tbs-official-dvbc/etc/unraid-media $D/$VERSION/tbs-official-dvbc/
 
 #Package Up bzroot
 cd $D/bzroot-tbs-official-dvbc
