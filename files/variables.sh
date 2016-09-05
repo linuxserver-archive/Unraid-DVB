@@ -7,13 +7,13 @@ slack_package_list=(autoconf automake bc binutils cpio flex gc gcc gcc-g++ glibc
 TBS="160630"
 
 # current LibreELEC Release - See https://github.com/LibreELEC/dvb-firmware/releases
-LE="1.0.0"
+LE="1.1.0"
 
 # current OpenELEC Release - See https://github.com/CvH/dvb-firmware/releases
 OE="1.11"
 
 # current Digital Devices Github release - See https://github.com/DigitalDevices/dddvb/releases
-DD="0.9.23"
+DD="0.9.24"
 
 # current Date (DDExp Version)
 DATE=$(date +'%d%m%y')
