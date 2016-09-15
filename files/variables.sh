@@ -13,7 +13,7 @@ LE="1.1.0"
 OE="1.11"
 
 # current Digital Devices Github release - See https://github.com/DigitalDevices/dddvb/releases
-DD="0.9.24"
+DD="0.9.26"
 
 # current Date (DDExp Version)
 DATE=$(date +'%d%m%y')
