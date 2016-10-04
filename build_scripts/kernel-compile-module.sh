@@ -41,15 +41,15 @@ cd $D
   make oldconfig
  
 ##Make menuconfig
-#cd $D/kernel
-#make menuconfig
- 
-##Use preconfigured .config rather than going through make menuconfig
-#cd $D
-#wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/files/.config
-#cd $D/kernel
-#rm -f .config
-#rsync $D/.config $D/kernel/.config
+cd $D
+wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/files/.config-$KERNEL
+cd $D/kernel
+if [ -e $D/.config-$KERNEL ]; then
+   rm -f .config 
+   rsync $D/.config-$KERNEL $D/kernel/.config 
+else 
+   make menuconfig
+fi
 
 ##Compile Kernel
 cd $D/kernel
