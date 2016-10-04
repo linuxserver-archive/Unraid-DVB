@@ -42,11 +42,11 @@ cd $D
  
 ##Make menuconfig
 cd $D
-wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/files/.config-$KERNEL
+wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/files/.config-$UNRAID-KERNEL
 cd $D/kernel
-if [ -e $D/.config-$KERNEL ]; then
+if [ -e $D/.config-$UNRAID-KERNEL ]; then
    rm -f .config 
-   rsync $D/.config-$KERNEL $D/kernel/.config 
+   rsync $D/.config-$UNRAID-KERNEL $D/kernel/.config 
 else 
    make menuconfig
 fi
