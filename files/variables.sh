@@ -21,6 +21,9 @@ DATE=$(date +'%d%m%y')
 # find our working folder
 D="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
 
+#Unraid Kernel Version
+UNRAID-KERNEL="uname -r"
+
 # clean up old files if they exist
 [[ -f "$D"/FILE_LIST ]] && rm "$D"/FILE_LIST
 [[ -f "$D"/URLS ]] && rm "$D"/URLS
