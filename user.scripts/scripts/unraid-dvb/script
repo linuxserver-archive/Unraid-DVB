@@ -4,7 +4,7 @@
 rm /mnt/disk1/dvb/dd-module.sh
 
 #Grab master files
-wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/build.sh
+wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/build.sh -P /mnt/disk1/dvb/
 wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/kernel-compile-module.sh -P /mnt/disk1/dvb/
 wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/dd-module.sh -P /mnt/disk1/dvb/
 wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/libreelec-module.sh -P /mnt/disk1/dvb/
