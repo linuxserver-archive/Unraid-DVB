@@ -4,9 +4,6 @@
 wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/files/variables.sh
 . "$(dirname "$(readlink -f ${BASH_SOURCE[0]})")"/variables.sh
 
-##Remove old folders
-rm -rf $D/bzroot-ddexp $D/bzroot-master-* $D/bzroot-libreelec $D/bzroot-tbs $D/bzroot-tbs-dvbc $D/kernel $D/lib $D/media_build_experimental $D/libreelec-drivers $D/tbs-drivers $D/tbs-drivers-dvbc $D/unraid $D/.config $D/linux-*.tar.xz $D/unRAIDServer-*.zip $D/variables.sh $D/ddexp-*.zip $D/FILE_LIST $D:/packages
-
 ##Pull slackware64-current FILE_LIST to get packages
 wget -nc http://mirrors.slackware.com/slackware/slackware64-current/slackware64/FILE_LIST
 
