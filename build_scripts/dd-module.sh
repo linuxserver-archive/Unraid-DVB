@@ -25,13 +25,6 @@ cd /usr/src/
 wget https://github.com/DigitalDevices/dddvb/archive/$DD.tar.gz
 tar -xf $DD.tar.gz
 cd dddvb-$DD
-
-##Pull release from my fork
-#wget https://github.com/CHBMB/dddvb/archive/master.zip
-#unzip master.zip
-#cd dddvb-master
-
-##Common to both
 make
 make install
 mkdir -p $D/bzroot-dd/etc/depmod.d
