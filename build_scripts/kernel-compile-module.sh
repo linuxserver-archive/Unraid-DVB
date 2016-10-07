@@ -42,11 +42,11 @@ cd $D
 
 ##Make menuconfig
 cd $D
-wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/files/.config-$UNRAID-KERNEL
+wget https://files.linuxserver.io/unraid-dvb/$VERSION/stock/.config
 cd $D/kernel
-if [ -e $D/.config-$UNRAID-KERNEL ]; then
+if [ -e $D/.config ]; then
    rm -f .config
-   rsync $D/.config-$UNRAID-KERNEL $D/kernel/.config
+   rsync $D/.config $D/kernel/.config
 else
    make menuconfig
 fi
@@ -87,12 +87,14 @@ mkdir -p $D/$VERSION/stock/
 cp -f $D/unraid/bzimage $D/$VERSION/stock/
 cp -f $D/unraid/bzroot $D/$VERSION/stock/
 cp -f $D/unraid/bzroot-gui $D/$VERSION/stock/
+cp -f $D/kernel/.config $D/$VERSION/stock/
 
 ##Calculate md5 on stock files
 cd $D/$VERSION/stock/
 md5sum bzroot > bzroot.md5
 md5sum bzimage > bzimage.md5
 md5sum bzroot-gui > bzroot-gui.md5
+md5sum .config > .config.md5
 
 #Return to original directory
 cd $D

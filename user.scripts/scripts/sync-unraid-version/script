@@ -1,0 +1,10 @@
+#!/bin/bash
+
+#Copy files from flash to vdisk
+
+cp /boot/bzroot /mnt/disks/UNRAID_VM/bzroot
+cp /boot/bzimage /mnt/disks/UNRAID_VM/bzimage
+cp /boot/bzroot-gui /mnt/disks/UNRAID_VM/bzroot-gui
+
+
+
