@@ -13,4 +13,18 @@ $D/tbs-os-module.sh && \
 $D/dd-module.sh
 $D/ftp.sh
 
-rm -rf $D/bzroot-dd $D/bzroot-libreelec $D/bzroot-tbs-* $D/kernel $D/lib $D/libreelec-drivers $D/packages $D/tbs-drivers-* $D/unraid $D/FILE_LIST $D/linux-*.tar.xz $D/unRAIDServer-*.zip $D/URLS $D/variables.sh
+rm -rf \
+   $D/.config \
+   $D/bzroot-dd \
+   $D/bzroot-libreelec \
+   $D/bzroot-tbs-* \
+   $D/kernel \
+   $D/lib \
+   $D/libreelec-drivers \
+   $D/packages \
+   $D/tbs-drivers-* \
+   $D/unraid \
+   $D/FILE_LIST \ 
+   $D/linux-*.tar.xz \ 
+   $D/unRAIDServer-*.zip \
+   $D/URLS $D/variables.sh \
