@@ -1,4 +1,5 @@
 #!/bin/bash
 
 #Remove any existing file
-rm -rf /mnt/disk1/dvb/*
+rm -rf /mnt/disk1/dvb/
+mkdir /mnt/disk1/dvb/
