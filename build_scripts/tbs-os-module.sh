@@ -2,7 +2,7 @@
 
 ###Run kernel_compile.sh prior to running a module###
 
-##Pull variables from github 
+##Pull variables from github
 wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/files/variables.sh
 . "$(dirname "$(readlink -f ${BASH_SOURCE[0]})")"/variables.sh
 
@@ -29,14 +29,23 @@ make
 make install
 
 ##Firmware from Current TBS Closed Source Drivers
+mkdir -p $D/tbs-os-firmware/
+cd $D/tbs-os-firmware/
+wget http://www.tbsdtv.com/download/document/linux/tbs-tuner-firmwares_v1.0.tar.bz2
+tar jxvf tbs-tuner-firmwares_v1.0.tar.bz2 -C $D/bzroot-tbs-os-dvbst/lib/firmware/
 
+##CX24117 firmware
+cd $D
+wget http://www.tbsdtv.com/download/document/common/tbs-linux-drivers_v130901.zip
+unzip -p tbs-linux-drivers_v130901.zip linux-tbs-drivers.tar.bz2 | tar jxOf - linux-tbs-drivers/v4l/tbs6981fe_driver.o.x86_64 | dd bs=1 skip=10144 count=55486 of=dvb-fe-cx24117.fw
+mv dvb-fe-cx24117.fw $D/bzroot-tbs-os-dvbst/lib/firmware/
 
 #Copy firmware to bzroot
 find /lib/modules/$(uname -r) -type f -exec cp -r --parents '{}' $D/bzroot-tbs-os-dvbst/ \;
 find /lib/firmware/ -type f -exec cp -r --parents '{}' $D/bzroot-tbs-os-dvbst/ \;
 
 #Create /etc/unraid-media to identify type of mediabuild and copy to bzroot
-echo base=\"TBS \(Open Source\) DVB-S\(2\) \& DVB-T\(2\)\" > $D/bzroot-tbs-os-dvbst/etc/unraid-media
+echo base=\"TBS \(Open Source\) ATSC-C, DVB-C, DVB-S\(2\) \& DVB-T\(2\)\" > $D/bzroot-tbs-os-dvbst/etc/unraid-media
 echo driver=\"$DATE\" >> $D/bzroot-tbs-os-dvbst/etc/unraid-media
 
 #Copy /etc/unraid-media to identify type of mediabuild to destination folder
