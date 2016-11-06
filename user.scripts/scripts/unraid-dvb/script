@@ -11,7 +11,7 @@ wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/lib
 wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/tbs-crazy-dvbst-module.sh -P /mnt/disk1/dvb/
 wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/tbs-official-dvbc-module.sh -P /mnt/disk1/dvb/
 wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/tbs-official-dvbst-module.sh -P /mnt/disk1/dvb/
-wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/tbs-os-dvbst-module.sh -P /mnt/disk1/dvb/
+wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/tbs-os-module.sh -P /mnt/disk1/dvb/
 wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/other_scripts/ftp.sh -P /mnt/disk1/dvb/
 
 #Change permissions
