@@ -2,7 +2,7 @@
 
 ###Run kernel_compile.sh prior to running a module###
 
-##Pull variables from github 
+##Pull variables from github
 wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/files/variables.sh
 . "$(dirname "$(readlink -f ${BASH_SOURCE[0]})")"/variables.sh
 
@@ -22,7 +22,7 @@ rsync -avr $D/bzroot-master-$VERSION/ $D/bzroot-tbs-official-dvbst
 cd $D
 mkdir tbs-drivers-dvbst
 cd $D/tbs-drivers-dvbst
-wget -nc http://www.tbsdtv.com/download/document/common/tbs-linux-drivers_v$TBS.zip
+wget -nc http://www.tbsiptv.com/download/common/tbs-linux-drivers_v$TBS.zip
 unzip tbs-linux-drivers_v$TBS.zip
 tar jxf linux-tbs-drivers.tar.bz2
 cd linux-tbs-drivers

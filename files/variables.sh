@@ -3,8 +3,8 @@
 # set our package list
 slack_package_list=(autoconf automake bc binutils cpio flex gc gcc gcc-g++ git glibc glibc-solibs guile kernel-headers kernel-modules lftp libcgroup libgudev libmpc libtool libunistring m4 make mercurial mpfr ncurses patch perl pkg-config sqlite)
 
-# current TBS Drivers See http://www.tbsdtv.com/download/
-TBS="160919"
+# current TBS Drivers See http://www.tbsiptv.com/downloads?path=3
+TBS="161031"
 
 # current LibreELEC Release - See https://github.com/LibreELEC/dvb-firmware/releases
 LE="1.1.0"
