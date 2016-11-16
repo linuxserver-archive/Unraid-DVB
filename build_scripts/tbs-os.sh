@@ -35,8 +35,15 @@ make install
 ##Firmware from Current TBS Closed Source Drivers
 mkdir -p $D/tbs-os-firmware/
 cd $D/tbs-os-firmware/
-wget https://github.com/CHBMB/Unraid-DVB/raw/master/files/tbs-firmware.tar.bz2
-tar jxvf tbs-firmware.tar.bz2 -C $D/bzroot-tbs-os/lib/firmware/
+wget http://www.tbsdtv.com/download/document/linux/tbs-tuner-firmwares_v1.0.tar.bz2
+tar jxvf tbs-tuner-firmwares_v1.0.tar.bz2 -C $D/bzroot-tbs-os/lib/firmware/
+
+
+##Firmware from Current TBS Closed Source Drivers
+#mkdir -p $D/tbs-os-firmware/
+#cd $D/tbs-os-firmware/
+#wget https://github.com/CHBMB/Unraid-DVB/raw/master/files/tbs-firmware.tar.bz2
+#tar jxvf tbs-firmware.tar.bz2 -C $D/bzroot-tbs-os/lib/firmware/
 
 ##libreelec Mediabuild
 cd $D
@@ -53,7 +60,7 @@ find /lib/firmware/ -type f -exec cp -r --parents '{}' $D/bzroot-tbs-os/ \;
 rsync -av $D/libreelec-drivers/dvb-firmware-$LE/firmware/ $D/bzroot-tbs-os/lib/firmware/
 
 #Create /etc/unraid-media to identify type of mediabuild and copy to bzroot
-echo base=\"TBS \(Open Source\) ATSC-C, DVB-C, DVB-S\(2\) \& DVB-T\(2\)\" > $D/bzroot-tbs-os/etc/unraid-media
+echo base=\"TBS \(Open Source\) ATSC-C, DVB-C, DVB-S\(2\) \& DVB-T\(2\)\ with extra firmware to support more cards" > $D/bzroot-tbs-os/etc/unraid-media
 echo driver=\"$DATE\" >> $D/bzroot-tbs-os/etc/unraid-media
 
 #Copy /etc/unraid-media to identify type of mediabuild to destination folder
