@@ -8,7 +8,6 @@ $D/kernel-compile-module.sh && \
 $D/libreelec-module.sh && \
 $D/tbs-official-dvbst-module.sh && \
 $D/tbs-official-dvbc-module.sh && \
-$D/tbs-crazy-dvbst-module.sh && \
 $D/tbs-os-module.sh && \
 $D/dd-module.sh
 $D/ftp.sh
