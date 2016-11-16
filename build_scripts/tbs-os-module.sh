@@ -55,7 +55,7 @@ find /lib/firmware/ -type f -exec cp -r --parents '{}' $D/bzroot-tbs-os/ \;
 rsync -av $D/libreelec-drivers/dvb-firmware-$LE/firmware/ $D/bzroot-tbs-os/lib/firmware/
 
 #Create /etc/unraid-media to identify type of mediabuild and copy to bzroot
-echo base=\"TBS \(Open Source\) ATSC-C, DVB-C, DVB-S\(2\) \& DVB-T\(2\) with extra firmware to support more cards\" > $D/bzroot-tbs-os/etc/unraid-media
+echo base=\"TBS \(Open Source\) ATSC-C, DVB-C, DVB-S\(2\) \& DVB-T\(2\)\" > $D/bzroot-tbs-os/etc/unraid-media
 echo driver=\"$DATE\" >> $D/bzroot-tbs-os/etc/unraid-media
 
 #Copy /etc/unraid-media to identify type of mediabuild to destination folder
