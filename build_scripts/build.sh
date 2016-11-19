@@ -24,4 +24,5 @@ rm -rf \
    $D/FILE_LIST \ 
    $D/linux-*.tar.xz \ 
    $D/unRAIDServer-*.zip \
-   $D/URLS $D/variables.sh \
+   $D/URLS \
+   $D/variables.sh \
