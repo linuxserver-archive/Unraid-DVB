@@ -32,10 +32,10 @@ UNRAID-KERNEL="uname -r"
 VERSION="$(cat /etc/unraid-version | tr "." - | cut -d '"' -f2)"
 
 # get slackware64-current FILE_LIST
-wget -nc http://mirrors.slackware.com/slackware/slackware64-current/slackware64/FILE_LIST
+wget -nc http://mirrors.slackware.com/slackware/slackware64-14.2/slackware64/FILE_LIST
 
 python_url="https://github.com/dmacias72/unRAID-plugins/raw/master/packages/6.2/python-2.7.11-x86_64-2.txz"
-slack_package_urlbase="http://mirrors.slackware.com/slackware/slackware64-current/slackware64"
+slack_package_urlbase="http://mirrors.slackware.com/slackware/slackware64-14.2/slackware64"
 
 for i in "${slack_package_list[@]}"
 do
