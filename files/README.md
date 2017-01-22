@@ -8,5 +8,5 @@
 * `./configure --prefix=/usr`
 * `make install DESTDIR=$(pwd)/patchutils-0.3.4`
 * `cd $(pwd)/patchutils-0.3.4`
-* `makepkg -l y -c n ../patchutils-0.34-x86_64-1.tgz`
-* `installpkg ../patchutils-0.34-x86_64-1.tgz`
+* `makepkg -l y -c n ../patchutils-0.34-x86_64-2.tgz`
+* `installpkg ../patchutils-0.34-x86_64-2.tgz`
