@@ -7,7 +7,7 @@ slack_package_list=(autoconf automake bc binutils cpio flex gc gcc gcc-g++ git g
 TBS="161031"
 
 # current LibreELEC Release - See https://github.com/LibreELEC/dvb-firmware/releases
-LE="1.1.0"
+LE="1.2.0"
 
 # current OpenELEC Release - See https://github.com/CvH/dvb-firmware/releases
 OE="1.11"
