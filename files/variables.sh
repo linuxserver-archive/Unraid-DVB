@@ -36,7 +36,6 @@ do
 package_locations_current=$(grep "\<$i-[[:digit:]].*.txz$" FILE_LIST_CURRENT | cut -b 53-9001)
 echo "$slack_package_current_urlbase""$package_locations_current" >> "$D"/CURRENTURLS
 done
-echo "$python_url" >> "$D"/CURRENTURLS
 
 # get slackware64-14.2 FILE_LIST
 wget -nc http://mirrors.slackware.com/slackware/slackware64-14.2/slackware64/FILE_LIST -O $D/FILE_LIST_142
