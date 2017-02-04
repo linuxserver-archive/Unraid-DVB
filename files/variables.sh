@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#!/bin/bash
-
 # set our package list
 slack_package_current=(autoconf automake binutils cpio flex gc gcc gcc-g++ git glibc glibc-solibs guile kernel-headers kernel-modules libcgroup libgudev libmpc libtool libunistring m4 make mercurial mpfr ncurses patch perl pkg-config python sqlite)
 slack_package_142=(bc lftp)
