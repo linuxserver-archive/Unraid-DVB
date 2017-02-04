@@ -20,8 +20,10 @@ DATE=$(date +'%d%m%y')
 D="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
 
 # clean up old files if they exist
-[[ -f "$D"/FILE_LIST ]] && rm "$D"/FILE_LIST
-[[ -f "$D"/URLS ]] && rm "$D"/URLS
+[[ -f "$D"/FILE_LIST_142 ]] && rm "$D"/FILE_LIST_142
+[[ -f "$D"/URLS_142 ]] && rm "$D"/URLS_142
+[[ -f "$D"/FILE_LIST_CURRENT ]] && rm "$D"/FILE_LIST_CURRENT
+[[ -f "$D"/URLS_CURRENT ]] && rm "$D"/URLS_CURRENT
 
 # current Unraid Version
 VERSION="$(cat /etc/unraid-version | tr "." - | cut -d '"' -f2)"
@@ -34,7 +36,7 @@ slack_package_current_urlbase="http://mirrors.slackware.com/slackware/slackware6
 for i in "${slack_package_current[@]}"
 do
 package_locations_current=$(grep "\<$i-[[:digit:]].*.txz$" FILE_LIST_CURRENT | cut -b 53-9001)
-echo "$slack_package_current_urlbase""$package_locations_current" >> "$D"/CURRENTURLS
+echo "$slack_package_current_urlbase""$package_locations_current" >> "$D"/URLS_CURRENT
 done
 
 # get slackware64-14.2 FILE_LIST
@@ -45,5 +47,5 @@ slack_package_142_urlbase="http://mirrors.slackware.com/slackware/slackware64-14
 for i in "${slack_package_142[@]}"
 do
 package_locations_142=$(grep "\<$i-[[:digit:]].*.txz$" FILE_LIST_142 | cut -b 53-9001)
-echo "$slack_package_142_urlbase""$package_locations_142" >> "$D"/142URLS
+echo "$slack_package_142_urlbase""$package_locations_142" >> "$D"/URLS_142
 done
