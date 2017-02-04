@@ -21,7 +21,8 @@ cd $D
 
 ##Install pkg modules
 [ ! -d "$D/packages" ] && mkdir $D/packages
-  wget -nc -P $D/packages -i $D/URLS
+  wget -nc -P $D/packages -i $D/CURRENTURLS
+  wget -nc -P $D/packages -i $D/142URLS
   installpkg $D/packages/*.*
 
 ##Download and Install Kernel
