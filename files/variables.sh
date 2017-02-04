@@ -34,7 +34,7 @@ slack_package_current_urlbase="http://mirrors.slackware.com/slackware/slackware6
 for i in "${slack_package_current[@]}"
 do
 package_locations_current=$(grep "\<$i-[[:digit:]].*.txz$" FILE_LIST_CURRENT | cut -b 53-9001)
-echo "$slack_package_current_urlbase""$current_package_locations" >> "$D"/CURRENTURLS
+echo "$slack_package_current_urlbase""$package_locations_current" >> "$D"/CURRENTURLS
 done
 echo "$python_url" >> "$D"/CURRENTURLS
 
@@ -46,5 +46,5 @@ slack_package_142_urlbase="http://mirrors.slackware.com/slackware/slackware64-14
 for i in "${slack_package_142[@]}"
 do
 package_locations_142=$(grep "\<$i-[[:digit:]].*.txz$" FILE_LIST_142 | cut -b 53-9001)
-echo "$slack_package_142_urlbase""$142_package_locations" >> "$D"/142URLS
+echo "$slack_package_142_urlbase""$package_locations_142" >> "$D"/142URLS
 done
