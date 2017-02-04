@@ -22,12 +22,12 @@ rsync -avr $D/bzroot-master-$VERSION/ $D/bzroot-tbs-crazy-dvbst
 
 ##Crazy Cat DVB-ST build
 cd $D
-mkdir tbs-drivers-crazycat
-cd $D/tbs-drivers-crazycat
-wget -nc https://bitbucket.org/CrazyCat/linux-tbs-drivers/get/master.tar.bz2
-tar xjvf master.tar.bz2 -C $D/tbs-drivers-crazycat/ --strip-components=1
-./v4l/tbs-x86_64.sh
-make -j $(nproc)
+git clone https://github.com/tbsdtv/media_build.git
+git clone --depth=1 https://github.com/crazycat69/linux_media.git -b latest ./tbs-crazycat
+cd media_build
+make dir DIR=../tbs-crazycat
+make distclean
+make
 make install
 
 #Copy firmware to bzroot
