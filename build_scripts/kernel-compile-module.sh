@@ -7,9 +7,6 @@ rm -rf $D/bzroot-dd $D/bzroot-libreelec $D/bzroot-tbs-* $D/kernel $D/lib $D/libr
 wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/files/variables.sh
 . "$(dirname "$(readlink -f ${BASH_SOURCE[0]})")"/variables.sh
 
-##Pull slackware64-current FILE_LIST to get packages
-wget -nc http://mirrors.slackware.com/slackware/slackware64-current/slackware64/FILE_LIST
-
 #Download patchutils
 mkdir $D/packages
 cd $D/packages
