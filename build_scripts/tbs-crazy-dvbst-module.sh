@@ -22,12 +22,12 @@ rsync -avr $D/bzroot-master-$VERSION/ $D/bzroot-tbs-crazy-dvbst
 
 ##Crazy Cat DVB-ST build
 cd $D
-git clone https://github.com/tbsdtv/media_build.git
-git clone --depth=1 https://github.com/crazycat69/linux_media.git -b latest ./tbs-crazycat
-cd media_build
-make dir DIR=../tbs-crazycat
-make distclean
-make
+wget -nc https://raw.githubusercontent.com/LibreELEC/LibreELEC.tv/master/tools/mkpkg/mkpkg_media_build
+chmod +x mkpkg_media_build
+mkpkg_media_build
+tar xvf media_build-$GIT_REV
+cd $D/media_build-$GIT_REV
+./build
 make install
 
 #Copy firmware to bzroot
