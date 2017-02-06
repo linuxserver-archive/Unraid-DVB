@@ -25,7 +25,6 @@ libtool \
 libunistring \
 m4 \
 make \
-mercurial \
 mpfr \
 ncurses \
 patch \
