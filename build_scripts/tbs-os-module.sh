@@ -34,12 +34,6 @@ cd $D/tbs-os-firmware/
 wget http://www.tbsdtv.com/download/document/linux/tbs-tuner-firmwares_v1.0.tar.bz2
 tar jxvf tbs-tuner-firmwares_v1.0.tar.bz2 -C $D/bzroot-tbs-os/lib/firmware/
 
-##Firmware from Current TBS Closed Source Drivers
-#mkdir -p $D/tbs-os-firmware/
-#cd $D/tbs-os-firmware/
-#wget https://github.com/CHBMB/Unraid-DVB/raw/master/files/tbs-firmware.tar.bz2
-#tar jxvf tbs-firmware.tar.bz2 -C $D/bzroot-tbs-os/lib/firmware/
-
 ##libreelec Mediabuild
 cd $D
 mkdir libreelec-drivers
