@@ -5,7 +5,7 @@ slack_package_current=(autoconf automake binutils cpio flex gc gcc gcc-g++ git g
 slack_package_142=(bc lftp)
 
 # current TBS Drivers See http://www.tbsiptv.com/downloads?path=3
-TBS="161031"
+TBS="170206"
 
 # current LibreELEC Release - See https://github.com/LibreELEC/dvb-firmware/releases
 LE="1.2.1"
