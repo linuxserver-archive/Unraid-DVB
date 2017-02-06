@@ -33,7 +33,7 @@ perl \
 pkg-config \
 python \
 readline \
-sqlite
+sqlite \
 )
 
 # current TBS Drivers See http://www.tbsiptv.com/downloads?path=3
