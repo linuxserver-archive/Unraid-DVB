@@ -20,13 +20,16 @@ rsync -av $D/lib/firmware/ /lib/firmware/
 #Create bzroot-tbs files from master
 rsync -avr $D/bzroot-master-$VERSION/ $D/bzroot-tbs-crazy-dvbst
 
-##Crazy Cat DVB-ST build
+##Crazy Cat DVB-ST built from LE script
 cd $D
 wget -nc https://raw.githubusercontent.com/LibreELEC/LibreELEC.tv/master/tools/mkpkg/mkpkg_media_build
 chmod +x mkpkg_media_build
 mkpkg_media_build
-tar xvf media_build-$GIT_REV
-cd $D/media_build-$GIT_REV
+
+##Unpack and build from LE package
+GIT_REV="$(find media_build-*.tar.xz | cut -c 13-22)"
+tar xvf media_build-"$GIT_REV".tar.xz
+cd media_build-"$GIT_REV"
 ./build
 make install
 
