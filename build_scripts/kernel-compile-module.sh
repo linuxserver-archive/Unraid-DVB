@@ -7,14 +7,15 @@ rm -rf $D/bzroot-dd $D/bzroot-libreelec $D/bzroot-tbs-* $D/kernel $D/lib $D/libr
 wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/files/variables.sh
 . "$(dirname "$(readlink -f ${BASH_SOURCE[0]})")"/variables.sh
 
-#Download patchutils
+#Download patchutils & Proc-ProcessTable
 mkdir $D/packages
 cd $D/packages
-wget -nc https://github.com/CHBMB/Unraid-DVB/raw/master/files/patchutils-0.3.4-x86_64-1.tgz
+wget -nc https://github.com/CHBMB/Unraid-DVB/raw/master/files/patchutils-0.3.4-x86_64-2.tgz
+wget -nc https://github.com/CHBMB/Unraid-DVB/raw/master/files/Proc-ProcessTable-0.53-x86_64-1.tgz
 
 ##Instal perl-process-table for CrazyCat
-#export PERL_MM_USE_DEFAULT=1
-#cpan> install Proc::ProcessTable
+export PERL_MM_USE_DEFAULT=1
+cpan> install Proc::ProcessTable
 
 #Change to current directory
 cd $D
