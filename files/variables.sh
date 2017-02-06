@@ -1,8 +1,39 @@
 #!/bin/bash
 
 # set our package list
-slack_package_current=(autoconf automake binutils cpio flex gc gcc gcc-g++ git glibc glibc-solibs guile kernel-headers kernel-modules libcgroup libgudev libmpc libtool libunistring m4 make mercurial mpfr ncurses patch perl pkg-config python sqlite)
-slack_package_142=(bc lftp)
+slack_package_current=(\
+autoconf \
+automake \
+bc \
+binutils \
+cpio \
+flex \
+gc \
+gcc \
+gcc-g++ \
+git \
+glibc \
+glibc-solibs \
+guile \
+kernel-headers \
+kernel-modules \
+lftp \
+libcgroup \
+libgudev \
+libmpc \
+libtool \
+libunistring \
+m4 \
+make \
+mpfr \
+ncurses \
+patch \
+perl \
+pkg-config \
+python \
+readline \
+sqlite \
+)
 
 # current TBS Drivers See http://www.tbsiptv.com/downloads?path=3
 TBS="170206"
@@ -20,8 +51,6 @@ DATE=$(date +'%d%m%y')
 D="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
 
 # clean up old files if they exist
-[[ -f "$D"/FILE_LIST_142 ]] && rm "$D"/FILE_LIST_142
-[[ -f "$D"/URLS_142 ]] && rm "$D"/URLS_142
 [[ -f "$D"/FILE_LIST_CURRENT ]] && rm "$D"/FILE_LIST_CURRENT
 [[ -f "$D"/URLS_CURRENT ]] && rm "$D"/URLS_CURRENT
 
@@ -37,15 +66,4 @@ for i in "${slack_package_current[@]}"
 do
 package_locations_current=$(grep "\<$i-[[:digit:]].*.txz$" FILE_LIST_CURRENT | cut -b 53-9001)
 echo "$slack_package_current_urlbase""$package_locations_current" >> "$D"/URLS_CURRENT
-done
-
-# get slackware64-14.2 FILE_LIST
-wget -nc http://mirrors.slackware.com/slackware/slackware64-14.2/slackware64/FILE_LIST -O $D/FILE_LIST_142
-
-slack_package_142_urlbase="http://mirrors.slackware.com/slackware/slackware64-14.2/slackware64"
-
-for i in "${slack_package_142[@]}"
-do
-package_locations_142=$(grep "\<$i-[[:digit:]].*.txz$" FILE_LIST_142 | cut -b 53-9001)
-echo "$slack_package_142_urlbase""$package_locations_142" >> "$D"/URLS_142
 done
