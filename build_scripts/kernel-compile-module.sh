@@ -13,10 +13,6 @@ cd $D/packages
 wget -nc https://github.com/CHBMB/Unraid-DVB/raw/master/files/patchutils-0.3.4-x86_64-2.tgz
 wget -nc https://github.com/CHBMB/Unraid-DVB/raw/master/files/Proc-ProcessTable-0.53-x86_64-1.tgz
 
-##Instal perl-process-table for CrazyCat
-export PERL_MM_USE_DEFAULT=1
-cpan> install Proc::ProcessTable
-
 #Change to current directory
 cd $D
 
@@ -25,6 +21,10 @@ cd $D
   wget -nc -P $D/packages -i $D/URLS_CURRENT
   wget -nc -P $D/packages -i $D/URLS_142
   installpkg $D/packages/*.*
+  
+##Instal perl-process-table for CrazyCat
+export PERL_MM_USE_DEFAULT=1
+cpan> install Proc::ProcessTable
 
 ##Download and Install Kernel
 [[ $(uname -r) =~ ([0-9.]*) ]] &&  KERNEL=${BASH_REMATCH[1]} || return 1
