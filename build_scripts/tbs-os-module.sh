@@ -34,19 +34,9 @@ cd $D/tbs-os-firmware/
 wget http://www.tbsdtv.com/download/document/linux/tbs-tuner-firmwares_v1.0.tar.bz2
 tar jxvf tbs-tuner-firmwares_v1.0.tar.bz2 -C $D/bzroot-tbs-os/lib/firmware/
 
-##libreelec Mediabuild
-cd $D
-mkdir libreelec-drivers
-cd libreelec-drivers
-wget -nc https://github.com/LibreELEC/dvb-firmware/archive/$LE.tar.gz
-tar xvf $LE.tar.gz 
-
 #Copy firmware to bzroot
 find /lib/modules/$(uname -r) -type f -exec cp -r --parents '{}' $D/bzroot-tbs-os/ \;
 find /lib/firmware/ -type f -exec cp -r --parents '{}' $D/bzroot-tbs-os/ \;
-
-#Copy librelec firmware to bzroot
-rsync -av $D/libreelec-drivers/dvb-firmware-$LE/firmware/ $D/bzroot-tbs-os/lib/firmware/
 
 #Create /etc/unraid-media to identify type of mediabuild and copy to bzroot
 echo base=\"TBS \(Open Source\) \& LibreELEC ATSC-C, DVB-C, DVB-S\(2\) \& DVB-T\(2\)\" > $D/bzroot-tbs-os/etc/unraid-media
