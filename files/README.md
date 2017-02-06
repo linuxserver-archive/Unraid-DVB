@@ -10,3 +10,15 @@
 * `cd $(pwd)/patchutils-0.3.4`
 * `makepkg -l y -c n ../patchutils-0.3.4-x86_64-2.tgz`
 * `installpkg ../patchutils-0.3.4-x86_64-2.tgz`
+
+#Proc-ProcessTable
+
+* `wget http://search.cpan.org/CPAN/authors/id/J/JW/JWB/Proc-ProcessTable-0.53.tar.gz`
+* `tar xvf Proc-ProcessTable-0.53.tar.gz`
+* `cd Proc-ProcessTable-0.53`
+* `perl Makefile.PL`
+* `make`
+* `make install DESTDIR=$(pwd)/Proc-ProcessTable-0.53`
+* `cd $(pwd)/Proc-ProcessTable-0.53`
+* `makepkg -l y -c n ../Proc-ProcessTable-0.53-x86_64-1.tgz`
+* `installpkg ../Proc-ProcessTable-0.53-x86_64-1.tgz`

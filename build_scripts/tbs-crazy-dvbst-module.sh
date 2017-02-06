@@ -1,5 +1,3 @@
-###Deprecated Repo No Longer Exists
-
 #!/bin/bash
 
 ###Run kernel_compile.sh prior to running a module###
@@ -20,14 +18,17 @@ rsync -av $D/lib/firmware/ /lib/firmware/
 #Create bzroot-tbs files from master
 rsync -avr $D/bzroot-master-$VERSION/ $D/bzroot-tbs-crazy-dvbst
 
-##Crazy Cat DVB-ST build
+##Crazy Cat DVB-ST built from LE script
 cd $D
-git clone https://github.com/tbsdtv/media_build.git
-git clone --depth=1 https://github.com/crazycat69/linux_media.git -b latest ./tbs-crazycat
-cd media_build
-make dir DIR=../tbs-crazycat
-make distclean
-make
+wget -nc https://raw.githubusercontent.com/LibreELEC/LibreELEC.tv/master/tools/mkpkg/mkpkg_media_build
+chmod +x mkpkg_media_build
+mkpkg_media_build
+
+##Unpack and build from LE package
+GIT_REV="$(find media_build-*.tar.xz | cut -c 13-22)"
+tar xvf media_build-"$GIT_REV".tar.xz
+cd media_build-"$GIT_REV"
+./build
 make install
 
 #Copy firmware to bzroot
@@ -36,7 +37,7 @@ find /lib/firmware/ -type f -exec cp -r --parents '{}' $D/bzroot-tbs-crazy-dvbst
 
 #Create /etc/unraid-media to identify type of mediabuild and copy to bzroot
 echo base=\"TBS \(CrazyCat\) DVB-S\(2\) \& DVB-T\(2\)\" > $D/bzroot-tbs-crazy-dvbst/etc/unraid-media
-echo driver=\"$DATE\" >> $D/bzroot-tbs-crazy-dvbst/etc/unraid-media
+echo driver=\"$GIT_REV\" >> $D/bzroot-tbs-crazy-dvbst/etc/unraid-media
 
 #Copy /etc/unraid-media to identify type of mediabuild to destination folder
 mkdir -p $D/$VERSION/tbs-crazy-dvbst/
