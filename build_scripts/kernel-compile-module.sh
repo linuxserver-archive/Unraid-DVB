@@ -23,8 +23,8 @@ cd $D
   installpkg $D/packages/*.*
   
 ##Instal perl-process-table for CrazyCat
-export PERL_MM_USE_DEFAULT=1
-cpan> install Proc::ProcessTable
+#export PERL_MM_USE_DEFAULT=1
+#cpan> install Proc::ProcessTable
 
 ##Download and Install Kernel
 [[ $(uname -r) =~ ([0-9.]*) ]] &&  KERNEL=${BASH_REMATCH[1]} || return 1
