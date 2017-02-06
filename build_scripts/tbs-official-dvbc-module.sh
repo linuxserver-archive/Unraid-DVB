@@ -1,5 +1,3 @@
-###Deprecated - Use TBS OpenSource Version 
-
 #!/bin/bash
 
 ###Run kernel_compile.sh prior to running a module###
