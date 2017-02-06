@@ -36,7 +36,7 @@ find /lib/firmware/ -type f -exec cp -r --parents '{}' $D/bzroot-tbs-crazy-dvbst
 
 #Create /etc/unraid-media to identify type of mediabuild and copy to bzroot
 echo base=\"TBS \(CrazyCat\) DVB-S\(2\) \& DVB-T\(2\)\" > $D/bzroot-tbs-crazy-dvbst/etc/unraid-media
-echo driver=\"$DATE\" >> $D/bzroot-tbs-crazy-dvbst/etc/unraid-media
+echo driver=\"$GIT_REV\" >> $D/bzroot-tbs-crazy-dvbst/etc/unraid-media
 
 #Copy /etc/unraid-media to identify type of mediabuild to destination folder
 mkdir -p $D/$VERSION/tbs-crazy-dvbst/
