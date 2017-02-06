@@ -13,6 +13,9 @@ LE="1.2.1"
 # current Digital Devices Github release - See https://github.com/DigitalDevices/dddvb/releases
 DD="0.9.28"
 
+#current Crazy Cat build for kernel version - See https://github.com/CvH/media_build/releases
+CC="4.9.0"
+
 # current Date (DDExp & TBS OS Version)
 DATE=$(date +'%d%m%y')
 
