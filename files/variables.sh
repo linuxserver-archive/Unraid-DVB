@@ -42,7 +42,7 @@ TBS="170206"
 LE="1.2.1"
 
 # current Digital Devices Github release - See https://github.com/DigitalDevices/dddvb/releases
-DD="0.9.28"
+DD="0.9.26"
 
 # current Date (DDExp & TBS OS Version)
 DATE=$(date +'%d%m%y')
