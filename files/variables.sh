@@ -36,7 +36,7 @@ sqlite \
 )
 
 # current TBS Drivers See http://www.tbsiptv.com/downloads?path=3
-TBS="170206"
+TBS="170330"
 
 # current LibreELEC Release - See https://github.com/LibreELEC/dvb-firmware/releases
 LE="1.2.1"
