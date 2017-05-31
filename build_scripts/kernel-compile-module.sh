@@ -1,5 +1,11 @@
 #!/bin/bash
 
+##Make /lib/modules/ writeable
+cp -r /lib/modules /tmp
+umount -l /lib/modules/
+rm -rf  /lib/modules
+mv -f  /tmp/modules /lib
+
 ##Clean up working directory
 rm -rf $D/bzroot-dd $D/bzroot-libreelec $D/bzroot-tbs-* $D/kernel $D/lib $D/libreelec-drivers $D/packages $D/tbs-drivers-* $D/unraid $D/FILE_LIST $D/linux-*.tar.xz $D/unRAIDServer-*.zip $D/URLS $D/variables.sh
 
