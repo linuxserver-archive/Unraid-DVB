@@ -32,6 +32,7 @@ perl \
 pkg-config \
 python \
 readline \
+squashfs-tools \
 sqlite \
 )
 
