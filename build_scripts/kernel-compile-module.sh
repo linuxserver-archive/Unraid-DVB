@@ -1,13 +1,8 @@
 #!/bin/bash
-
-##Make /lib/modules/ writeable
-cp -r /lib/modules /tmp
-umount -l /lib/modules/
-rm -rf  /lib/modules
-mv -f  /tmp/modules /lib
+##This will create a base Unraid bzmodules & bzfirmware - not required after LT release.
 
 ##Clean up working directory
-rm -rf $D/bzroot-dd $D/bzroot-libreelec $D/bzroot-tbs-* $D/kernel $D/lib $D/libreelec-drivers $D/packages $D/tbs-drivers-* $D/unraid $D/FILE_LIST $D/linux-*.tar.xz $D/unRAIDServer-*.zip $D/URLS $D/variables.sh
+rm -rf $D/bzroot-dd $D/bzroot-libreelec $D/bzroot-tbs-* $D/kernel $D/libreelec-drivers $D/packages $D/tbs-drivers-* $D/unraid $D/FILE_LIST $D/linux-*.tar.xz $D/unRAIDServer-*.zip $D/URLS $D/variables.sh
 
 ##Pull variables from github
 wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/files/variables.sh
@@ -22,16 +17,23 @@ wget -nc https://github.com/CHBMB/Unraid-DVB/raw/master/files/Proc-ProcessTable-
 #Change to current directory
 cd $D
 
-##Install pkg modules
+##Unmount bzmodules and make rw
+cp -r /lib/modules /tmp
+umount -l /lib/modules/
+rm -rf  /lib/modules
+mv -f  /tmp/modules /lib
+
+##Unount bzfirmware and make rw
+cp -r /lib/firmware /tmp
+umount -l /lib/firmware/
+rm -rf  /lib/firmware
+mv -f  /tmp/firmware /lib
+
+##Install packages
 [ ! -d "$D/packages" ] && mkdir $D/packages
   wget -nc -P $D/packages -i $D/URLS_CURRENT
-  wget -nc -P $D/packages -i $D/URLS_142
   installpkg $D/packages/*.*
   
-##Instal perl-process-table for CrazyCat
-#export PERL_MM_USE_DEFAULT=1
-#cpan> install Proc::ProcessTable
-
 ##Download and Install Kernel
 [[ $(uname -r) =~ ([0-9.]*) ]] &&  KERNEL=${BASH_REMATCH[1]} || return 1
   LINK="https://www.kernel.org/pub/linux/kernel/v4.x/linux-${KERNEL}.tar.xz"
@@ -66,29 +68,19 @@ make all modules_install install
 
 ##Download Unraid
 cd $D
-wget -nc http://dnld.lime-technology.com/stable/unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip
 if [ -e $D/unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip]; then
-  unzip unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip -d $D/unraid
+ unzip unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip -d $D/unraid
 else
   wget -nc http://dnld.lime-technology.com/next/unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip
   unzip unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip -d $D/unraid
 fi
 
-##Extract bzroot
-rm -rf $D/bzroot-master-$VERSION; mkdir $D/bzroot-master-$VERSION; cd $D/bzroot-master-$VERSION
-xzcat $D/unraid/bzroot | cpio -i -d -H newc --no-absolute-filenames
-
-##Copy default Mediabuild Kernel Modules to bzroot
-cd $D/kernel/
-make modules_install
-find /lib/modules/$(uname -r) -type f -exec cp -r --parents '{}' $D/bzroot-master-$VERSION/ \;
-
-##Backup /lib/modules/ & /lib/firmware/
-find /lib/modules/$(uname -r) -type f -exec cp -r --parents '{}' $D/ \;
-find /lib/firmware -type f -exec cp -r --parents '{}' $D/ \;
+##Make new bzmodules and bzfirmware
+mkdir -p $D/$VERSION/stock/
+mksquashfs /lib/modules $D/$VERSION/stock/bzmodules -noappend
+mksquashfs /lib/firmware $D/$VERSION/stock/bzfirmware -noappend
 
 ##Copy default Unraid bz files to folder prior to uploading
-mkdir -p $D/$VERSION/stock/
 cp -f $D/unraid/bzimage $D/$VERSION/stock/
 cp -f $D/unraid/bzroot $D/$VERSION/stock/
 cp -f $D/unraid/bzroot-gui $D/$VERSION/stock/
@@ -96,9 +88,11 @@ cp -f $D/kernel/.config $D/$VERSION/stock/
 
 ##Calculate md5 on stock files
 cd $D/$VERSION/stock/
-md5sum bzroot > bzroot.md5
 md5sum bzimage > bzimage.md5
+md5sum bzroot > bzroot.md5
 md5sum bzroot-gui > bzroot-gui.md5
+md5sum bzmodules > bzmodules.md5
+md5sum bzfirmware > bzfirmware.md5
 md5sum .config > .config.md5
 
 #Return to original directory
