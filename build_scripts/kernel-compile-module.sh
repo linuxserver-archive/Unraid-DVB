@@ -39,7 +39,6 @@ mv -f  /tmp/firmware /lib
   LINK="https://www.kernel.org/pub/linux/kernel/v4.x/linux-${KERNEL}.tar.xz"
   rm -rf $D/kernel; mkdir $D/kernel
   [[ ! -f $D/linux-${KERNEL}.tar.xz ]] && wget $LINK -O $D/linux-${KERNEL}.tar.xz
-
   tar -C $D/kernel --strip-components=1 -Jxf $D/linux-${KERNEL}.tar.xz
   rsync -av /usr/src/linux-$(uname -r)/ $D/kernel/
   cd $D/kernel
