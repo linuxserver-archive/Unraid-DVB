@@ -82,3 +82,5 @@ md5sum bzfirmware > bzfirmware.md5
 
 #Return to original directory
 cd $D
+
+##Will need to restore default bzfirmware and bzroot at end.
