@@ -1,8 +1,5 @@
 #!/bin/bash
-##This will create a base Unraid bzmodules & bzfirmware - not required after LT release.
-
-##Clean up working directory
-rm -rf $D/bzroot-dd $D/bzroot-libreelec $D/bzroot-tbs-* $D/kernel $D/libreelec-drivers $D/packages $D/tbs-drivers-* $D/unraid $D/FILE_LIST $D/linux-*.tar.xz $D/unRAIDServer-*.zip $D/URLS $D/variables.sh
+##This will create a base UnraidDVB bzmodules & bzfirmware
 
 ##Pull variables from github
 wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/files/variables.sh
@@ -39,6 +36,7 @@ mv -f  /tmp/firmware /lib
   LINK="https://www.kernel.org/pub/linux/kernel/v4.x/linux-${KERNEL}.tar.xz"
   rm -rf $D/kernel; mkdir $D/kernel
   [[ ! -f $D/linux-${KERNEL}.tar.xz ]] && wget $LINK -O $D/linux-${KERNEL}.tar.xz
+
   tar -C $D/kernel --strip-components=1 -Jxf $D/linux-${KERNEL}.tar.xz
   rsync -av /usr/src/linux-$(uname -r)/ $D/kernel/
   cd $D/kernel
@@ -48,10 +46,7 @@ mv -f  /tmp/firmware /lib
 
 ##Make menuconfig
 cd $D
-##Remove this once released
 wget https://files.linuxserver.io/unraid-dvb-old-builds/$VERSION/stock/.config
-##Unhash this once released
-#wget https://files.linuxserver.io/unraid-dvb/$VERSION/stock/.config
 cd $D/kernel
 if [ -e $D/.config ]; then
    rm -f .config
@@ -87,6 +82,10 @@ cp -f $D/unraid/bzimage $D/$VERSION/stock/
 cp -f $D/unraid/bzroot $D/$VERSION/stock/
 cp -f $D/unraid/bzroot-gui $D/$VERSION/stock/
 cp -f $D/kernel/.config $D/$VERSION/stock/
+
+#Copy new bzfiles to /boot
+cp -f $D/$VERSION/stock/bzmodules /boot/bzmodules
+cp -f $D/$VERSION/stock/bzfirmware /boot/bzfirmware
 
 ##Calculate md5 on stock files
 cd $D/$VERSION/stock/
