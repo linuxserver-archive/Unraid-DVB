@@ -1,23 +1,40 @@
-
 #!/bin/bash
 
-###Run kernel_compile.sh prior to running a module###
-
-##Pull variables from github 
+##Pull variables from github
 wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/files/variables.sh
 . "$(dirname "$(readlink -f ${BASH_SOURCE[0]})")"/variables.sh
 
-##Remove any files remaining in /lib/modules/ & /lib/firmware/
+##Install packages
+[ ! -d "$D/packages" ] && mkdir $D/packages
+  wget -nc -P $D/packages -i $D/URLS_CURRENT
+  installpkg $D/packages/*.*
+
+#Download patchutils & Proc-ProcessTable
+mkdir $D/packages
+cd $D/packages
+wget -nc https://github.com/CHBMB/Unraid-DVB/raw/master/files/patchutils-0.3.4-x86_64-2.tgz
+wget -nc https://github.com/CHBMB/Unraid-DVB/raw/master/files/Proc-ProcessTable-0.53-x86_64-1.tgz
+
+##Download Unraid
 cd $D
-find /lib/modules/$(uname -r) -type f -exec rm -rf {} \;
-find /lib/firmware -type f -exec rm -rf {} \;
+if [ -e $D/unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip]; then
+ unzip unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip -d $D/unraid
+else
+  wget -nc http://dnld.lime-technology.com/next/unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip
+  unzip unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip -d $D/unraid
+fi
 
-#Restore default /lib/modules/ & /lib/firmware/
-rsync -av $D/lib/modules/$(uname -r)/ /lib/modules/$(uname -r)/
-rsync -av $D/lib/firmware/ /lib/firmware/
+##Unmount bzmodules and make rw
+cp -r /lib/modules /tmp
+umount -l /lib/modules/
+rm -rf  /lib/modules
+mv -f  /tmp/modules /lib
 
-#Create bzroot-ddgit files from master
-rsync -avr $D/bzroot-master-$VERSION/ $D/bzroot-dd
+##Unount bzfirmware and make rw
+cp -r /lib/firmware /tmp
+umount -l /lib/firmware/
+rm -rf  /lib/firmware
+mv -f  /tmp/firmware /lib
 
 ##Digital Devices Github
 cd /usr/src/
@@ -28,37 +45,31 @@ tar -xf $DD.tar.gz
 cd dddvb-$DD
 make
 make install
-mkdir -p $D/bzroot-dd/etc/depmod.d
-echo 'search extra updates built-in' | tee $D/bzroot-dd/etc/depmod.d/extra.conf
-depmod -a
-
-#Copy firmware to bzroot
-find /lib/modules/$(uname -r) -type f -exec cp -r --parents '{}' $D/bzroot-dd/ \;
-find /lib/firmware/ -type f -exec cp -r --parents '{}' $D/bzroot-dd/ \;
 
 #Create /etc/unraid-media to identify type of mediabuild and copy to bzroot
-echo base=\"Digital Devices \(Github\)\" > $D/bzroot-dd/etc/unraid-media
-echo driver=\"$DD\" >> $D/bzroot-dd/etc/unraid-media
+echo base=\"Digital Devices \(Github\)\" > /lib/firmware/unraid-media
+echo driver=\"$DD\" >> /lib/firmware/unraid-media
 
 #Copy /etc/unraid-media to identify type of mediabuild to destination folder
 mkdir -p $D/$VERSION/dd/
-cp $D/bzroot-dd/etc/unraid-media $D/$VERSION/dd/
+cp /lib/firmware/unraid-media $D/$VERSION/dd/
 
-#Package Up bzroot
-cd $D/bzroot-dd
-find . | cpio -o -H newc | xz --format=lzma > $D/$VERSION/dd/bzroot
-
-#Package Up bzimage
-cp -f $D/kernel/arch/x86/boot/bzImage $D/$VERSION/dd/bzimage
-
-#Copy default bzroot-gui
-cp -f $D/unraid/bzroot-gui $D/$VERSION/dd/bzroot-gui
+##Make new bzmodules and bzfirmware
+mksquashfs /lib/modules $D/$VERSION/dd/bzmodules -noappend
+mksquashfs /lib/firmware $D/$VERSION/dd/bzfirmware -noappend
 
 #MD5 calculation of files
 cd $D/$VERSION/dd/
-md5sum bzroot > bzroot.md5
-md5sum bzimage > bzimage.md5
-md5sum bzroot-gui > bzroot-gui.md5
+md5sum bzmodules > bzmodules.md5
+md5sum bzfirmware > bzfirmware.md5
 
 #Return to original directory
 cd $D
+
+##Restore /lib/modules/ & /lib/firmware/
+rm -rf  /lib/modules
+rm -rf  /lib/firmware
+mkdir /lib/modules
+mkdir /lib/firmware
+mount /boot/bzmodules /lib/firmware -t squashfs -o loop
+mount /boot/bzfirmware /lib/firmware -t squashfs -o loop
