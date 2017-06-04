@@ -24,11 +24,28 @@ else
   unzip unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip -d $D/unraid
 fi
 
+##Restore /lib/modules/ & /lib/firmware/
+umount -l /lib/firmware/
+umount -l /lib/modules/
+rm -rf  /lib/modules
+rm -rf  /lib/firmware
+mkdir /lib/modules
+mkdir /lib/firmware
+mount /unraid/bzmodules /lib/firmware -t squashfs -o loop
+mount /unraid/bzfirmware /lib/firmware -t squashfs -o loop
+
+##Unmount bzmodules and make rw
+cp -r /lib/modules /tmp
+umount -l /lib/modules/
+rm -rf  /lib/modules
+mv -f  /tmp/modules /lib
+
 ##Unount bzfirmware and make rw
 cp -r /lib/firmware /tmp
 umount -l /lib/firmware/
 rm -rf  /lib/firmware
 mv -f  /tmp/firmware /lib
+
 
 ##libreelec Mediabuild
 cd $D
@@ -40,14 +57,22 @@ tar xvf $LE.tar.gz
 #Copy firmware to /lib/firmware
 rsync -av $D/libreelec-drivers/dvb-firmware-$LE/firmware/ /lib/firmware/
 
-#Create /etc/unraid-media to identify type of mediabuild and copy to bzroot
+#Create /lib/firmware/unraid-media to identify type of mediabuild
 echo base=\"LibreELEC\" > /lib/firmware/unraid-media
 echo driver=\"$LE\" >> /lib/firmware/unraid-media
 
-#Copy /etc/unraid-media to identify type of mediabuild to destination folder
+#Copy /lib/firmware/unraid-media to identify type of mediabuild to destination folder
 mkdir -p $D/$VERSION/libreelec/
 cp /lib/firmware/unraid-media $D/$VERSION/libreelec/
 
 ##Make new bzmodules and bzfirmware
 mksquashfs /lib/firmware $D/$VERSION/libreelec/bzfirmware -noappend
 cp $D/unraid/bzmodules $D/$VERSION/libreelec/bzmodules
+
+#MD5 calculation of files
+cd $D/$VERSION/libreelec/
+md5sum bzmodules > bzmodules.md5
+md5sum bzfirmware > bzfirmware.md5
+
+#Return to original directory
+cd $D
