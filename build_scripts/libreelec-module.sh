@@ -1,22 +1,34 @@
 #!/bin/bash
 
-###Run kernel_compile.sh prior to running a module###
-
-##Pull variables from github 
+##Pull variables from github
 wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/files/variables.sh
 . "$(dirname "$(readlink -f ${BASH_SOURCE[0]})")"/variables.sh
 
-##Remove any files remaining in /lib/modules/ & /lib/firmware/
+##Install packages
+[ ! -d "$D/packages" ] && mkdir $D/packages
+  wget -nc -P $D/packages -i $D/URLS_CURRENT
+  installpkg $D/packages/*.*
+
+#Download patchutils & Proc-ProcessTable
+mkdir $D/packages
+cd $D/packages
+wget -nc https://github.com/CHBMB/Unraid-DVB/raw/master/files/patchutils-0.3.4-x86_64-2.tgz
+wget -nc https://github.com/CHBMB/Unraid-DVB/raw/master/files/Proc-ProcessTable-0.53-x86_64-1.tgz
+
+##Download Unraid
 cd $D
-find /lib/modules/$(uname -r) -type f -exec rm -rf {} \;
-find /lib/firmware -type f -exec rm -rf {} \;
+if [ -e $D/unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip]; then
+ unzip unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip -d $D/unraid
+else
+  wget -nc http://dnld.lime-technology.com/next/unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip
+  unzip unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip -d $D/unraid
+fi
 
-#Restore default /lib/modules/ & /lib/firmware/
-rsync -av $D/lib/modules/$(uname -r)/ /lib/modules/$(uname -r)/
-rsync -av $D/lib/firmware/ /lib/firmware/
-
-#Create bzroot-libreelec files from master
-rsync -avr $D/bzroot-master-$VERSION/ $D/bzroot-libreelec
+##Unount bzfirmware and make rw
+cp -r /lib/firmware /tmp
+umount -l /lib/firmware/
+rm -rf  /lib/firmware
+mv -f  /tmp/firmware /lib
 
 ##libreelec Mediabuild
 cd $D
@@ -25,36 +37,17 @@ cd libreelec-drivers
 wget -nc https://github.com/LibreELEC/dvb-firmware/archive/$LE.tar.gz
 tar xvf $LE.tar.gz
 
-#Copy firmware to bzroot
-find /lib/modules/$(uname -r) -type f -exec cp -r --parents '{}' $D/bzroot-libreelec/ \;
-find /lib/firmware/ -type f -exec cp -r --parents '{}' $D/bzroot-libreelec/ \;
-
-#Copy firmware to bzroot
-rsync -av $D/libreelec-drivers/dvb-firmware-$LE/firmware/ $D/bzroot-libreelec/lib/firmware/
+#Copy firmware to /lib/firmware
+rsync -av $D/libreelec-drivers/dvb-firmware-$LE/firmware/ /lib/firmware/
 
 #Create /etc/unraid-media to identify type of mediabuild and copy to bzroot
-echo base=\"LibreELEC\" > $D/bzroot-libreelec/etc/unraid-media
-echo driver=\"$LE\" >> $D/bzroot-libreelec/etc/unraid-media
+echo base=\"LibreELEC\" > /lib/firmware/unraid-media
+echo driver=\"$LE\" >> /lib/firmware/unraid-media
 
 #Copy /etc/unraid-media to identify type of mediabuild to destination folder
 mkdir -p $D/$VERSION/libreelec/
-cp $D/bzroot-libreelec/etc/unraid-media $D/$VERSION/libreelec/
+cp /lib/firmware/unraid-media $D/$VERSION/libreelec/
 
-#Package Up bzroot
-cd $D/bzroot-libreelec
-find . | cpio -o -H newc | xz --format=lzma > $D/$VERSION/libreelec/bzroot
-
-#Package Up bzimage
-cp -f $D/kernel/arch/x86/boot/bzImage $D/$VERSION/libreelec/bzimage
-
-#Copy default bzroot-gui
-cp -f $D/unraid/bzroot-gui $D/$VERSION/libreelec/bzroot-gui
-
-#MD5 calculation of files
-cd $D/$VERSION/libreelec/
-md5sum bzroot > bzroot.md5
-md5sum bzimage > bzimage.md5
-md5sum bzroot-gui > bzroot-gui.md5
-
-#Return to original directory
-cd $D
+##Make new bzmodules and bzfirmware
+mksquashfs /lib/firmware $D/$VERSION/libreelec/bzfirmware -noappend
+cp $D/unraid/bzmodules $D/$VERSION/libreelec/bzmodules
