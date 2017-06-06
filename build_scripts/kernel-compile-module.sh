@@ -5,6 +5,11 @@
 wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/files/variables.sh
 . "$(dirname "$(readlink -f ${BASH_SOURCE[0]})")"/variables.sh
 
+##Install packages
+[ ! -d "$D/packages" ] && mkdir $D/packages
+  wget -nc -P $D/packages -i $D/URLS_CURRENT
+  installpkg $D/packages/*.*
+
 #Download patchutils & Proc-ProcessTable
 mkdir $D/packages
 cd $D/packages
@@ -26,11 +31,6 @@ umount -l /lib/firmware/
 rm -rf  /lib/firmware
 mv -f  /tmp/firmware /lib
 
-##Install packages
-[ ! -d "$D/packages" ] && mkdir $D/packages
-  wget -nc -P $D/packages -i $D/URLS_CURRENT
-  installpkg $D/packages/*.*
-  
 ##Download and Install Kernel
 [[ $(uname -r) =~ ([0-9.]*) ]] &&  KERNEL=${BASH_REMATCH[1]} || return 1
   LINK="https://www.kernel.org/pub/linux/kernel/v4.x/linux-${KERNEL}.tar.xz"
@@ -46,7 +46,7 @@ mv -f  /tmp/firmware /lib
 
 ##Make menuconfig
 cd $D
-wget https://files.linuxserver.io/unraid-dvb/$VERSION/stock/.config
+wget https://files.linuxserver.io/unraid-dvb-rc/$VERSION/stock/.config
 cd $D/kernel
 if [ -e $D/.config ]; then
    rm -f .config
@@ -66,26 +66,27 @@ make all modules_install install
 ##Download Unraid
 cd $D
 if [ -e $D/unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip]; then
- unzip unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip -d $D/unraid
+ unzip unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip -od $D/unraid
 else
   wget -nc http://dnld.lime-technology.com/next/unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip
-  unzip unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip -d $D/unraid
+  unzip unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip -od $D/unraid
 fi
 
-##Make new bzmodules and bzfirmware
-mkdir -p $D/$VERSION/stock/
-mksquashfs /lib/modules $D/$VERSION/stock/bzmodules -noappend
-mksquashfs /lib/firmware $D/$VERSION/stock/bzfirmware -noappend
+##Delete unnecessary /lib/modules/ folders & files
+#find /lib/modules/* -type d ! -name "*unRAID*" -delete
 
 ##Copy default Unraid bz files to folder prior to uploading
 cp -f $D/unraid/bzimage $D/$VERSION/stock/
 cp -f $D/unraid/bzroot $D/$VERSION/stock/
 cp -f $D/unraid/bzroot-gui $D/$VERSION/stock/
+cp -f $D/unraid/bzmodules $D/$VERSION/stock/
+cp -f $D/unraid/bzfirmware $D/$VERSION/stock/
 cp -f $D/kernel/.config $D/$VERSION/stock/
 
-#Copy new bzfiles to /boot
-cp -f $D/$VERSION/stock/bzmodules /boot/bzmodules
-cp -f $D/$VERSION/stock/bzfirmware /boot/bzfirmware
+##Make new bzmodules and bzfirmware - overwriting existing
+mkdir -p $D/$VERSION/stock/
+mksquashfs /lib/modules /boot/bzmodules -noappend
+mksquashfs /lib/firmware /boot/bzfirmware -noappend
 
 ##Calculate md5 on stock files
 cd $D/$VERSION/stock/
@@ -98,3 +99,11 @@ md5sum .config > .config.md5
 
 #Return to original directory
 cd $D
+
+##Update bzmodules & bzfirmware to DVB
+#rm -rf  /lib/modules
+#rm -rf  /lib/firmware
+#mkdir /lib/modules
+#mkdir /lib/firmware
+#mount /boot/bzmodules /lib/firmware -t squashfs -o loop
+#mount /boot/bzfirmware /lib/firmware -t squashfs -o loop
