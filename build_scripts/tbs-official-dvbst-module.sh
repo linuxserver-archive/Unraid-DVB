@@ -1,22 +1,30 @@
 #!/bin/bash
 
-###Run kernel_compile.sh prior to running a module###
-
 ##Pull variables from github
 wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/files/variables.sh
 . "$(dirname "$(readlink -f ${BASH_SOURCE[0]})")"/variables.sh
 
-##Remove any files remaining in /lib/modules/ & /lib/firmware/
-cd $D
-find /lib/modules/$(uname -r) -type f -exec rm -rf {} \;
-find /lib/firmware -type f -exec rm -rf {} \;
+##Restore /lib/modules/ & /lib/firmware/
+umount -l /lib/modules/
+umount -l /lib/firmware/
+rm -rf  /lib/modules
+rm -rf  /lib/firmware
+mkdir /lib/modules
+mkdir /lib/firmware
+mount /boot/bzmodules /lib/modules -t squashfs -o loop
+mount /boot/bzfirmware /lib/firmware -t squashfs -o loop
 
-#Restore default /lib/modules/ & /lib/firmware/
-rsync -av $D/lib/modules/$(uname -r)/ /lib/modules/$(uname -r)/
-rsync -av $D/lib/firmware/ /lib/firmware/
+##Unmount bzmodules and make rw
+cp -r /lib/modules /tmp
+umount -l /lib/modules/
+rm -rf  /lib/modules
+mv -f  /tmp/modules /lib
 
-#Create bzroot-tbs files from master
-rsync -avr $D/bzroot-master-$VERSION/ $D/bzroot-tbs-official-dvbst
+##Unount bzfirmware and make rw
+cp -r /lib/firmware /tmp
+umount -l /lib/firmware/
+rm -rf  /lib/firmware
+mv -f  /tmp/firmware /lib
 
 ##TBS Mediabuild
 cd $D
@@ -30,33 +38,27 @@ cd linux-tbs-drivers
 make -j $(nproc)
 make install
 
-#Copy firmware to bzroot
-find /lib/modules/$(uname -r) -type f -exec cp -r --parents '{}' $D/bzroot-tbs-official-dvbst/ \;
-find /lib/firmware/ -type f -exec cp -r --parents '{}' $D/bzroot-tbs-official-dvbst/ \;
+#Create /lib/firmware/unraid-media to identify type of mediabuild
+echo base=\"TBS \(Official\) DVB-S\(2\) \& DVB-T\(2\)\" > /lib/firmware/unraid-media
+echo driver=\"$TBS\" >> /lib/firmware/unraid-media
 
-#Create /etc/unraid-media to identify type of mediabuild and copy to bzroot
-echo base=\"TBS \(Official\) DVB-S\(2\) \& DVB-T\(2\)\" > $D/bzroot-tbs-official-dvbst/etc/unraid-media
-echo driver=\"$TBS\" >> $D/bzroot-tbs-official-dvbst/etc/unraid-media
-
-#Copy /etc/unraid-media to identify type of mediabuild to destination folder
+#Copy /lib/firmware/unraid-media to identify type of mediabuild to destination folder
 mkdir -p $D/$VERSION/tbs-official-dvbst/
-cp $D/bzroot-tbs-official-dvbst/etc/unraid-media $D/$VERSION/tbs-official-dvbst/
+cp /lib/firmware/unraid-media $D/$VERSION/tbs-official-dvbst/
 
-#Package Up bzroot
-cd $D/bzroot-tbs-official-dvbst
-find . | cpio -o -H newc | xz --format=lzma > $D/$VERSION/tbs-official-dvbst/bzroot
-
-#Package Up bzimage
-cp -f $D/kernel/arch/x86/boot/bzImage $D/$VERSION/tbs-official-dvbst/bzimage
-
-#Copy default bzroot-gui
-cp -f $D/unraid/bzroot-gui $D/$VERSION/tbs-official-dvbst/bzroot-gui
+##Make new bzmodules and bzfirmware
+mkdir -p $D/$VERSION/stock/
+mksquashfs /lib/modules $D/$VERSION/tbs-official-dvbst/bzmodules -noappend
+mksquashfs /lib/firmware $D/$VERSION/tbs-official-dvbst/bzfirmware -noappend
 
 #MD5 calculation of files
 cd $D/$VERSION/tbs-official-dvbst/
-md5sum bzroot > bzroot.md5
-md5sum bzimage > bzimage.md5
-md5sum bzroot-gui > bzroot-gui.md5
+md5sum bzmodules > bzmodules.md5
+md5sum bzfirmware > bzfirmware.md5
+
+#Copy necessary stock files
+cp $D/$VERSION/stock/bzimage* $D/$VERSION/tbs-official-dvbst/
+cp $D/$VERSION/stock/bzroot* $D/$VERSION/tbs-official-dvbst/
 
 #Return to original directory
 cd $D
