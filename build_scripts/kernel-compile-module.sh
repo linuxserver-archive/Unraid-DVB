@@ -1,5 +1,5 @@
 #!/bin/bash
-##This will create a base UnraidDVB bzmodules & bzfirmware
+##This will create a base UnraidDVB bzmodules & bzfirmware named bzmodules-new and bzfirmware-new
 
 ##Pull variables from github
 wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/files/variables.sh
@@ -66,27 +66,20 @@ make all modules_install install
 ##Download Unraid
 cd $D
 if [ -e $D/unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip]; then
- unzip unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip -od $D/unraid
+ unzip unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip -d $D/unraid
 else
   wget -nc http://dnld.lime-technology.com/next/unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip
-  unzip unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip -od $D/unraid
+  unzip unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip -d $D/unraid
 fi
 
-##Delete unnecessary /lib/modules/ folders & files
-#find /lib/modules/* -type d ! -name "*unRAID*" -delete
-
 ##Copy default Unraid bz files to folder prior to uploading
+mkdir -p $D/$VERSION/stock/
 cp -f $D/unraid/bzimage $D/$VERSION/stock/
 cp -f $D/unraid/bzroot $D/$VERSION/stock/
 cp -f $D/unraid/bzroot-gui $D/$VERSION/stock/
 cp -f $D/unraid/bzmodules $D/$VERSION/stock/
 cp -f $D/unraid/bzfirmware $D/$VERSION/stock/
 cp -f $D/kernel/.config $D/$VERSION/stock/
-
-##Make new bzmodules and bzfirmware - overwriting existing
-mkdir -p $D/$VERSION/stock/
-mksquashfs /lib/modules /boot/bzmodules -noappend
-mksquashfs /lib/firmware /boot/bzfirmware -noappend
 
 ##Calculate md5 on stock files
 cd $D/$VERSION/stock/
@@ -97,13 +90,26 @@ md5sum bzmodules > bzmodules.md5
 md5sum bzfirmware > bzfirmware.md5
 md5sum .config > .config.md5
 
-#Return to original directory
+##Make new bzmodules and bzfirmware - overwriting existing
+mksquashfs /lib/modules /boot/bzmodules -noappend
+mksquashfs /lib/firmware /boot/bzfirmware -noappend
+
+##Copy new bzfirmware & bzmodule to stock
+cp -f $D/boot/bzmodules $D/$VERSION/stock/bzmodules-new
+cp -f $D/boot/bzfirmware $D/$VERSION/stock/bzfirmware-new
+
+##Calculate md5 on new bzfirmware & bzmodules
+cd $D/$VERSION/stock/
+md5sum bzmodules-new > bzmodules-new.md5
+md5sum bzfirmware-new > bzfirmware-new.md5
+
+##Return to original directory
 cd $D
 
 ##Update bzmodules & bzfirmware to DVB
-#rm -rf  /lib/modules
-#rm -rf  /lib/firmware
-#mkdir /lib/modules
-#mkdir /lib/firmware
-#mount /boot/bzmodules /lib/firmware -t squashfs -o loop
-#mount /boot/bzfirmware /lib/firmware -t squashfs -o loop
+rm -rf  /lib/modules
+rm -rf  /lib/firmware
+mkdir /lib/modules
+mkdir /lib/firmware
+mount /boot/bzmodules /lib/firmware -t squashfs -o loop
+mount /boot/bzfirmware /lib/firmware -t squashfs -o loo
