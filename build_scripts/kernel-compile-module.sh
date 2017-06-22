@@ -1,5 +1,4 @@
 #!/bin/bash
-##This will create a base UnraidDVB bzmodules & bzfirmware named bzmodules-new and bzfirmware-new
 
 ##Pull variables from github
 wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/files/variables.sh
@@ -8,13 +7,9 @@ wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/files/variabl
 ##Install packages
 [ ! -d "$D/packages" ] && mkdir $D/packages
   wget -nc -P $D/packages -i $D/URLS_CURRENT
+  wget -nc -P $D/packages https://github.com/CHBMB/Unraid-DVB/raw/master/files/patchutils-0.3.4-x86_64-2.tgz
+  wget -nc -P $D/packages https://github.com/CHBMB/Unraid-DVB/raw/master/files/Proc-ProcessTable-0.53-x86_64-1.tgz
   installpkg $D/packages/*.*
-
-#Download patchutils & Proc-ProcessTable
-mkdir $D/packages
-cd $D/packages
-wget -nc https://github.com/CHBMB/Unraid-DVB/raw/master/files/patchutils-0.3.4-x86_64-2.tgz
-wget -nc https://github.com/CHBMB/Unraid-DVB/raw/master/files/Proc-ProcessTable-0.53-x86_64-1.tgz
 
 #Change to current directory
 cd $D
@@ -94,9 +89,15 @@ md5sum .config > .config.md5
 mksquashfs /lib/modules /boot/bzmodules -noappend
 mksquashfs /lib/firmware /boot/bzfirmware -noappend
 
+##Make backup of /lib/firmware & /lib/modules
+mkdir -p $D/backup/modules
+cp -r /lib/modules/ $D/backup/
+mkdir -p $D/backup/firmware
+cp -r /lib/firmware/ $D/backup/
+
 ##Copy new bzfirmware & bzmodule to stock
-cp -f $D/boot/bzmodules $D/$VERSION/stock/bzmodules-new
-cp -f $D/boot/bzfirmware $D/$VERSION/stock/bzfirmware-new
+cp -f /boot/bzmodules $D/$VERSION/stock/bzmodules-new
+cp -f /boot/bzfirmware $D/$VERSION/stock/bzfirmware-new
 
 ##Calculate md5 on new bzfirmware & bzmodules
 cd $D/$VERSION/stock/
@@ -105,11 +106,3 @@ md5sum bzfirmware-new > bzfirmware-new.md5
 
 ##Return to original directory
 cd $D
-
-##Update bzmodules & bzfirmware to DVB
-rm -rf  /lib/modules
-rm -rf  /lib/firmware
-mkdir /lib/modules
-mkdir /lib/firmware
-mount /boot/bzmodules /lib/firmware -t squashfs -o loop
-mount /boot/bzfirmware /lib/firmware -t squashfs -o loo
