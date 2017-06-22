@@ -32,8 +32,8 @@ perl \
 pkg-config \
 python \
 readline \
-squashfs-tools \
 sqlite \
+squashfs-tools \
 )
 
 # current LibreELEC Release - See https://github.com/LibreELEC/dvb-firmware/releases
