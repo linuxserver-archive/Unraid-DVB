@@ -16,7 +16,6 @@ glibc \
 glibc-solibs \
 guile \
 kernel-headers \
-kernel-modules \
 lftp \
 libcgroup \
 libgudev \
