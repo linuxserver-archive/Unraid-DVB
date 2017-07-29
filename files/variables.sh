@@ -40,7 +40,7 @@ squashfs-tools \
 LE="1.2.1"
 
 # current Digital Devices Github release - See https://github.com/DigitalDevices/dddvb/releases
-DD="0.9.29"
+DD="0.9.30-intermediate"
 
 # current Date (DDExp & TBS OS Version)
 DATE=$(date +'%d%m%y')
