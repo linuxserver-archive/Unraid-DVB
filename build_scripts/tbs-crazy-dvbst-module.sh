@@ -35,7 +35,7 @@ cp /lib/firmware/unraid-media $D/$VERSION/tbs-crazy-dvbst/
 
 ##Make new bzmodules and bzfirmware
 mkdir -p $D/$VERSION/tbs-crazy-dvbst/
-mksquashfs /lib/modules $D/$VERSION/tbs-crazy-dvbst/bzmodules -noappend
+mksquashfs /lib/modules/$(uname -r)/ $D/$VERSION/tbs-crazy-dvbst/bzmodules -keep-as-directory -noappend
 mksquashfs /lib/firmware $D/$VERSION/tbs-crazy-dvbst/bzfirmware -noappend
 
 #MD5 calculation of files
