@@ -31,7 +31,7 @@ mkdir -p $D/$VERSION/dd/
 cp /lib/firmware/unraid-media $D/$VERSION/dd/
 
 ##Make new bzmodules and bzfirmware
-mksquashfs /lib/modules $D/$VERSION/dd/bzmodules -noappend
+mksquashfs /lib/modules/$(uname -r)/ $D/$VERSION/dd/bzmodules -keep-as-directory -noappend
 mksquashfs /lib/firmware $D/$VERSION/dd/bzfirmware -noappend
 
 #MD5 calculation of files
