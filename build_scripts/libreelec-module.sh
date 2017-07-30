@@ -32,7 +32,7 @@ cp /lib/firmware/unraid-media $D/$VERSION/libreelec/
 
 ##Make new bzmodules and bzfirmware
 mksquashfs /lib/firmware $D/$VERSION/libreelec/bzfirmware -noappend
-cp /boot/bzmodules $D/$VERSION/libreelec/bzmodules
+cp $D/$VERSION/stock/bzmodules-new $D/$VERSION/libreelec/bzmodules
 
 #MD5 calculation of files
 cd $D/$VERSION/libreelec/
