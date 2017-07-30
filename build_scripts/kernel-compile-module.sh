@@ -4,30 +4,27 @@
 wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/files/variables.sh
 . "$(dirname "$(readlink -f ${BASH_SOURCE[0]})")"/variables.sh
 
-##Grab packages
+##Install packages
 [ ! -d "$D/packages" ] && mkdir $D/packages
   wget -nc -P $D/packages -i $D/URLS_CURRENT
   wget -nc -P $D/packages https://github.com/CHBMB/Unraid-DVB/raw/master/files/patchutils-0.3.4-x86_64-2.tgz
   wget -nc -P $D/packages https://github.com/CHBMB/Unraid-DVB/raw/master/files/Proc-ProcessTable-0.53-x86_64-1.tgz
-
-##Install packages
   installpkg $D/packages/*.*
+
+#Change to current directory
+cd $D
 
 ##Unmount bzmodules and make rw
-mkdir -p $D/backup
-cp -r /lib/modules $D/backup
+cp -r /lib/modules /tmp
 umount -l /lib/modules/
 rm -rf  /lib/modules
-cp -r  $D/backup/modules /lib
+mv -f  /tmp/modules /lib
 
 ##Unount bzfirmware and make rw
-cp -r /lib/firmware $D/backup
+cp -r /lib/firmware /tmp
 umount -l /lib/firmware/
 rm -rf  /lib/firmware
-cp -r  $D/backup/firmware /lib
-
-##Install other packages
-  installpkg $D/packages/*.*
+mv -f  /tmp/firmware /lib
 
 ##Download and Install Kernel
 [[ $(uname -r) =~ ([0-9.]*) ]] &&  KERNEL=${BASH_REMATCH[1]} || return 1
@@ -102,41 +99,20 @@ md5sum bzmodules > bzmodules.md5
 md5sum bzfirmware > bzfirmware.md5
 md5sum .config > .config.md5
 
-##libreelec Mediabuild
-cd $D
-mkdir libreelec-drivers
-cd libreelec-drivers
-wget -nc https://github.com/LibreELEC/dvb-firmware/archive/$LE.tar.gz
-tar xvf $LE.tar.gz
+##Make new bzmodules and bzfirmware - overwriting existing
+mksquashfs /lib/modules/$(uname -r)/ $D/$VERSION/stock/bzmodules-new -keep-as-directory -noappend
+mksquashfs /lib/firmware $D/$VERSION/stock/bzfirmware-new -noappend
 
-#Copy firmware to /lib/firmware
-rsync -av $D/libreelec-drivers/dvb-firmware-$LE/firmware/ /lib/firmware/
+##Make backup of /lib/firmware & /lib/modules
+mkdir -p $D/backup/modules
+cp -r /lib/modules/ $D/backup/
+mkdir -p $D/backup/firmware
+cp -r /lib/firmware/ $D/backup/
 
-#Create /lib/firmware/unraid-media to identify type of DVB build
-echo base=\"LibreELEC\" > /lib/firmware/unraid-media
-echo driver=\"$LE\" >> /lib/firmware/unraid-media
+##Calculate md5 on new bzfirmware & bzmodules
+cd $D/$VERSION/stock/
+md5sum bzmodules-new > bzmodules-new.md5
+md5sum bzfirmware-new > bzfirmware-new.md5
 
-#Copy /lib/firmware/unraid-media to identify type of DVB build to destination folder
-mkdir -p $D/$VERSION/libreelec/
-cp /lib/firmware/unraid-media $D/$VERSION/libreelec/
-
-##Make new bzmodules and bzfirmware
-mksquashfs /lib/firmware $D/$VERSION/libreelec/bzfirmware -noappend
-mksquashfs /lib/modules/$(uname -r)/ $D/$VERSION/libreelec/bzmodules -keep-as-directory -noappend
-
-#MD5 calculation of files
-cd $D/$VERSION/libreelec/
-md5sum bzmodules > bzmodules.md5
-md5sum bzfirmware > bzfirmware.md5
-
-#Copy necessary stock files
-cp $D/$VERSION/stock/bzimage* $D/$VERSION/libreelec/
-cp $D/$VERSION/stock/bzroot* $D/$VERSION/libreelec/
-
-#make backup files
-mkdir -p $D/backup-media
-cp -r /lib/modules $D/backup-media
-cp -r /lib/firmware $D/backup-media
-
-#Return to original directory
+##Return to original directory
 cd $D
