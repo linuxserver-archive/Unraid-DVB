@@ -39,6 +39,8 @@ squashfs-tools \
 # current RocketRaid Release - See
 ROCKET="1.2.10.1-17_01_23"
 
+ROCKETSHORT="echo $ROCKET | cut -d"-" -f1"
+
 # current LibreELEC Release - See https://github.com/LibreELEC/dvb-firmware/releases
 LE="1.2.1"
 
