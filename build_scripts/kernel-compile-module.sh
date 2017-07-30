@@ -58,6 +58,20 @@ make -j $(cat /proc/cpuinfo | grep -m 1 -Po "cpu cores.*?\K\d")
 cd $D/kernel
 make all modules_install install
 
+##Install RocketRaid
+mkdir -p /usr/src/drivers/highpoint
+cd /usr/src/drivers/highpoint
+wget http://www.highpoint-tech.com/BIOS_Driver/R750/Linux/R750_Linux_Src_v$ROCKET.tar.gz
+tar xf R750_Linux_Src_v$ROCKET.tar.gz
+echo "Build out of tree driver: RocketRaid r750"
+( cd /usr/src/drivers/highpoint
+  rm -rf r750-linux-src-v$ROCKETSHORT
+  ./r750-linux-src-v$ROCKET.bin --keep --noexec --target r750-linux-src-v$ROCKETSHORT )
+( cd /usr/src/drivers/highpoint/r750-linux-src-v$ROCKETSHORT/product/r750/linux/
+  make KERNELDIR=$D/kernel
+  xz -f r750.ko
+  install -m 644 -o root -g root r750.ko.xz -D -t /lib/modules/$(uname -r)/kernel/drivers/scsi/ )
+
 ##Download Unraid
 cd $D
 if [ -e $D/unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip]; then
@@ -86,18 +100,14 @@ md5sum bzfirmware > bzfirmware.md5
 md5sum .config > .config.md5
 
 ##Make new bzmodules and bzfirmware - overwriting existing
-mksquashfs /lib/modules /boot/bzmodules -noappend
-mksquashfs /lib/firmware /boot/bzfirmware -noappend
+mksquashfs /lib/modules/$(uname -r)/ $D/$VERSION/stock/bzmodules-new -keep-as-directory -noappend
+mksquashfs /lib/firmware $D/$VERSION/stock/bzfirmware-new -noappend
 
 ##Make backup of /lib/firmware & /lib/modules
 mkdir -p $D/backup/modules
 cp -r /lib/modules/ $D/backup/
 mkdir -p $D/backup/firmware
 cp -r /lib/firmware/ $D/backup/
-
-##Copy new bzfirmware & bzmodule to stock
-cp -f /boot/bzmodules $D/$VERSION/stock/bzmodules-new
-cp -f /boot/bzfirmware $D/$VERSION/stock/bzfirmware-new
 
 ##Calculate md5 on new bzfirmware & bzmodules
 cd $D/$VERSION/stock/
