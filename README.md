@@ -4,7 +4,7 @@
 
 In order to use TVHeadEnd or MythTV with PCIe or USB DVB Tuners you need to run a special Unraid build which contains the necessary drivers.  
 
-This replaces the Unraid bzroot and bzimage files (the OS) with newly created ones that have drivers for DVB hardware incorporated.
+This replaces the Unraid bzmodules and bzfirmware files (the OS) with newly created ones that have drivers for DVB hardware incorporated.
 
 These are not necessary if you use Homerun or IPTV devices.
 
