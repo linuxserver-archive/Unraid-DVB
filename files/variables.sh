@@ -36,7 +36,7 @@ sqlite \
 squashfs-tools \
 )
 
-# current RocketRaid Release - See
+# current RocketRaid Release - See http://www.highpoint-tech.com/BIOS_Driver/R750/Linux/
 ROCKET="1.2.10.1-17_01_23"
 
 ROCKETSHORT=$(echo $ROCKET | cut -d"-" -f1)
@@ -45,7 +45,7 @@ ROCKETSHORT=$(echo $ROCKET | cut -d"-" -f1)
 LE="1.2.1"
 
 # current Digital Devices Github release - See https://github.com/DigitalDevices/dddvb/releases
-DD="0.9.30-intermediate"
+DD="0.9.31-intermediate"
 
 # current Date (DDExp & TBS OS Version)
 DATE=$(date +'%d%m%y')
