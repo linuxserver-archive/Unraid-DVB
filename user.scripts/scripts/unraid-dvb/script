@@ -10,7 +10,7 @@ wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/dd-
 wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/libreelec-module.sh -P /mnt/disk1/dvb/
 wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/tbs-crazy-dvbst-module.sh -P /mnt/disk1/dvb/
 wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/tbs-os-module.sh -P /mnt/disk1/dvb/
-wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/other_scripts/ftp.sh -P /mnt/disk1/dvb/
+wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/upload.sh -P /mnt/disk1/dvb/
 
 #Change permissions
 chmod +x /mnt/disk1/dvb/*.sh
