@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ##Pull variables from github
-wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/files/variables.sh
+wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/variables.sh
 . "$(dirname "$(readlink -f ${BASH_SOURCE[0]})")"/variables.sh
 
 ##Install packages
@@ -41,7 +41,7 @@ mv -f  /tmp/firmware /lib
 
 ##Make menuconfig
 cd $D
-wget https://files.linuxserver.io/unraid-dvb-rc/$VERSION/stock/.config
+wget https://mirror.linuxserver.io/unraid-dvb-rc/$VERSION/stock/.config
 cd $D/kernel
 if [ -e $D/.config ]; then
    rm -f .config
