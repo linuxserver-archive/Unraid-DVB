@@ -34,13 +34,16 @@ cp /lib/firmware/unraid-media $D/$VERSION/libreelec/
 mksquashfs /lib/firmware $D/$VERSION/libreelec/bzfirmware -noappend
 cp $D/$VERSION/stock/bzmodules-new $D/$VERSION/libreelec/bzmodules
 
+#Package Up bzimage
+cp -f $D/kernel/arch/x86/boot/bzImage $D/$VERSION/libreelec/bzimage
+
 #MD5 calculation of files
 cd $D/$VERSION/libreelec/
 md5sum bzmodules > bzmodules.md5
 md5sum bzfirmware > bzfirmware.md5
+md5sum bzimage > bzimage.md5
 
 #Copy necessary stock files
-cp $D/$VERSION/stock/bzimage* $D/$VERSION/libreelec/
 cp $D/$VERSION/stock/bzroot* $D/$VERSION/libreelec/
 
 #Return to original directory
