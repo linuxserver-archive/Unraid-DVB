@@ -8,7 +8,7 @@ wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts
 [ ! -d "$D/packages" ] && mkdir $D/packages
   wget -nc -P $D/packages -i $D/URLS_CURRENT
   wget -nc -P $D/packages https://github.com/CHBMB/Unraid-DVB/raw/master/files/patchutils-0.3.4-x86_64-2.tgz
-  wget -nc -P $D/packages https://github.com/CHBMB/Unraid-DVB/raw/master/files/Proc-ProcessTable-0.53-x86_64-1.tgz
+  wget -nc -P $D/packages https://github.com/CHBMB/Unraid-DVB/raw/master/files/Proc-ProcessTable-0.53-x86_64-2.tgz
   installpkg $D/packages/*.*
 
 #Change to current directory
