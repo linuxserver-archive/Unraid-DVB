@@ -20,5 +20,5 @@
 * `make`
 * `make install DESTDIR=$(pwd)/Proc-ProcessTable-0.53`
 * `cd $(pwd)/Proc-ProcessTable-0.53`
-* `makepkg -l y -c n ../Proc-ProcessTable-0.53-x86_64-1.tgz`
-* `installpkg ../Proc-ProcessTable-0.53-x86_64-1.tgz`
+* `makepkg -l y -c n ../Proc-ProcessTable-0.53-x86_64-2.tgz`
+* `installpkg ../Proc-ProcessTable-0.53-x86_64-2.tgz`
