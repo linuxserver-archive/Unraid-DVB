@@ -52,7 +52,7 @@ fi
 
 ##Compile Kernel
 cd $D/kernel
-make -j $(cat /proc/cpuinfo | grep -m 1 -Po "cpu cores.*?\K\d")
+make -j $(grep -c ^processor /proc/cpuinfo)
 
 ##Install Kernel Modules
 cd $D/kernel
