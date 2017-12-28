@@ -7,6 +7,7 @@ automake \
 bc \
 binutils \
 cpio \
+elfutils \
 flex \
 gc \
 gcc \
