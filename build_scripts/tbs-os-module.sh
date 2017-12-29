@@ -19,7 +19,7 @@ git clone --depth=1 https://github.com/tbsdtv/linux_media.git -b latest ./media
 cd media_build
 make dir DIR=../media
 make distclean
-make
+make -j $(grep -c ^processor /proc/cpuinfo)
 make install
 
 ##Firmware from Current TBS Closed Source Drivers
