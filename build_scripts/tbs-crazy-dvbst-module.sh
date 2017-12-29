@@ -38,13 +38,16 @@ mkdir -p $D/$VERSION/tbs-crazy-dvbst/
 mksquashfs /lib/modules/$(uname -r)/ $D/$VERSION/tbs-crazy-dvbst/bzmodules -keep-as-directory -noappend
 mksquashfs /lib/firmware $D/$VERSION/tbs-crazy-dvbst/bzfirmware -noappend
 
+#Package Up bzimage
+cp -f $D/kernel/arch/x86/boot/bzImage $D/$VERSION/tbs-crazy-dvbst/bzimage
+
 #MD5 calculation of files
 cd $D/$VERSION/tbs-crazy-dvbst/
 md5sum bzmodules > bzmodules.md5
 md5sum bzfirmware > bzfirmware.md5
+md5sum bzimage > bzimage.md5
 
 #Copy necessary stock files
-cp $D/$VERSION/stock/bzimage* $D/$VERSION/tbs-crazy-dvbst/
 cp $D/$VERSION/stock/bzroot* $D/$VERSION/tbs-crazy-dvbst/
 
 #Return to original directory

@@ -34,13 +34,16 @@ cp /lib/firmware/unraid-media $D/$VERSION/dd/
 mksquashfs /lib/modules/$(uname -r)/ $D/$VERSION/dd/bzmodules -keep-as-directory -noappend
 mksquashfs /lib/firmware $D/$VERSION/dd/bzfirmware -noappend
 
+#Package Up bzimage
+cp -f $D/kernel/arch/x86/boot/bzImage $D/$VERSION/dd/bzimage
+
 #MD5 calculation of files
 cd $D/$VERSION/dd/
 md5sum bzmodules > bzmodules.md5
 md5sum bzfirmware > bzfirmware.md5
+md5sum bzimage > bzimage.md5
 
 #Copy necessary stock files
-cp $D/$VERSION/stock/bzimage* $D/$VERSION/dd/
 cp $D/$VERSION/stock/bzroot* $D/$VERSION/dd/
 
 #Return to original directory
