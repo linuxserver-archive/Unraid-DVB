@@ -19,7 +19,7 @@ cd /usr/src/
 wget https://github.com/DigitalDevices/dddvb/archive/$DD.tar.gz
 tar -xf $DD.tar.gz
 cd dddvb-$DD
-make
+make -j $(grep -c ^processor /proc/cpuinfo)
 make install
 
 #Create /etc/unraid-media to identify type of mediabuild and copy to bzroot
