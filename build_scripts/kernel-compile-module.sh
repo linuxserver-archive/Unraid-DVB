@@ -99,7 +99,7 @@ md5sum bzmodules > bzmodules.md5
 md5sum bzfirmware > bzfirmware.md5
 md5sum .config > .config.md5
 
-##Make new bzmodules and bzfirmware - overwriting existing
+##Make new bzmodules and bzfirmware - not overwriting existing
 mksquashfs /lib/modules/$(uname -r)/ $D/$VERSION/stock/bzmodules-new -keep-as-directory -noappend
 mksquashfs /lib/firmware $D/$VERSION/stock/bzfirmware-new -noappend
 
