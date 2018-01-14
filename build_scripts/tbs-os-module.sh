@@ -19,7 +19,7 @@ git clone --depth=1 https://github.com/tbsdtv/linux_media.git -b latest ./media
 cd media_build
 make dir DIR=../media
 make distclean
-make
+make -j $(grep -c ^processor /proc/cpuinfo)
 make install
 
 ##Firmware from Current TBS Closed Source Drivers
@@ -27,6 +27,10 @@ mkdir -p $D/tbs-os-firmware/
 cd $D/tbs-os-firmware/
 wget http://www.tbsdtv.com/download/document/linux/tbs-tuner-firmwares_v1.0.tar.bz2
 tar jxvf tbs-tuner-firmwares_v1.0.tar.bz2 -C /lib/firmware/
+
+##Compatible dvb-fe-cx24117.fw
+wget http://www.tbsdtv.com/download/document/common/tbs-linux-drivers_v130901.zip
+unzip -p tbs-linux-drivers_v130901.zip linux-tbs-drivers.tar.bz2 | tar jxOf - linux-tbs-drivers/v4l/tbs6981fe_driver.o.x86_64 | dd bs=1 skip=10144 count=55486 of=dvb-fe-cx24117.fw
 
 #Create /lib/firmware/unraid-media to identify type of DVB build
 echo base=\"TBS \(Open Source\) \& LibreELEC ATSC-C, DVB-C, DVB-S\(2\) \& DVB-T\(2\)\" > /lib/firmware/unraid-media

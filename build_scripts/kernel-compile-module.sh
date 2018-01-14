@@ -99,9 +99,12 @@ md5sum bzmodules > bzmodules.md5
 md5sum bzfirmware > bzfirmware.md5
 md5sum .config > .config.md5
 
-##Make new bzmodules and bzfirmware - overwriting existing
+##Make new bzmodules and bzfirmware - not overwriting existing
 mksquashfs /lib/modules/$(uname -r)/ $D/$VERSION/stock/bzmodules-new -keep-as-directory -noappend
 mksquashfs /lib/firmware $D/$VERSION/stock/bzfirmware-new -noappend
+
+#Package Up new bzimage
+cp -f $D/kernel/arch/x86/boot/bzImage $D/$VERSION/stock/bzimage-new
 
 ##Make backup of /lib/firmware & /lib/modules
 mkdir -p $D/backup/modules
@@ -109,8 +112,9 @@ cp -r /lib/modules/ $D/backup/
 mkdir -p $D/backup/firmware
 cp -r /lib/firmware/ $D/backup/
 
-##Calculate md5 on new bzfirmware & bzmodules
+##Calculate md5 on new bzimage, bzfirmware & bzmodules
 cd $D/$VERSION/stock/
+md5sum bzimage-new > bzimage-new.md5
 md5sum bzmodules-new > bzmodules-new.md5
 md5sum bzfirmware-new > bzfirmware-new.md5
 
