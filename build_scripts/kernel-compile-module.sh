@@ -103,6 +103,9 @@ md5sum .config > .config.md5
 mksquashfs /lib/modules/$(uname -r)/ $D/$VERSION/stock/bzmodules-new -keep-as-directory -noappend
 mksquashfs /lib/firmware $D/$VERSION/stock/bzfirmware-new -noappend
 
+#Package Up new bzimage
+cp -f $D/kernel/arch/x86/boot/bzImage $D/$VERSION/stock/bzimage-new
+
 ##Make backup of /lib/firmware & /lib/modules
 mkdir -p $D/backup/modules
 cp -r /lib/modules/ $D/backup/
