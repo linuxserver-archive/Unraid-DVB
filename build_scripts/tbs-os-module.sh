@@ -29,8 +29,16 @@ wget http://www.tbsdtv.com/download/document/linux/tbs-tuner-firmwares_v1.0.tar.
 tar jxvf tbs-tuner-firmwares_v1.0.tar.bz2 -C /lib/firmware/
 
 ##Compatible dvb-fe-cx24117.fw
-wget http://www.tbsdtv.com/download/document/common/tbs-linux-drivers_v130901.zip
-unzip -p tbs-linux-drivers_v130901.zip linux-tbs-drivers.tar.bz2 | tar jxOf - linux-tbs-drivers/v4l/tbs6981fe_driver.o.x86_64 | dd bs=1 skip=10144 count=55486 of=dvb-fe-cx24117.fw
+if [ -e $D/libreelec-drivers/dvb-firmware-$LE/firmware/dvb-fe-cx24117.fw ]; then
+   cp $D/libreelec-drivers/dvb-firmware-$LE/firmware/dvb-fe-cx24117.fw /lib/firmware/dvb-fe-cx24117.fw
+else
+   cd $D
+   mkdir libreelec-drivers
+   cd libreelec-drivers
+   wget -nc https://github.com/LibreELEC/dvb-firmware/archive/$LE.tar.gz
+   tar xvf $LE.tar.gz
+   cp $D/libreelec-drivers/dvb-firmware-$LE/firmware/dvb-fe-cx24117.fw /lib/firmware/dvb-fe-cx24117.fw
+fi
 
 #Create /lib/firmware/unraid-media to identify type of DVB build
 echo base=\"TBS \(Open Source\) \& LibreELEC ATSC-C, DVB-C, DVB-S\(2\) \& DVB-T\(2\)\" > /lib/firmware/unraid-media
