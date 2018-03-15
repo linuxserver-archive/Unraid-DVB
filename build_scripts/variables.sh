@@ -46,7 +46,7 @@ ROCKETSHORT=$(echo $ROCKET | cut -d"-" -f1)
 LE="1.2.2"
 
 # current Digital Devices Github release - See https://github.com/DigitalDevices/dddvb/releases
-DD="0.9.32-compile-fix"
+DD="0.9.33"
 
 # current Date (DDExp & TBS OS Version)
 DATE=$(date +'%d%m%y')
