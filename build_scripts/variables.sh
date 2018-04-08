@@ -42,6 +42,12 @@ ROCKET="1.2.10.1-17_01_23"
 
 ROCKETSHORT=$(echo $ROCKET | cut -d"-" -f1)
 
+#current Intel 10GB IXGBE - See https://downloadcenter.intel.com/download/14687/Intel-Network-Adapter-Driver-for-PCIe-Intel-10-Gigabit-Ethernet-Network-Connections-Under-Linux-?product=36773
+IXGBE="5.3.6"
+
+#current Intel 10GB IXGBEVF - See https://downloadcenter.intel.com/download/18700/Intel-Network-Adapter-Virtual-Function-Driver-for-Intel-10-Gigabit-Ethernet-Network-Connections?product=36773
+IXGBEVF="4.3.4"
+
 # current LibreELEC Release - See https://github.com/LibreELEC/dvb-firmware/releases
 LE="1.2.2"
 
