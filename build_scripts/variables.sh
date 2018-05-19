@@ -49,10 +49,10 @@ IXGBE="5.3.6"
 IXGBEVF="4.3.4"
 
 # current LibreELEC Release - See https://github.com/LibreELEC/dvb-firmware/releases
-LE="$(curl -sX GET https://api.github.com/repos/LibreELEC/dvb-firmware/releases/latest | grep 'tag_name' | cut -d\" -f4)"
+LE="1.22"
 
 # current Digital Devices Github release - See https://github.com/DigitalDevices/dddvb/releases
-DD="$(curl -sX GET https://api.github.com/repos/DigitalDevices/dddvb/releases/latest | grep 'tag_name' | cut -d\" -f4)"
+DD="0.9.33"
 
 # current Date (DDExp & TBS OS Version)
 DATE=$(date +'%d%m%y')
