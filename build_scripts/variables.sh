@@ -49,7 +49,7 @@ IXGBE="5.3.6"
 IXGBEVF="4.3.4"
 
 # current LibreELEC Release - See https://github.com/LibreELEC/dvb-firmware/releases
-LE="1.22"
+LE="1.2.2"
 
 # current Digital Devices Github release - See https://github.com/DigitalDevices/dddvb/releases
 DD="0.9.33"
