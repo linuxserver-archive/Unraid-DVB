@@ -41,7 +41,7 @@ mv -f  /tmp/firmware /lib
 
 ##Make menuconfig
 cd $D
-wget https://mirror.linuxserver.io/unraid-dvb-rc/$VERSION/stock/.config
+wget https://mirror.linuxserver.io/unraid-dvb/$VERSION/stock/.config
 cd $D/kernel
 if [ -e $D/.config ]; then
    rm -f .config
