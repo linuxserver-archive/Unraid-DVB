@@ -6,6 +6,7 @@ autoconf \
 automake \
 bc \
 binutils \
+bison \
 cpio \
 elfutils \
 flex \
