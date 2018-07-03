@@ -8,6 +8,9 @@ require_once("/usr/local/emhttp/plugins/community.applications/include/helpers.p
 $xmlRaw = file_get_contents("https://lsio.ams3.digitaloceanspaces.com/?max-keys=500000");
 $o = TypeConverter::xmlToArray($xmlRaw,TypeConverter::XML_GROUP);
 foreach ($o['Contents'] as $test) {
+  if (startsWith($test['Key'],"unraid-dvb-old-builds")) {
+    continue;
+  }
   if (startsWith($test['Key'],"unraid-dvb")) {
     $folder[dirname($test['Key'])] = true;
   }
