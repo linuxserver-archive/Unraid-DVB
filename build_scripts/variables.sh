@@ -36,6 +36,7 @@ python \
 readline \
 sqlite \
 squashfs-tools \
+zstd \
 )
 
 # current RocketRaid Release - See http://www.highpoint-tech.com/BIOS_Driver/R750/Linux/
