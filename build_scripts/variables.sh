@@ -6,6 +6,7 @@ autoconf \
 automake \
 bc \
 binutils \
+bison \
 cpio \
 elfutils \
 flex \
@@ -35,18 +36,24 @@ python \
 readline \
 sqlite \
 squashfs-tools \
+zstd \
 )
 
-# current RocketRaid Release - See http://www.highpoint-tech.com/BIOS_Driver/R750/Linux/
-ROCKET="1.2.10.1-17_01_23"
+# current RocketRaid R750 Release - See http://www.highpoint-tech.com/BIOS_Driver/R750/Linux/
+ROCKET="1.2.11-18_06_26"
 
 ROCKETSHORT=$(echo $ROCKET | cut -d"-" -f1)
 
+# current RocketRaid RR3740A Release - 
+RR="1.17.0_18_06_15"
+
+RRSHORT=$(echo $RR | cut -d"-" -f1)
+
 # current LibreELEC Release - See https://github.com/LibreELEC/dvb-firmware/releases
-LE="1.2.2"
+LE="1.3.1"
 
 # current Digital Devices Github release - See https://github.com/DigitalDevices/dddvb/releases
-DD="0.9.33"
+DD="0.9.36"
 
 # current Date (DDExp & TBS OS Version)
 DATE=$(date +'%d%m%y')
