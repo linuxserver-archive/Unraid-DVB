@@ -8,8 +8,8 @@
 * `./configure --prefix=/usr`
 * `make install DESTDIR=$(pwd)/patchutils-0.3.4`
 * `cd $(pwd)/patchutils-0.3.4`
-* `makepkg -l y -c n ../patchutils-0.3.4-x86_64-2.tgz`
-* `installpkg ../patchutils-0.3.4-x86_64-2.tgz`
+* `makepkg -l y -c n ../patchutils-0.3.4-x86_64-4.tgz`
+* `installpkg ../patchutils-0.3.4-x86_64-4.tgz`
 
 #Proc-ProcessTable
 
@@ -20,5 +20,5 @@
 * `make`
 * `make install DESTDIR=$(pwd)/Proc-ProcessTable-0.53`
 * `cd $(pwd)/Proc-ProcessTable-0.53`
-* `makepkg -l y -c n ../Proc-ProcessTable-0.53-x86_64-2.tgz`
-* `installpkg ../Proc-ProcessTable-0.53-x86_64-2.tgz`
+* `makepkg -l y -c n ../Proc-ProcessTable-0.53-x86_64-4.tgz`
+* `installpkg ../Proc-ProcessTable-0.53-x86_64-4.tgz`
