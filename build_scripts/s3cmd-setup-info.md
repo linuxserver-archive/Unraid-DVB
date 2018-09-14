@@ -3,7 +3,7 @@ Set up an s3cmd docker container with the following:
 ```
 docker create \
   --name=s3cmd \
-  -v /mnt/cache/appdata/s3cmd:/config \
+  -v /mnt/disk1/appdata/s3cmd:/config \
   -v /mnt:/mnt:ro \
   -e TZ=Europe/London \
   aptalca/docker-s3cmd
