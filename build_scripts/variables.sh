@@ -47,7 +47,7 @@ ROCKETSHORT=$(echo $ROCKET | cut -d"-" -f1)
 # current RocketRaid RR3740A Release - 
 RR="1.17.0_18_06_15"
 
-RRSHORT=$(echo $RR | cut -d"-" -f1)+
+RRSHORT=$(echo $RR | cut -d"-" -f1)
 
 # current LibreELEC Release - See https://github.com/LibreELEC/dvb-firmware/releases
 LE="1.3.1"
