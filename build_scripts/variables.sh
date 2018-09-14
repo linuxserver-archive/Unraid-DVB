@@ -39,16 +39,15 @@ squashfs-tools \
 zstd \
 )
 
-# current RocketRaid Release - See http://www.highpoint-tech.com/BIOS_Driver/R750/Linux/
-ROCKET="1.2.10.1-17_01_23"
+# current RocketRaid R750 Release - See http://www.highpoint-tech.com/BIOS_Driver/R750/Linux/
+ROCKET="1.2.11-18_06_26"
 
 ROCKETSHORT=$(echo $ROCKET | cut -d"-" -f1)
 
-#current Intel 10GB IXGBE - See https://downloadcenter.intel.com/download/14687/Intel-Network-Adapter-Driver-for-PCIe-Intel-10-Gigabit-Ethernet-Network-Connections-Under-Linux-?product=36773
-IXGBE="5.3.6"
+# current RocketRaid RR3740A Release - 
+RR="1.17.0_18_06_15"
 
-#current Intel 10GB IXGBEVF - See https://downloadcenter.intel.com/download/18700/Intel-Network-Adapter-Virtual-Function-Driver-for-Intel-10-Gigabit-Ethernet-Network-Connections?product=36773
-IXGBEVF="4.3.4"
+RRSHORT=$(echo $RR | cut -d"-" -f1)
 
 # current LibreELEC Release - See https://github.com/LibreELEC/dvb-firmware/releases
 LE="1.3.1"
