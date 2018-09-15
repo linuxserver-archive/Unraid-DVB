@@ -35,7 +35,7 @@ installpkg /tmp/nvidia-kernel-*.tgz
 
 #Create /lib/firmware/unraid-media to identify type of build
 echo base=\"Nvidia\ Kernel\" > /lib/firmware/unraid-media
-echo driver=\"$NVIDIA\" >> /lib/firmware/unraid-media
+echo driver=\"$NVIDIAKERNEL\" >> /lib/firmware/unraid-media
 
 #Copy /lib/firmware/unraid-media to identify type of DVB build to destination folder
 mkdir -p $D/$VERSION/nvidia-kernel/
