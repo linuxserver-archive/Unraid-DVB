@@ -35,13 +35,19 @@ Leave the container running while the build scripts run
 It will compile the kernel and the nvidia kernel modules, then stage the driver dev with all the sources.  Any new variables required will need to be added to [nvidia-variables.sh](https://github.com/CHBMB/Unraid-DVB/blob/master/build_scripts/nvidia-variables.sh)
 ```
 #!/bin/bash/
+
+##Pull variables from github
+wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/variables.sh
+. "$(dirname "$(readlink -f ${BASH_SOURCE[0]})")"/variables.sh
+
+##Get required scripts
 wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/nvidia-kernel-compile-module.sh
 wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/nvidia-kernel.sh
 wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/nvidia-driver.sh
-chmod +x *.sh
-nvidia-kernel-compile-module.sh
-nvidia-kernel.sh
-nvidia-driver.sh
+chmod +x $/D/*.sh
+$D/nvidia-kernel-compile-module.sh && \
+$D/nvidia-kernel.sh && \
+$D/nvidia-driver.sh
 ```
 
 ### *Second Method (Preferred)*
@@ -50,9 +56,15 @@ Use the precompiled NVIDIA Kernel Modules build and in a dedicated cache directo
 
 ```
 #!/bin/bash/
+
+##Pull variables from github
+wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/variables.sh
+. "$(dirname "$(readlink -f ${BASH_SOURCE[0]})")"/variables.sh
+
+##Get required scripts
 wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/nvidia-kernel-compile-module.sh
 wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/nvidia-driver.sh
-chmod +x *.sh
-nvidia-kernel-compile-module.sh
-nvidia-driver.sh
+chmod +x $/D/*.sh
+$D/nvidia-kernel-compile-module.sh && \
+$D/nvidia-driver.sh
 ```
