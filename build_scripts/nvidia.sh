@@ -41,10 +41,13 @@ wget https://download.nvidia.com/XFree86/nvidia-persistenced/nvidia-persistenced
 wget https://download.nvidia.com/XFree86/nvidia-settings/nvidia-settings-$NVIDIA.tar.bz2
 wget https://download.nvidia.com/XFree86/nvidia-xconfig/nvidia-xconfig-$NVIDIA.tar.bz2
 
-##Make Nvidia Kernel
+##Make Nvidia Kernel Package
 cd $D/nvidia-kernel
 chmod +x nvidia-kernel.SlackBuild
 ./nvidia-kernel.SlackBuild
+
+##Install Nvidia Kernel Package
+installpkg /tmp/nvidia-kernel-*.tgz
 
 #Create /lib/firmware/unraid-media to identify type of build
 echo base=\"Nvidia\" > /lib/firmware/unraid-media
