@@ -1,5 +1,6 @@
 ![https://linuxserver.io](https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/linuxserver_medium.png)
 
+##Uploading
 
 Set up an s3cmd docker container with the following:
 
@@ -24,3 +25,34 @@ Initial setup:
 * The config file will be in the `/config` folder
 
 Leave the container running while the build scripts run
+
+## NVIDIA Driver Install (Work In Progress)
+
+### *First method*
+
+* From a base Unraid install and in a dedicated cache directory run this.
+
+It will compile the kernel and the nvidia kernel modules, then stage the driver dev with all the sources.  Any new variables required will need to be added to [nvidia-variables.sh](https://github.com/CHBMB/Unraid-DVB/blob/master/build_scripts/nvidia-variables.sh)
+```
+#!/bin/bash/
+wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/nvidia-kernel-compile-module.sh
+wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/nvidia-kernel.sh
+wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/nvidia-driver.sh
+chmod +x *.sh
+nvidia-kernel-compile-module.sh
+nvidia-kernel.sh
+nvidia-driver.sh
+```
+
+### *Second Method (Preferred)*
+
+Use the precompiled NVIDIA Kernel Modules build and in a dedicated cache directory run this.  Once this is run you will have all the NVIDIA sources for a driver install.  Any new variables required will need to be added to [nvidia-variables.sh](https://github.com/CHBMB/Unraid-DVB/blob/master/build_scripts/nvidia-variables.sh)
+
+```
+#!/bin/bash/
+wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/nvidia-kernel-compile-module.sh
+wget https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/nvidia-driver.sh
+chmod +x *.sh
+nvidia-kernel-compile-module.sh
+nvidia-driver.sh
+```
