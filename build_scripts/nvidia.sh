@@ -55,8 +55,9 @@ mkdir -p $D/$VERSION/nvidia/
 cp /lib/firmware/unraid-media $D/$VERSION/nvidia/
 
 ##Make new bzmodules and bzfirmware
+mkdir -p $D/$VERSION/nvidia/
+mksquashfs /lib/modules/$(uname -r)/ $D/$VERSION/nvidia/bzmodules -keep-as-directory -noappend
 mksquashfs /lib/firmware $D/$VERSION/nvidia/bzfirmware -noappend
-cp $D/$VERSION/stock/bzmodules-new $D/$VERSION/nvidia/bzmodules
 
 #Package Up bzimage
 cp -f $D/kernel/arch/x86/boot/bzImage $D/$VERSION/nvidia/bzimage
