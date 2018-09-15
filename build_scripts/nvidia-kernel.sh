@@ -34,29 +34,28 @@ chmod +x nvidia-kernel.SlackBuild
 installpkg /tmp/nvidia-kernel-*.tgz
 
 #Create /lib/firmware/unraid-media to identify type of build
-echo base=\"Nvidia\" > /lib/firmware/unraid-media
+echo base=\"Nvidia\ Kernel\" > /lib/firmware/unraid-media
 echo driver=\"$NVIDIA\" >> /lib/firmware/unraid-media
 
 #Copy /lib/firmware/unraid-media to identify type of DVB build to destination folder
-mkdir -p $D/$VERSION/nvidia/
-cp /lib/firmware/unraid-media $D/$VERSION/nvidia/
+mkdir -p $D/$VERSION/nvidia-kernel/
+cp /lib/firmware/unraid-media $D/$VERSION/nvidia-kernel/
 
 ##Make new bzmodules and bzfirmware
-mkdir -p $D/$VERSION/nvidia/
-mksquashfs /lib/modules/$(uname -r)/ $D/$VERSION/nvidia/bzmodules -keep-as-directory -noappend
-mksquashfs /lib/firmware $D/$VERSION/nvidia/bzfirmware -noappend
+mksquashfs /lib/modules/$(uname -r)/ $D/$VERSION/nvidia-kernel/bzmodules -keep-as-directory -noappend
+mksquashfs /lib/firmware $D/$VERSION/nvidia-kernel/bzfirmware -noappend
 
 #Package Up bzimage
-cp -f $D/kernel/arch/x86/boot/bzImage $D/$VERSION/nvidia/bzimage
+cp -f $D/kernel/arch/x86/boot/bzImage $D/$VERSION/nvidia-kernel/bzimage
 
 #MD5 calculation of files
-cd $D/$VERSION/nvidia/
+cd $D/$VERSION/nvidia-kernel/
 md5sum bzmodules > bzmodules.md5
 md5sum bzfirmware > bzfirmware.md5
 md5sum bzimage > bzimage.md5
 
 #Copy necessary stock files
-cp $D/$VERSION/stock/bzroot* $D/$VERSION/nvidia/
+cp $D/$VERSION/stock/bzroot* $D/$VERSION/nvidia-kernel/
 
 #Return to original directory
 cd $D
