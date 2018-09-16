@@ -75,6 +75,6 @@ slack_package_current_urlbase="http://mirrors.slackware.com/slackware/slackware6
 
 for i in "${slack_package_current[@]}"
 do
-package_locations_current=$(grep "/$i-[[:digit:]].*.txz$" FILE_LIST_CURRENT | cut -b 53-9001)
+package_locations_current=$(grep "/$i-[[:digit:]].*.txz$" FILE_LIST_CURRENT | cut -d . -f2-7)
 echo "$slack_package_current_urlbase""$package_locations_current" >> "$D"/URLS_CURRENT
 done
