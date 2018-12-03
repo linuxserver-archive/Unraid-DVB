@@ -7,6 +7,10 @@ wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts
 ##Install packages
 [ ! -d "$D/packages" ] && mkdir $D/packages
   wget -nc -P $D/packages -i $D/URLS_CURRENT
+  if [[ $? != 0 ]]; then
+    echo "Package missing. Exiting..."
+    exit 1
+  fi
   wget -nc -P $D/packages https://github.com/CHBMB/Unraid-DVB/raw/master/files/patchutils-0.3.4-x86_64-3.tgz
   wget -nc -P $D/packages https://github.com/CHBMB/Unraid-DVB/raw/master/files/Proc-ProcessTable-0.53-x86_64-3.tgz
   installpkg $D/packages/*.*
