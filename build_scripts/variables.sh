@@ -50,7 +50,7 @@ RR="1.17.0_18_06_15"
 RRSHORT=$(echo $RR | cut -d"-" -f1)
 
 #current Intel 10GB IXGBE - See https://downloadcenter.intel.com/download/14687/Intel-Network-Adapter-Driver-for-PCIe-Intel-10-Gigabit-Ethernet-Network-Connections-Under-Linux-?product=36773
-IXGBE="5.5.1"
+IXGBE="5.5.2"
 
 #current Intel 10GB IXGBEVF - See https://downloadcenter.intel.com/download/18700/Intel-Network-Adapter-Virtual-Function-Driver-for-Intel-10-Gigabit-Ethernet-Network-Connections?product=36773
 IXGBEVF="4.5.1"
