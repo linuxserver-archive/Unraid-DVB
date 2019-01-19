@@ -82,6 +82,25 @@ echo "Build out of tree driver: RocketRaid 3740A"
   xz -f rr3740a.ko
   install -m 644 -o root -g root rr3740a.ko.xz -D -t /lib/modules/$(uname -r)/kernel/drivers/scsi/ )
 
+##Install Intel 10GB drivers
+mkdir -p /usr/src/drivers/intel
+cd /usr/src/drivers/intel
+wget https://downloadmirror.intel.com/14687/eng/ixgbe-$IXGBE.tar.gz
+tar xf ixgbe-*.tar.gz
+echo "Build out of tree driver: Intel 10Gbit Ethernet"
+( cd /usr/src/drivers/intel
+  cd ixgbe-*/src
+  BUILD_KERNEL=$KERNEL_VERSION make install )
+
+##Install Intel 10GB virtual function drivers
+mkdir -p /usr/src/drivers/intel
+cd /usr/src/drivers/intel
+wget https://downloadmirror.intel.com/18700/eng/ixgbevf-$IXGBEVF.tar.gz
+tar xf ixgbevf-*.tar.gz
+( cd /usr/src/drivers/intel
+  cd ixgbevf-*/src
+  BUILD_KERNEL=$KERNEL_VERSION make install )
+
 ##Download Unraid
 cd $D
 if [ -e $D/unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip]; then
