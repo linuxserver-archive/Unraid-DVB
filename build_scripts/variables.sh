@@ -55,6 +55,9 @@ IXGBE="5.5.3"
 #current Intel 10GB IXGBEVF - See https://downloadcenter.intel.com/download/18700/Intel-Network-Adapter-Virtual-Function-Driver-for-Intel-10-Gigabit-Ethernet-Network-Connections?product=36773
 IXGBEVF="4.5.1"
 
+##tehuti Driver
+TEHUTI="0.3.6.17"
+
 # current LibreELEC Release - See https://github.com/LibreELEC/dvb-firmware/releases
 LE="1.3.1"
 
