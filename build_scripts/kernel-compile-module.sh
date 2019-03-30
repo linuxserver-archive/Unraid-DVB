@@ -1,10 +1,12 @@
 #!/bin/bash
 
 ##Pull variables from github
+echo -e "${BLUE}Kernel Compile Module${NC}    -----    Pull variables from github"
 wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/variables.sh
 . "$(dirname "$(readlink -f ${BASH_SOURCE[0]})")"/variables.sh
 
 ##Install packages
+echo -e "${BLUE}Kernel Compile Module${NC}    -----    Install packages"
 [ ! -d "${D}/packages" ] && mkdir ${D}/packages
   wget -nc -P ${D}/packages -i ${D}/URLS_CURRENT
   if [[ $? != 0 ]]; then
@@ -16,21 +18,25 @@ wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts
   installpkg ${D}/packages/*.*
 
 #Change to current directory
+echo -e "${BLUE}Kernel Compile Module${NC}    -----    Change to current directory"
 cd ${D}
 
 ##Unmount bzmodules and make rw
+echo -e "${BLUE}Kernel Compile Module${NC}    -----    Unmount bzmodules and make rw"
 cp -r /lib/modules /tmp
 umount -l /lib/modules/
 rm -rf  /lib/modules
 mv -f  /tmp/modules /lib
 
-##Unount bzfirmware and make rw
+##Unmount bzfirmware and make rw
+echo -e "${BLUE}Kernel Compile Module${NC}    -----    Unmount bzfirmware and make rw"
 cp -r /lib/firmware /tmp
 umount -l /lib/firmware/
 rm -rf  /lib/firmware
 mv -f  /tmp/firmware /lib
 
-##Download and Install Kernel 
+##Download and Install Kernel
+echo -e "${BLUE}Kernel Compile Module${NC}    -----    Download and Install Kernel"
 [[ $(uname -r) =~ ([0-9.]*) ]] &&  KERNEL=${BASH_REMATCH[1]} || return 1
   LINK="https://www.kernel.org/pub/linux/kernel/v4.x/linux-${KERNEL}.tar.xz"
   rm -rf ${D}/kernel; mkdir ${D}/kernel
@@ -43,6 +49,7 @@ mv -f  /tmp/firmware /lib
   make oldconfig
 
 ##Make menuconfig
+echo -e "${BLUE}Kernel Compile Module${NC}    -----    Make menuconfig"
 cd ${D}
 #wget -q https://lsio.ams3.digitaloceanspaces.com/unraid-dvb/${UNRAID_VERSION}/stock/.config
 cd ${D}/kernel
@@ -54,10 +61,12 @@ else
 fi
 
 ##Compile Kernel
+echo -e "${BLUE}Kernel Compile Module${NC}    -----    Compile Kernel"
 cd ${D}/kernel
 make -j $(grep -c ^processor /proc/cpuinfo)
 
 ##Install Kernel Modules
+echo -e "${BLUE}Kernel Compile Module${NC}    -----    Install Kernel Modules"
 cd ${D}/kernel
 make all modules_install install
 
@@ -153,6 +162,7 @@ fi
 cd ${D}
 
 ##Download Original Unraid And move it to stock
+echo -e "${BLUE}Kernel Compile Module${NC}    -----    Download Original Unraid And move it to stock"
 if [ -e "${D}/unRAIDServer-${UNRAID_DOWNLOAD_VERSION}-x86_64.zip" ]; then
  unzip -o unRAIDServer-${UNRAID_DOWNLOAD_VERSION}-x86_64.zip -d ${D}/unraid/
 else
@@ -165,6 +175,7 @@ else
 fi
 
 ##Copy default Unraid bz files to folder prior to uploading
+echo -e "${BLUE}Kernel Compile Module${NC}    -----    Copy default Unraid bz files to folder prior to uploading"
 mkdir -p ${D}/${UNRAID_VERSION}/stock/
 cp -f ${D}/unraid/bzimage ${D}/${UNRAID_VERSION}/stock/
 cp -f ${D}/unraid/bzroot ${D}/${UNRAID_VERSION}/stock/
@@ -174,6 +185,7 @@ cp -f ${D}/unraid/bzfirmware ${D}/${UNRAID_VERSION}/stock/
 cp -f ${D}/kernel/.config ${D}/${UNRAID_VERSION}/stock/
 
 ##Calculate md5 on stock files
+echo -e "${BLUE}Kernel Compile Module${NC}    -----    Calculate md5 on stock files"
 cd ${D}/${UNRAID_VERSION}/stock/
 md5sum bzimage > bzimage.md5
 md5sum bzroot > bzroot.md5
@@ -182,24 +194,46 @@ md5sum bzmodules > bzmodules.md5
 md5sum bzfirmware > bzfirmware.md5
 md5sum .config > .config.md5
 
+
+##Calculate sha256 on stock files - can then switch to SHA256 in the future
+echo -e "${BLUE}Kernel Compile Module${NC}    -----    Calculate sha256 on stock files"
+cd ${STOCK_DIR}
+sha256sum bzimage > bzimage.sha256
+sha256sum bzroot > bzroot.sha256
+sha256sum bzmodules > bzmodules.sha256
+sha256sum bzfirmware > bzfirmware.sha256
+sha256sum bzroot-gui > bzroot-gui.sha256
+
 ##Make new bzmodules and bzfirmware - not overwriting existing
+echo -e "${BLUE}Kernel Compile Module${NC}    -----    Make new bzmodules and bzfirmware - not overwriting existing"
 mksquashfs /lib/modules/$(uname -r)/ ${D}/${UNRAID_VERSION}/stock/bzmodules-new -keep-as-directory -noappend
 mksquashfs /lib/firmware ${D}/${UNRAID_VERSION}/stock/bzfirmware-new -noappend
 
 #Package Up new bzimage
+echo -e "${BLUE}Kernel Compile Module${NC}    -----    Package Up new bzimage"
 cp -f ${D}/kernel/arch/x86/boot/bzImage ${D}/${UNRAID_VERSION}/stock/bzimage-new
 
 ##Make backup of /lib/firmware & /lib/modules
+echo -e "${BLUE}Kernel Compile Module${NC}    -----    Make backup of /lib/firmware & /lib/modules"
 mkdir -p ${D}/backup/modules
 cp -r /lib/modules/ ${D}/backup/
 mkdir -p ${D}/backup/firmware
 cp -r /lib/firmware/ ${D}/backup/
 
 ##Calculate md5 on new bzimage, bzfirmware & bzmodules
+echo -e "${BLUE}Kernel Compile Module${NC}    -----    Calculate md5 on new bzimage, bzfirmware & bzmodules"
 cd ${D}/${UNRAID_VERSION}/stock/
 md5sum bzimage-new > bzimage-new.md5
 md5sum bzmodules-new > bzmodules-new.md5
 md5sum bzfirmware-new > bzfirmware-new.md5
 
+##Calculate sha256 on new bzimage, bzfirmware & bzmodules - can then switch to SHA256 in the future
+echo -e "${BLUE}Kernel Compile Module${NC}    -----    Calculate sha256 on new bzimage, bzfirmware & bzmodules"
+cd ${STOCK_DIR}
+sha256sum bzimage-new > bzimage-new.sha256
+sha256sum bzmodules-new > bzmodules-new.sha256
+sha256sum bzfirmware-new > bzfirmware-new.sha256
+
 ##Return to original directory
+echo -e "${BLUE}Kernel Compile Module${NC}    -----    Return to original directory"
 cd ${D}
