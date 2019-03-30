@@ -27,24 +27,24 @@ echo base=\"LibreELEC\" > /lib/firmware/unraid-media
 echo driver=\"${LE}\" >> /lib/firmware/unraid-media
 
 #Copy /lib/firmware/unraid-media to identify type of DVB build to destination folder
-mkdir -p ${D}/${VERSION}/libreelec/
-cp /lib/firmware/unraid-media ${D}/${VERSION}/libreelec/
+mkdir -p ${D}/${UNRAID_VERSION}/libreelec/
+cp /lib/firmware/unraid-media ${D}/${UNRAID_VERSION}/libreelec/
 
 ##Make new bzmodules and bzfirmware
-mksquashfs /lib/firmware ${D}/${VERSION}/libreelec/bzfirmware -noappend
-cp ${D}/${VERSION}/stock/bzmodules-new ${D}/${VERSION}/libreelec/bzmodules
+mksquashfs /lib/firmware ${D}/${UNRAID_VERSION}/libreelec/bzfirmware -noappend
+cp ${D}/${UNRAID_VERSION}/stock/bzmodules-new ${D}/${UNRAID_VERSION}/libreelec/bzmodules
 
 #Package Up bzimage
-cp -f ${D}/kernel/arch/x86/boot/bzImage ${D}/${VERSION}/libreelec/bzimage
+cp -f ${D}/kernel/arch/x86/boot/bzImage ${D}/${UNRAID_VERSION}/libreelec/bzimage
 
 #MD5 calculation of files
-cd ${D}/${VERSION}/libreelec/
+cd ${D}/${UNRAID_VERSION}/libreelec/
 md5sum bzmodules > bzmodules.md5
 md5sum bzfirmware > bzfirmware.md5
 md5sum bzimage > bzimage.md5
 
 #Copy necessary stock files
-cp ${D}/${VERSION}/stock/bzroot* ${D}/${VERSION}/libreelec/
+cp ${D}/${UNRAID_VERSION}/stock/bzroot* ${D}/${UNRAID_VERSION}/libreelec/
 
 #Return to original directory
 cd ${D}

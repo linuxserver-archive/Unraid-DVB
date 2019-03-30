@@ -40,7 +40,7 @@ mv -f  /tmp/firmware /lib
 
 ##Make menuconfig
 cd ${D}
-wget https://lsio.ams3.digitaloceanspaces.com/unraid-dvb/${VERSION}/stock/.config
+wget https://lsio.ams3.digitaloceanspaces.com/unraid-dvb/${UNRAID_VERSION}/stock/.config
 cd ${D}/kernel
 if [ -e ${D}/.config ]; then
    rm -f .config
@@ -161,16 +161,16 @@ else
 fi
 
 ##Copy default Unraid bz files to folder prior to uploading
-mkdir -p ${D}/${VERSION}/stock/
-cp -f ${D}/unraid/bzimage ${D}/${VERSION}/stock/
-cp -f ${D}/unraid/bzroot ${D}/${VERSION}/stock/
-cp -f ${D}/unraid/bzroot-gui ${D}/${VERSION}/stock/
-cp -f ${D}/unraid/bzmodules ${D}/${VERSION}/stock/
-cp -f ${D}/unraid/bzfirmware ${D}/${VERSION}/stock/
-cp -f ${D}/kernel/.config ${D}/${VERSION}/stock/
+mkdir -p ${D}/${UNRAID_VERSION}/stock/
+cp -f ${D}/unraid/bzimage ${D}/${UNRAID_VERSION}/stock/
+cp -f ${D}/unraid/bzroot ${D}/${UNRAID_VERSION}/stock/
+cp -f ${D}/unraid/bzroot-gui ${D}/${UNRAID_VERSION}/stock/
+cp -f ${D}/unraid/bzmodules ${D}/${UNRAID_VERSION}/stock/
+cp -f ${D}/unraid/bzfirmware ${D}/${UNRAID_VERSION}/stock/
+cp -f ${D}/kernel/.config ${D}/${UNRAID_VERSION}/stock/
 
 ##Calculate md5 on stock files
-cd ${D}/${VERSION}/stock/
+cd ${D}/${UNRAID_VERSION}/stock/
 md5sum bzimage > bzimage.md5
 md5sum bzroot > bzroot.md5
 md5sum bzroot-gui > bzroot-gui.md5
@@ -179,11 +179,11 @@ md5sum bzfirmware > bzfirmware.md5
 md5sum .config > .config.md5
 
 ##Make new bzmodules and bzfirmware - not overwriting existing
-mksquashfs /lib/modules/$(uname -r)/ ${D}/${VERSION}/stock/bzmodules-new -keep-as-directory -noappend
-mksquashfs /lib/firmware ${D}/${VERSION}/stock/bzfirmware-new -noappend
+mksquashfs /lib/modules/$(uname -r)/ ${D}/${UNRAID_VERSION}/stock/bzmodules-new -keep-as-directory -noappend
+mksquashfs /lib/firmware ${D}/${UNRAID_VERSION}/stock/bzfirmware-new -noappend
 
 #Package Up new bzimage
-cp -f ${D}/kernel/arch/x86/boot/bzImage ${D}/${VERSION}/stock/bzimage-new
+cp -f ${D}/kernel/arch/x86/boot/bzImage ${D}/${UNRAID_VERSION}/stock/bzimage-new
 
 ##Make backup of /lib/firmware & /lib/modules
 mkdir -p ${D}/backup/modules
@@ -192,7 +192,7 @@ mkdir -p ${D}/backup/firmware
 cp -r /lib/firmware/ ${D}/backup/
 
 ##Calculate md5 on new bzimage, bzfirmware & bzmodules
-cd ${D}/${VERSION}/stock/
+cd ${D}/${UNRAID_VERSION}/stock/
 md5sum bzimage-new > bzimage-new.md5
 md5sum bzmodules-new > bzmodules-new.md5
 md5sum bzfirmware-new > bzfirmware-new.md5

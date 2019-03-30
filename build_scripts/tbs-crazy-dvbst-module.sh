@@ -30,25 +30,25 @@ echo base=\"TBS \(CrazyCat\) DVB-S\(2\) \& DVB-T\(2\)\" > /lib/firmware/unraid-m
 echo driver=\"${GIT_REV}\" >> /lib/firmware/unraid-media
 
 #Copy /lib/firmware/unraid-media to identify type of DVB build to destination folder
-mkdir -p ${D}/${VERSION}/tbs-crazy-dvbst/
-cp /lib/firmware/unraid-media ${D}/${VERSION}/tbs-crazy-dvbst/
+mkdir -p ${D}/${UNRAID_VERSION}/tbs-crazy-dvbst/
+cp /lib/firmware/unraid-media ${D}/${UNRAID_VERSION}/tbs-crazy-dvbst/
 
 ##Make new bzmodules and bzfirmware
-mkdir -p ${D}/${VERSION}/tbs-crazy-dvbst/
-mksquashfs /lib/modules/$(uname -r)/ ${D}/${VERSION}/tbs-crazy-dvbst/bzmodules -keep-as-directory -noappend
-mksquashfs /lib/firmware ${D}/${VERSION}/tbs-crazy-dvbst/bzfirmware -noappend
+mkdir -p ${D}/${UNRAID_VERSION}/tbs-crazy-dvbst/
+mksquashfs /lib/modules/$(uname -r)/ ${D}/${UNRAID_VERSION}/tbs-crazy-dvbst/bzmodules -keep-as-directory -noappend
+mksquashfs /lib/firmware ${D}/${UNRAID_VERSION}/tbs-crazy-dvbst/bzfirmware -noappend
 
 #Package Up bzimage
-cp -f ${D}/kernel/arch/x86/boot/bzImage ${D}/${VERSION}/tbs-crazy-dvbst/bzimage
+cp -f ${D}/kernel/arch/x86/boot/bzImage ${D}/${UNRAID_VERSION}/tbs-crazy-dvbst/bzimage
 
 #MD5 calculation of files
-cd ${D}/${VERSION}/tbs-crazy-dvbst/
+cd ${D}/${UNRAID_VERSION}/tbs-crazy-dvbst/
 md5sum bzmodules > bzmodules.md5
 md5sum bzfirmware > bzfirmware.md5
 md5sum bzimage > bzimage.md5
 
 #Copy necessary stock files
-cp ${D}/${VERSION}/stock/bzroot* ${D}/${VERSION}/tbs-crazy-dvbst/
+cp ${D}/${UNRAID_VERSION}/stock/bzroot* ${D}/${UNRAID_VERSION}/tbs-crazy-dvbst/
 
 #Return to original directory
 cd ${D}

@@ -45,25 +45,25 @@ echo base=\"TBS \(Open Source\) \& LibreELEC ATSC-C, DVB-C, DVB-S\(2\) \& DVB-T\
 echo driver=\"${DATE}\" >> /lib/firmware/unraid-media
 
 #Copy /lib/firmware/unraid-media to identify type of DVB build to destination folder
-mkdir -p ${D}/${VERSION}/tbs-os/
-cp /lib/firmware/unraid-media ${D}/${VERSION}/tbs-os/
+mkdir -p ${D}/${UNRAID_VERSION}/tbs-os/
+cp /lib/firmware/unraid-media ${D}/${UNRAID_VERSION}/tbs-os/
 
 ##Make new bzmodules and bzfirmware
-mkdir -p ${D}/${VERSION}/tbs-os/
-mksquashfs /lib/modules/$(uname -r)/ ${D}/${VERSION}/tbs-os/bzmodules -keep-as-directory -noappend
-mksquashfs /lib/firmware ${D}/${VERSION}/tbs-os/bzfirmware -noappend
+mkdir -p ${D}/${UNRAID_VERSION}/tbs-os/
+mksquashfs /lib/modules/$(uname -r)/ ${D}/${UNRAID_VERSION}/tbs-os/bzmodules -keep-as-directory -noappend
+mksquashfs /lib/firmware ${D}/${UNRAID_VERSION}/tbs-os/bzfirmware -noappend
 
 #Package Up bzimage
-cp -f ${D}/kernel/arch/x86/boot/bzImage ${D}/${VERSION}/tbs-os/bzimage
+cp -f ${D}/kernel/arch/x86/boot/bzImage ${D}/${UNRAID_VERSION}/tbs-os/bzimage
 
 #MD5 calculation of files
-cd ${D}/${VERSION}/tbs-os/
+cd ${D}/${UNRAID_VERSION}/tbs-os/
 md5sum bzmodules > bzmodules.md5
 md5sum bzfirmware > bzfirmware.md5
 md5sum bzimage > bzimage.md5
 
 #Copy necessary stock files
-cp ${D}/${VERSION}/stock/bzroot* ${D}/${VERSION}/tbs-os/
+cp ${D}/${UNRAID_VERSION}/stock/bzroot* ${D}/${UNRAID_VERSION}/tbs-os/
 
 #Return to original directory
 cd ${D}
