@@ -40,7 +40,7 @@ mv -f  /tmp/firmware /lib
 
 ##Make menuconfig
 cd ${D}
-wget https://lsio.ams3.digitaloceanspaces.com/unraid-dvb/${UNRAID_VERSION}/stock/.config
+#wget -q https://lsio.ams3.digitaloceanspaces.com/unraid-dvb/${UNRAID_VERSION}/stock/.config
 cd ${D}/kernel
 if [ -e ${D}/.config ]; then
    rm -f .config
