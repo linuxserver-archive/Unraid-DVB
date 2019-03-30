@@ -56,39 +56,107 @@ make -j $(grep -c ^processor /proc/cpuinfo)
 ##Install Kernel Modules
 cd $D/kernel
 make all modules_install install
+IFS=',' read -r -a oot_drivers <<< "${OOT_DRIVERS}"
 
-##Install Rocketraid R750
-mkdir -p /usr/src/drivers/highpoint
-cd /usr/src/drivers/highpoint
-wget https://s3.amazonaws.com/dnld.lime-technology.com/archive/R750_Linux_Src_v1.2.11-18_06_26.tar.gz
-tar xf R750_Linux_Src_v$ROCKET.tar.gz
-echo "Build out of tree driver: RocketRaid r750"
-( cd /usr/src/drivers/highpoint
-  ./r750-linux-src-v$ROCKET.bin --keep --noexec --target r750-linux-src-v$ROCKETSHORT )
-( cd /usr/src/drivers/highpoint/r750-linux-src-v$ROCKETSHORT/product/r750/linux/
-  make KERNELDIR=$D/kernel
-  xz -f r750.ko
-  install -m 644 -o root -g root r750.ko.xz -D -t /lib/modules/$(uname -r)/kernel/drivers/scsi/ )
+for each in "${oot_drivers[@]}"
+do
+	echo -e "${BLUE}Kernel Compile Module${NC}    -----    Going to compile $each"
+done
 
-##Install RR3740A
-cd /usr/src/drivers/highpoint
-wget https://s3.amazonaws.com/dnld.lime-technology.com/archive/RR3740A_840A_2840A_Linux_Src_v1.17.0_18_06_15.tar.gz
-tar xf RR3740A_840A_2840A_Linux_Src_v$RR.tar.gz
-echo "Build out of tree driver: RocketRaid 3740A"
-( cd /usr/src/drivers/highpoint
-  ./rr3740a_840a_2840a_linux_src_v$RR.bin --keep --noexec --target rr3740a-linux-src-v$RRSHORT )
-( cd /usr/src/drivers/highpoint/rr3740a-linux-src-v$RRSHORT/product/rr3740a/linux/
-  make KERNELDIR=$D/kernel
-  xz -f rr3740a.ko
-  install -m 644 -o root -g root rr3740a.ko.xz -D -t /lib/modules/$(uname -r)/kernel/drivers/scsi/ )
+if [[ " ${oot_drivers[@]} " =~ " rocketraid " ]]; then
+     #Install Rocketraid R750
+    echo -e "${BLUE}Kernel Compile Module${NC}    -----    Install Rocketraid R750"
+    mkdir -p /usr/src/drivers/highpoint
+    cd /usr/src/drivers/highpoint
+    wget https://s3.amazonaws.com/dnld.lime-technology.com/archive/R750_Linux_Src_v${ROCKET}.tar.gz
+    tar xf R750_Linux_Src_v${ROCKET}.tar.gz
+    echo -e "${BLUE}Kernel Compile Module${NC}    -----    Build out of tree driver: RocketRaid r750"
+    ( cd /usr/src/drivers/highpoint
+      ./r750-linux-src-v${ROCKET}.bin --keep --noexec --target r750-linux-src-v${ROCKETSHORT} )
+    ( cd /usr/src/drivers/highpoint/r750-linux-src-v${ROCKETSHORT}/product/r750/linux/
+      make KERNELDIR=${D}/kernel
+      xz -f r750.ko
+      install -m 644 -o root -g root r750.ko.xz -D -t /lib/modules/$(uname -r)/kernel/drivers/scsi/ )
+fi
 
-##Download Unraid
-cd $D
-if [ -e $D/unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip]; then
- unzip unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip -d $D/unraid
+
+if [[ " ${oot_drivers[@]} " =~ " rr3740a " ]]; then
+     #Install RR3740A
+     echo -e "${BLUE}Kernel Compile Module${NC}    -----    Install RR3740A"
+     cd /usr/src/drivers/highpoint
+     wget https://s3.amazonaws.com/dnld.lime-technology.com/archive/RR3740A_840A_2840A_Linux_Src_v${RR}.tar.gz
+     tar xf RR3740A_840A_2840A_Linux_Src_v${RR}.tar.gz
+     echo -e "${BLUE}Kernel Compile Module${NC}    -----    Build out of tree driver: RocketRaid 3740A"
+     ( cd /usr/src/drivers/highpoint
+       ./rr3740a_840a_2840a_linux_src_v${RR}.bin --keep --noexec --target rr3740a-linux-src-v${RRSHORT} )
+     ( cd /usr/src/drivers/highpoint/rr3740a-linux-src-v${RRSHORT}/product/rr3740a/linux/
+       make KERNELDIR=${D}/kernel
+       xz -f rr3740a.ko
+       install -m 644 -o root -g root rr3740a.ko.xz -D -t /lib/modules/$(uname -r)/kernel/drivers/scsi/ )
+fi
+
+
+
+if [[ " ${oot_drivers[@]} " =~ " tehuti " ]]; then
+     #Install Tehuti Drivers
+     echo -e "${BLUE}Kernel Compile Module${NC}    -----    Installing Tehuti 10GB drivers"
+     mkdir -p /usr/src/drivers/tehuti
+     cd /usr/src/drivers/tehuti
+     wget http://www.tehutinetworks.net/images/UL240756/tn40xx-${TEHUTI}.tgz
+     tar xf tn40xx-${TEHUTI}.tgz
+     KERNEL_VERSION=$(uname -r)
+     echo "Build out of tree driver: Tehuti 10Gbit Ethernet"
+     ( cd /usr/src/drivers/tehuti/tn40xx-${TEHUTI}
+       KVERSION=${KERNEL_VERSION} make clean
+       KVERSION=${KERNEL_VERSION} make -j $(grep -c ^processor /proc/cpuinfo)
+       xz -f tn40xx.ko
+       install -m 644 -o root -g root tn40xx.ko.xz -t /lib/modules/${KERNEL_VERSION}/kernel/drivers/net/ )
+fi
+
+
+if [[ " ${oot_drivers[@]} " =~ " ixgbe " ]]; then
+     ##Install Intel 10GB drivers - Do Not Remove hash out if not required
+     echo -e "${BLUE}Kernel Compile Module${NC}    -----    Installing Intel 10GB drivers"
+     mkdir -p /usr/src/drivers/intel
+     cd /usr/src/drivers/intel
+     wget https://downloadmirror.intel.com/14687/eng/ixgbe-${IXGBE}.tar.gz
+     tar xf ixgbe-${IXGBE}.tar.gz
+     KERNEL_VERSION=$(uname -r)
+     echo "Build out of tree driver: Intel 10Gbit Ethernet"
+     ( cd /usr/src/drivers/intel
+       cd ixgbe-*/src
+       BUILD_KERNEL=${KERNEL_VERSION} make install )
+     
+fi
+
+
+if [[ " ${oot_drivers[@]} " =~ " ixgbevf " ]]; then
+     #Install Intel 10GB virtual function drivers - Do Not Remove hash out if not required
+     echo -e "${BLUE}Kernel Compile Module${NC}    -----    Installing Intel 10GB virtual function drivers"
+     mkdir -p /usr/src/drivers/intel
+     cd /usr/src/drivers/intel
+     wget https://downloadmirror.intel.com/18700/eng/ixgbevf-${IXGBEVF}.tar.gz
+     tar xf ixgbevf-${IXGBEVF}.tar.gz
+     KERNEL_VERSION=$(uname -r)
+     ( cd /usr/src/drivers/intel
+       cd ixgbevf-*/src
+       BUILD_KERNEL=${KERNEL_VERSION} make install )
+     
+fi
+
+
+cd ${D}
+
+##Download Original Unraid And move it to stock
+if [ -e "${D}/unRAIDServer-${UNRAID_DOWNLOAD_VERSION}-x86_64.zip" ]; then
+ unzip -o unRAIDServer-${UNRAID_DOWNLOAD_VERSION}-x86_64.zip -d $D/unraid/
 else
-  wget -nc http://dnld.lime-technology.com/next/unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip
-  unzip unRAIDServer-"$(grep -o '".*"' /etc/unraid-version | sed 's/"//g')"-x86_64.zip -d $D/unraid
+	if [[ ${UNRAID_DOWNLOAD_VERSION} == *"rc"* ]]; then
+	  wget -nc https://s3.amazonaws.com/dnld.lime-technology.com/next/unRAIDServer-${UNRAID_DOWNLOAD_VERSION}-x86_64.zip
+	else 
+	  wget -nc https://s3.amazonaws.com/dnld.lime-technology.com/stable/unRAIDServer-${UNRAID_DOWNLOAD_VERSION}-x86_64.zip
+	fi
+    unzip -o unRAIDServer-${UNRAID_DOWNLOAD_VERSION}-x86_64.zip -d $D/unraid/
 fi
 
 ##Copy default Unraid bz files to folder prior to uploading
