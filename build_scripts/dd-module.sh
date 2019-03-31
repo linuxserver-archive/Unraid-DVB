@@ -39,6 +39,7 @@ cp -f ${D}/kernel/arch/x86/boot/bzImage ${D}/${UNRAID_VERSION}/dd/bzimage
 
 #MD5 calculation of files
 cd ${D}/${UNRAID_VERSION}/dd/
+
 md5sum bzmodules > bzmodules.md5
 md5sum bzfirmware > bzfirmware.md5
 md5sum bzimage > bzimage.md5

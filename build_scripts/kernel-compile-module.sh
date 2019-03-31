@@ -1,6 +1,7 @@
 #!/bin/bash
 
 ##Pull variables from github
+
 echo -e "${BLUE}Kernel Compile Module${NC}    -----    Pull variables from github"
 wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/variables.sh
 . "$(dirname "$(readlink -f ${BASH_SOURCE[0]})")"/variables.sh
@@ -35,6 +36,7 @@ umount -l /lib/firmware/
 rm -rf  /lib/firmware
 mv -f  /tmp/firmware /lib
 
+
 ##Download and Install Kernel
 echo -e "${BLUE}Kernel Compile Module${NC}    -----    Download and Install Kernel"
 [[ $(uname -r) =~ ([0-9.]*) ]] &&  KERNEL=${BASH_REMATCH[1]} || return 1
@@ -44,6 +46,7 @@ echo -e "${BLUE}Kernel Compile Module${NC}    -----    Download and Install Kern
   tar -C ${D}/kernel --strip-components=1 -Jxf ${D}/linux-${KERNEL}.tar.xz
   rsync -av /usr/src/linux-$(uname -r)/ ${D}/kernel/
   cd ${D}/kernel
+
   for p in $(find . -type f -iname "*.patch"); do patch -N -p 1 < $p
   done
   make oldconfig
@@ -69,6 +72,12 @@ make -j $(grep -c ^processor /proc/cpuinfo)
 echo -e "${BLUE}Kernel Compile Module${NC}    -----    Install Kernel Modules"
 cd ${D}/kernel
 make all modules_install install
+IFS=',' read -r -a oot_drivers <<< "${OOT_DRIVERS}"
+
+for each in "${oot_drivers[@]}"
+do
+	echo -e "${BLUE}Kernel Compile Module${NC}    -----    Going to compile $each"
+done
 
 IFS=',' read -r -a oot_drivers <<< "${OOT_DRIVERS}"
 
@@ -93,7 +102,6 @@ if [[ " ${oot_drivers[@]} " =~ " rocketraid " ]]; then
       install -m 644 -o root -g root r750.ko.xz -D -t /lib/modules/$(uname -r)/kernel/drivers/scsi/ )
 fi
 
-
 if [[ " ${oot_drivers[@]} " =~ " rr3740a " ]]; then
      #Install RR3740A
      echo -e "${BLUE}Kernel Compile Module${NC}    -----    Install RR3740A"
@@ -108,7 +116,6 @@ if [[ " ${oot_drivers[@]} " =~ " rr3740a " ]]; then
        xz -f rr3740a.ko
        install -m 644 -o root -g root rr3740a.ko.xz -D -t /lib/modules/$(uname -r)/kernel/drivers/scsi/ )
 fi
-
 
 
 if [[ " ${oot_drivers[@]} " =~ " tehuti " ]]; then
@@ -172,7 +179,7 @@ else
 	  wget -nc https://s3.amazonaws.com/dnld.lime-technology.com/stable/unRAIDServer-${UNRAID_DOWNLOAD_VERSION}-x86_64.zip
 	fi
     unzip -o unRAIDServer-${UNRAID_DOWNLOAD_VERSION}-x86_64.zip -d ${D}/unraid/
-fi
+  fi
 
 ##Copy default Unraid bz files to folder prior to uploading
 echo -e "${BLUE}Kernel Compile Module${NC}    -----    Copy default Unraid bz files to folder prior to uploading"

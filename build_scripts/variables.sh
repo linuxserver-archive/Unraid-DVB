@@ -112,7 +112,7 @@ done
 
 declare -A oot_driver_map=(
     	["6.6.6"]="ixgbe"
-        ["6.6.7"]="ixgbe"
+      ["6.6.7"]="ixgbe"
     	["6.7.0"]="ixgbe,tehuti"
 )
 
