@@ -39,10 +39,15 @@ cp -f ${D}/kernel/arch/x86/boot/bzImage ${D}/${UNRAID_VERSION}/dd/bzimage
 
 #MD5 calculation of files
 cd ${D}/${UNRAID_VERSION}/dd/
-
 md5sum bzmodules > bzmodules.md5
 md5sum bzfirmware > bzfirmware.md5
 md5sum bzimage > bzimage.md5
+
+#SHA256 calculation of files
+cd ${D}/${UNRAID_VERSION}/dd/
+sha256sum bzmodules > bzmodules.sha256
+sha256sum bzfirmware > bzfirmware.sha256
+sha256sum bzimage > bzimage.sha256
 
 #Copy necessary stock files
 cp ${D}/${UNRAID_VERSION}/stock/bzroot* ${D}/${UNRAID_VERSION}/dd/
