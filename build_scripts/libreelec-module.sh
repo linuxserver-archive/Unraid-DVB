@@ -43,6 +43,12 @@ md5sum bzmodules > bzmodules.md5
 md5sum bzfirmware > bzfirmware.md5
 md5sum bzimage > bzimage.md5
 
+#SHA256 calculation of files
+cd ${D}/${UNRAID_VERSION}/libreelec/
+sha256sum bzmodules > bzmodules.sha256
+sha256sum bzfirmware > bzfirmware.sha256
+sha256sum bzimage > bzimage.sha256
+
 #Copy necessary stock files
 cp ${D}/${UNRAID_VERSION}/stock/bzroot* ${D}/${UNRAID_VERSION}/libreelec/
 

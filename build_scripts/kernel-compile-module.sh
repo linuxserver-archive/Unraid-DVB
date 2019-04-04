@@ -201,10 +201,9 @@ md5sum bzmodules > bzmodules.md5
 md5sum bzfirmware > bzfirmware.md5
 md5sum .config > .config.md5
 
-
 ##Calculate sha256 on stock files - can then switch to SHA256 in the future
 echo -e "${BLUE}Kernel Compile Module${NC}    -----    Calculate sha256 on stock files"
-cd ${STOCK_DIR}
+cd ${D}/${UNRAID_VERSION}/stock/
 sha256sum bzimage > bzimage.sha256
 sha256sum bzroot > bzroot.sha256
 sha256sum bzmodules > bzmodules.sha256
@@ -236,7 +235,7 @@ md5sum bzfirmware-new > bzfirmware-new.md5
 
 ##Calculate sha256 on new bzimage, bzfirmware & bzmodules - can then switch to SHA256 in the future
 echo -e "${BLUE}Kernel Compile Module${NC}    -----    Calculate sha256 on new bzimage, bzfirmware & bzmodules"
-cd ${STOCK_DIR}
+cd ${D}/${UNRAID_VERSION}/stock/
 sha256sum bzimage-new > bzimage-new.sha256
 sha256sum bzmodules-new > bzmodules-new.sha256
 sha256sum bzfirmware-new > bzfirmware-new.sha256
