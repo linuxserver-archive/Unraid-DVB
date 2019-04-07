@@ -59,7 +59,7 @@ export RRSHORT=$(echo $RR | cut -d"-" -f1)
 
 ##current Intel 10GB IXGBE - See https://downloadcenter.intel.com/download/14687/Intel-Network-Adapter-Driver-for-PCIe-Intel-10-Gigabit-Ethernet-Network-Connections-Under-Linux-?product=36773
 echo -e "${BLUE}Variables.sh${NC}    -----    current Intel 10GB IXGBE driver"
-export IXGBE="5.3.3"
+export IXGBE="5.5.3"
 
 ##current Intel 10GB IXGBEVF - See https://downloadcenter.intel.com/download/18700/Intel-Network-Adapter-Virtual-Function-Driver-for-Intel-10-Gigabit-Ethernet-Network-Connections?product=36773
 echo -e "${BLUE}Variables.sh${NC}    -----    current Intel 10GB IXGBEVF driver"
@@ -112,7 +112,7 @@ done
 
 declare -A oot_driver_map=(
     	["6.6.6"]="ixgbe"
-      ["6.6.7"]="ixgbe"
+        ["6.6.7"]="ixgbe"
     	["6.7.0"]="ixgbe,tehuti"
 )
 
