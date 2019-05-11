@@ -74,12 +74,12 @@ echo -e "${BLUE}Kernel Compile Module${NC}    -----    Download and Install Kern
 ##Make menuconfig
 echo -e "${BLUE}Kernel Compile Module${NC}    -----    Make menuconfig"
 cd ${D}
-wget -q https://lsio.ams3.digitaloceanspaces.com/unraid-dvb/${UNRAID_VERSION}/stock/.config
-cd ${D}/kernel
-if [ -e ${D}/.config ]; then
+if wget --spider https://lsio.ams3.digitaloceanspaces.com/unraid-nvidia/${UNRAID_VERSION}/stock/.config 2>/dev/null; then
    rm -f .config
+   wget https://lsio.ams3.digitaloceanspaces.com/unraid-nvidia/${UNRAID_VERSION}/stock/.config
    rsync ${D}/.config ${D}/kernel/.config
 else
+   cd ${D}/kernel
    make menuconfig
 fi
 
