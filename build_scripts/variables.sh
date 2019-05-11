@@ -67,7 +67,7 @@ export IXGBEVF="4.5.1"
 
 ##tehuti Driver
 echo -e "${BLUE}Variables.sh${NC}    -----    current Tehuti 10GB Driver"
-export TEHUTI="0.3.6.17"
+export TEHUTI="0.3.6.17.1"
 
 # current LibreELEC Release - See https://github.com/LibreELEC/dvb-firmware/releases
 echo -e "${BLUE}Variables.sh${NC}    -----    current LibreELEC Release"
@@ -75,7 +75,7 @@ export LE="1.3.1"
 
 # current Digital Devices Github release - See https://github.com/DigitalDevices/dddvb/releases
 echo -e "${BLUE}Variables.sh${NC}    -----    current Digital Devices Github release"
-export DD="0.9.36"
+export DD="master"
 
 ##current Date (DDExp & TBS OS Version)
 echo -e "${BLUE}Variables.sh${NC}    -----    current Date (DDExp & TBS OS Version)"
