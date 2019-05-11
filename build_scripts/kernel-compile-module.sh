@@ -1,7 +1,15 @@
 #!/bin/bash
 
-##Pull variables from github
+##Set branch to pull from for dependencies
+set -ea
 
+: "${DEPENDENCY_BRANCH:=master}"
+
+##Pull variables from github
+wget -nc https://raw.githubusercontent.com/linuxserver/Unraid-Dependencies/${DEPENDENCY_BRANCH}/build_scripts/variables.sh
+. "$(dirname "$(readlink -f ${BASH_SOURCE[0]})")"/variables.sh
+
+##Pull variables from github
 echo -e "${BLUE}Kernel Compile Module${NC}    -----    Pull variables from github"
 wget -nc https://raw.githubusercontent.com/linuxserver/Unraid-Dependencies/master/build_scripts/variables.sh
 . "$(dirname "$(readlink -f ${BASH_SOURCE[0]})")"/variables.sh

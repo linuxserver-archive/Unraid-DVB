@@ -1,7 +1,12 @@
 #!/bin/bash
 
+##Set branch to pull from for dependencies
+set -ea
+
+: "${DEPENDENCY_BRANCH:=master}"
+
 ##Pull variables from github
-wget -nc wget -nc https://raw.githubusercontent.com/linuxserver/Unraid-Dependencies/master/build_scripts/variables.sh
+wget -nc https://raw.githubusercontent.com/linuxserver/Unraid-Dependencies/${DEPENDENCY_BRANCH}/build_scripts/variables.sh
 . "$(dirname "$(readlink -f ${BASH_SOURCE[0]})")"/variables.sh
 
 ##Restore /lib/modules/
