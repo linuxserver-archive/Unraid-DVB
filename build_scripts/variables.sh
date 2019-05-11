@@ -75,7 +75,7 @@ export LE="1.3.1"
 
 # current Digital Devices Github release - See https://github.com/DigitalDevices/dddvb/releases
 echo -e "${BLUE}Variables.sh${NC}    -----    current Digital Devices Github release"
-export DD="0.9.36"
+export DD="master"
 
 ##current Date (DDExp & TBS OS Version)
 echo -e "${BLUE}Variables.sh${NC}    -----    current Date (DDExp & TBS OS Version)"
