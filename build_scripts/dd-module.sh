@@ -24,7 +24,7 @@ make install
 
 #Create /etc/unraid-media to identify type of mediabuild and copy to bzroot
 echo base=\"Digital Devices \(Github\)\" > /lib/firmware/unraid-media
-echo driver=\"${DD}\" >> /lib/firmware/unraid-media
+echo driver=\"${DATE}\" >> /lib/firmware/unraid-media
 
 #Copy /etc/unraid-media to identify type of mediabuild to destination folder
 mkdir -p ${D}/${UNRAID_VERSION}/dd/
