@@ -1,12 +1,24 @@
 #!/bin/bash
 
+##Set branch to pull from for dependencies
+set -ea
+
+: "${DEPENDENCY_BRANCH:=master}"
+
 ##Pull variables from github
+wget -nc https://raw.githubusercontent.com/linuxserver/Unraid-Dependencies/${DEPENDENCY_BRANCH}/build_scripts/variables.sh
+wget -nc https://raw.githubusercontent.com/linuxserver/Unraid-Dependencies/${DEPENDENCY_BRANCH}/build_scripts/dvb-variables.sh
 
-echo -e "${BLUE}Kernel Compile Module${NC}    -----    Pull variables from github"
-wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/variables.sh
-. "$(dirname "$(readlink -f ${BASH_SOURCE[0]})")"/variables.sh
+source ./variables.sh
 
-##Install packages
+if [[ -z "$D" ]]; then
+    echo "Must provide D in environment" 1>&2
+    exit 1
+fi
+
+source ${D}/dvb-variables.sh
+
+##Grab Slackware packages
 echo -e "${BLUE}Kernel Compile Module${NC}    -----    Install packages"
 [ ! -d "${D}/packages" ] && mkdir ${D}/packages
   wget -nc -P ${D}/packages -i ${D}/URLS_CURRENT
@@ -14,9 +26,17 @@ echo -e "${BLUE}Kernel Compile Module${NC}    -----    Install packages"
     echo "Package missing. Exiting..."
     exit 1
   fi
-  wget -nc -P ${D}/packages https://github.com/CHBMB/Unraid-DVB/raw/master/files/patchutils-0.3.4-x86_64-3.tgz
-  wget -nc -P ${D}/packages https://github.com/CHBMB/Unraid-DVB/raw/master/files/Proc-ProcessTable-0.53-x86_64-3.tgz
-  installpkg ${D}/packages/*.*
+
+##Pull patchutils & ProcessTable
+  wget -nc -P ${D}/packages https://github.com/linuxserver/Unraid-Dependencies/raw/${DEPENDENCY_BRANCH}/files/patchutils-0.3.4-x86_64-3.tgz
+  wget -nc -P ${D}/packages https://github.com/linuxserver/Unraid-Dependencies/raw/${DEPENDENCY_BRANCH}/files/Proc-ProcessTable-0.53-x86_64-3.tgz
+
+##Pull static gcc deps
+  wget -nc -P ${D}/packages https://github.com/linuxserver/Unraid-Dependencies/raw/${DEPENDENCY_BRANCH}/gcc/gcc-8.3.0-x86_64-1.txz
+  wget -nc -P ${D}/packages https://github.com/linuxserver/Unraid-Dependencies/raw/${DEPENDENCY_BRANCH}/gcc/gcc-g++-8.3.0-x86_64-1.txz
+
+##Install packages  
+installpkg ${D}/packages/*.*
 
 #Change to current directory
 echo -e "${BLUE}Kernel Compile Module${NC}    -----    Change to current directory"
@@ -36,7 +56,6 @@ umount -l /lib/firmware/
 rm -rf  /lib/firmware
 mv -f  /tmp/firmware /lib
 
-
 ##Download and Install Kernel
 echo -e "${BLUE}Kernel Compile Module${NC}    -----    Download and Install Kernel"
 [[ $(uname -r) =~ ([0-9.]*) ]] &&  KERNEL=${BASH_REMATCH[1]} || return 1
@@ -54,12 +73,12 @@ echo -e "${BLUE}Kernel Compile Module${NC}    -----    Download and Install Kern
 ##Make menuconfig
 echo -e "${BLUE}Kernel Compile Module${NC}    -----    Make menuconfig"
 cd ${D}
-#wget -q https://lsio.ams3.digitaloceanspaces.com/unraid-dvb/${UNRAID_VERSION}/stock/.config
-cd ${D}/kernel
-if [ -e ${D}/.config ]; then
+if wget --spider https://lsio.ams3.digitaloceanspaces.com/unraid-nvidia/${UNRAID_VERSION}/stock/.config 2>/dev/null; then
    rm -f .config
+   wget https://lsio.ams3.digitaloceanspaces.com/unraid-nvidia/${UNRAID_VERSION}/stock/.config
    rsync ${D}/.config ${D}/kernel/.config
 else
+   cd ${D}/kernel
    make menuconfig
 fi
 
@@ -117,7 +136,6 @@ if [[ " ${oot_drivers[@]} " =~ " rr3740a " ]]; then
        install -m 644 -o root -g root rr3740a.ko.xz -D -t /lib/modules/$(uname -r)/kernel/drivers/scsi/ )
 fi
 
-
 if [[ " ${oot_drivers[@]} " =~ " tehuti " ]]; then
      #Install Tehuti Drivers
      echo -e "${BLUE}Kernel Compile Module${NC}    -----    Installing Tehuti 10GB drivers"
@@ -134,7 +152,6 @@ if [[ " ${oot_drivers[@]} " =~ " tehuti " ]]; then
        install -m 644 -o root -g root tn40xx.ko.xz -t /lib/modules/${KERNEL_VERSION}/kernel/drivers/net/ )
 fi
 
-
 if [[ " ${oot_drivers[@]} " =~ " ixgbe " ]]; then
      ##Install Intel 10GB drivers - Do Not Remove hash out if not required
      echo -e "${BLUE}Kernel Compile Module${NC}    -----    Installing Intel 10GB drivers"
@@ -150,7 +167,6 @@ if [[ " ${oot_drivers[@]} " =~ " ixgbe " ]]; then
      
 fi
 
-
 if [[ " ${oot_drivers[@]} " =~ " ixgbevf " ]]; then
      #Install Intel 10GB virtual function drivers - Do Not Remove hash out if not required
      echo -e "${BLUE}Kernel Compile Module${NC}    -----    Installing Intel 10GB virtual function drivers"
@@ -164,7 +180,6 @@ if [[ " ${oot_drivers[@]} " =~ " ixgbevf " ]]; then
        BUILD_KERNEL=${KERNEL_VERSION} make install )
      
 fi
-
 
 cd ${D}
 
