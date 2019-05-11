@@ -18,12 +18,7 @@ fi
 
 source ${D}/dvb-variables.sh
 
-##Pull variables from github
-echo -e "${BLUE}Kernel Compile Module${NC}    -----    Pull variables from github"
-wget -nc https://raw.githubusercontent.com/linuxserver/Unraid-Dependencies/master/build_scripts/variables.sh
-. "$(dirname "$(readlink -f ${BASH_SOURCE[0]})")"/variables.sh
-
-##Install packages
+##Grab Slackware packages
 echo -e "${BLUE}Kernel Compile Module${NC}    -----    Install packages"
 [ ! -d "${D}/packages" ] && mkdir ${D}/packages
   wget -nc -P ${D}/packages -i ${D}/URLS_CURRENT
@@ -31,9 +26,17 @@ echo -e "${BLUE}Kernel Compile Module${NC}    -----    Install packages"
     echo "Package missing. Exiting..."
     exit 1
   fi
-  wget -nc -P ${D}/packages https://github.com/linuxserver/Unraid-Dependencies/raw/master/files/patchutils-0.3.4-x86_64-3.tgz
-  wget -nc -P ${D}/packages https://github.com/linuxserver/Unraid-Dependencies/raw/master/files/Proc-ProcessTable-0.53-x86_64-3.tgz
-  installpkg ${D}/packages/*.*
+
+##Pull patchutils & ProcessTable
+  wget -nc -P ${D}/packages https://github.com/linuxserver/Unraid-Dependencies/raw/${DEPENDENCY_BRANCH}/files/patchutils-0.3.4-x86_64-3.tgz
+  wget -nc -P ${D}/packages https://github.com/linuxserver/Unraid-Dependencies/raw/${DEPENDENCY_BRANCH}/files/Proc-ProcessTable-0.53-x86_64-3.tgz
+
+##Pull static gcc deps
+  wget -nc -P ${D}/packages https://github.com/linuxserver/Unraid-Dependencies/raw/${DEPENDENCY_BRANCH}/gcc/gcc-8.3.0-x86_64-1.txz
+  wget -nc -P ${D}/packages https://github.com/linuxserver/Unraid-Dependencies/raw/${DEPENDENCY_BRANCH}/gcc/gcc-g++-8.3.0-x86_64-1.txz
+
+##Install packages  
+installpkg ${D}/packages/*.*
 
 #Change to current directory
 echo -e "${BLUE}Kernel Compile Module${NC}    -----    Change to current directory"
@@ -71,7 +74,7 @@ echo -e "${BLUE}Kernel Compile Module${NC}    -----    Download and Install Kern
 ##Make menuconfig
 echo -e "${BLUE}Kernel Compile Module${NC}    -----    Make menuconfig"
 cd ${D}
-#wget -q https://lsio.ams3.digitaloceanspaces.com/unraid-dvb/${UNRAID_VERSION}/stock/.config
+wget -q https://lsio.ams3.digitaloceanspaces.com/unraid-dvb/${UNRAID_VERSION}/stock/.config
 cd ${D}/kernel
 if [ -e ${D}/.config ]; then
    rm -f .config
