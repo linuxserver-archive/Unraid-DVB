@@ -56,7 +56,6 @@ umount -l /lib/firmware/
 rm -rf  /lib/firmware
 mv -f  /tmp/firmware /lib
 
-
 ##Download and Install Kernel
 echo -e "${BLUE}Kernel Compile Module${NC}    -----    Download and Install Kernel"
 [[ $(uname -r) =~ ([0-9.]*) ]] &&  KERNEL=${BASH_REMATCH[1]} || return 1
@@ -137,7 +136,6 @@ if [[ " ${oot_drivers[@]} " =~ " rr3740a " ]]; then
        install -m 644 -o root -g root rr3740a.ko.xz -D -t /lib/modules/$(uname -r)/kernel/drivers/scsi/ )
 fi
 
-
 if [[ " ${oot_drivers[@]} " =~ " tehuti " ]]; then
      #Install Tehuti Drivers
      echo -e "${BLUE}Kernel Compile Module${NC}    -----    Installing Tehuti 10GB drivers"
@@ -154,7 +152,6 @@ if [[ " ${oot_drivers[@]} " =~ " tehuti " ]]; then
        install -m 644 -o root -g root tn40xx.ko.xz -t /lib/modules/${KERNEL_VERSION}/kernel/drivers/net/ )
 fi
 
-
 if [[ " ${oot_drivers[@]} " =~ " ixgbe " ]]; then
      ##Install Intel 10GB drivers - Do Not Remove hash out if not required
      echo -e "${BLUE}Kernel Compile Module${NC}    -----    Installing Intel 10GB drivers"
@@ -170,7 +167,6 @@ if [[ " ${oot_drivers[@]} " =~ " ixgbe " ]]; then
      
 fi
 
-
 if [[ " ${oot_drivers[@]} " =~ " ixgbevf " ]]; then
      #Install Intel 10GB virtual function drivers - Do Not Remove hash out if not required
      echo -e "${BLUE}Kernel Compile Module${NC}    -----    Installing Intel 10GB virtual function drivers"
@@ -184,7 +180,6 @@ if [[ " ${oot_drivers[@]} " =~ " ixgbevf " ]]; then
        BUILD_KERNEL=${KERNEL_VERSION} make install )
      
 fi
-
 
 cd ${D}
 
