@@ -3,7 +3,7 @@
 ##Pull variables from github
 
 echo -e "${BLUE}Kernel Compile Module${NC}    -----    Pull variables from github"
-wget -nc https://raw.githubusercontent.com/CHBMB/Unraid-DVB/master/build_scripts/variables.sh
+wget -nc https://raw.githubusercontent.com/linuxserver/Unraid-Dependencies/master/build_scripts/variables.sh
 . "$(dirname "$(readlink -f ${BASH_SOURCE[0]})")"/variables.sh
 
 ##Install packages
@@ -14,8 +14,8 @@ echo -e "${BLUE}Kernel Compile Module${NC}    -----    Install packages"
     echo "Package missing. Exiting..."
     exit 1
   fi
-  wget -nc -P ${D}/packages https://github.com/CHBMB/Unraid-DVB/raw/master/files/patchutils-0.3.4-x86_64-3.tgz
-  wget -nc -P ${D}/packages https://github.com/CHBMB/Unraid-DVB/raw/master/files/Proc-ProcessTable-0.53-x86_64-3.tgz
+  wget -nc -P ${D}/packages https://github.com/linuxserver/Unraid-Dependencies/raw/master/files/patchutils-0.3.4-x86_64-3.tgz
+  wget -nc -P ${D}/packages https://github.com/linuxserver/Unraid-Dependencies/raw/master/files/Proc-ProcessTable-0.53-x86_64-3.tgz
   installpkg ${D}/packages/*.*
 
 #Change to current directory
