@@ -28,8 +28,8 @@ echo -e "${BLUE}Kernel Compile Module${NC}    -----    Install packages"
   fi
 
 ##Pull patchutils & ProcessTable
-  wget -nc -P ${D}/packages https://github.com/linuxserver/Unraid-Dependencies/raw/${DEPENDENCY_BRANCH}/files/patchutils-0.3.4-x86_64-3.tgz
-  wget -nc -P ${D}/packages https://github.com/linuxserver/Unraid-Dependencies/raw/${DEPENDENCY_BRANCH}/files/Proc-ProcessTable-0.53-x86_64-3.tgz
+  wget -nc -P ${D}/packages https://github.com/linuxserver/Unraid-Dependencies/raw/${DEPENDENCY_BRANCH}/files/patchutils-0.3.4-x86_64-4.tgz
+  wget -nc -P ${D}/packages https://github.com/linuxserver/Unraid-Dependencies/raw/${DEPENDENCY_BRANCH}/files/Proc-ProcessTable-0.53-x86_64-4.tgz
 
 ##Pull static gcc deps
   wget -nc -P ${D}/packages https://github.com/linuxserver/Unraid-Dependencies/raw/${DEPENDENCY_BRANCH}/gcc/gcc-8.3.0-x86_64-1.txz
