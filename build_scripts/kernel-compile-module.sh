@@ -139,10 +139,10 @@ fi
 if [[ " ${oot_drivers[@]} " =~ " tehuti " ]]; then
      #Install Tehuti Drivers
      echo -e "${BLUE}Kernel Compile Module${NC}    -----    Installing Tehuti 10GB drivers"
-     mkdir -p /usr/src/drivers/tehuti
+     mkdir -p /usr/src/drivers/tehuti/tn40xx-${TEHUTI}
      cd /usr/src/drivers/tehuti
-     wget http://www.tehutinetworks.net/images/UL240756/tn40xx-${TEHUTI}.tgz
-     tar xf tn40xx-${TEHUTI}.tgz
+     wget --content-disposition https://github.com/acooks/tn40xx-driver/tarball/vendor-drop/v${TEHUTI} -O tn40xx-${TEHUTI}.tar.gz
+     tar xf tn40xx-${TEHUTI}.tar.gz -C /usr/src/drivers/tehuti/tn40xx-${TEHUTI} --strip 1
      KERNEL_VERSION=$(uname -r)
      echo "Build out of tree driver: Tehuti 10Gbit Ethernet"
      ( cd /usr/src/drivers/tehuti/tn40xx-${TEHUTI}
