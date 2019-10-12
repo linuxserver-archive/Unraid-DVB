@@ -56,19 +56,19 @@ umount -l /lib/firmware/
 rm -rf  /lib/firmware
 mv -f  /tmp/firmware /lib
 
+
 ##Download and Install Kernel
 echo -e "${BLUE}Kernel Compile Module${NC}    -----    Download and Install Kernel"
 [[ $(uname -r) =~ ([0-9.]*) ]] &&  KERNEL=${BASH_REMATCH[1]} || return 1
-  LINK="https://www.kernel.org/pub/linux/kernel/v4.x/linux-${KERNEL}.tar.xz"
-  rm -rf ${D}/kernel; mkdir ${D}/kernel
-  [[ ! -f ${D}/linux-${KERNEL}.tar.xz ]] && wget $LINK -O ${D}/linux-${KERNEL}.tar.xz
-  tar -C ${D}/kernel --strip-components=1 -Jxf ${D}/linux-${KERNEL}.tar.xz
-  rsync -av /usr/src/linux-$(uname -r)/ ${D}/kernel/
-  cd ${D}/kernel
-
-  for p in $(find . -type f -iname "*.patch"); do patch -N -p 1 < $p
-  done
-  make oldconfig
+ LINK="https://www.kernel.org/pub/linux/kernel/v${KERNEL:0:1}.x/linux-${KERNEL}.tar.xz"
+ rm -rf ${D}/kernel; mkdir ${D}/kernel
+ [[ ! -f ${D}/linux-${KERNEL}.tar.xz ]] && wget ${LINK} -O ${D}/linux-${KERNEL}.tar.xz
+ tar -C ${D}/kernel --strip-components=1 -Jxf ${D}/linux-${KERNEL}.tar.xz
+ rsync -av /usr/src/linux-$(uname -r)/ ${D}/kernel/
+ cd ${D}/kernel
+ for p in $(find . -type f -iname "*.patch"); do patch -N -p 1 < $p
+ done
+ make oldconfig
 
 ##Make menuconfig
 echo -e "${BLUE}Kernel Compile Module${NC}    -----    Make menuconfig"
