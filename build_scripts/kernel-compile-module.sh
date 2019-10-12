@@ -91,12 +91,6 @@ make -j $(grep -c ^processor /proc/cpuinfo)
 echo -e "${BLUE}Kernel Compile Module${NC}    -----    Install Kernel Modules"
 cd ${D}/kernel
 make all modules_install install
-IFS=',' read -r -a oot_drivers <<< "${OOT_DRIVERS}"
-
-for each in "${oot_drivers[@]}"
-do
-	echo -e "${BLUE}Kernel Compile Module${NC}    -----    Going to compile $each"
-done
 
 IFS=',' read -r -a oot_drivers <<< "${OOT_DRIVERS}"
 
@@ -121,6 +115,7 @@ if [[ " ${oot_drivers[@]} " =~ " rocketraid " ]]; then
       install -m 644 -o root -g root r750.ko.xz -D -t /lib/modules/$(uname -r)/kernel/drivers/scsi/ )
 fi
 
+
 if [[ " ${oot_drivers[@]} " =~ " rr3740a " ]]; then
      #Install RR3740A
      echo -e "${BLUE}Kernel Compile Module${NC}    -----    Install RR3740A"
@@ -136,12 +131,30 @@ if [[ " ${oot_drivers[@]} " =~ " rr3740a " ]]; then
        install -m 644 -o root -g root rr3740a.ko.xz -D -t /lib/modules/$(uname -r)/kernel/drivers/scsi/ )
 fi
 
+
+if [[ " ${oot_drivers[@]} " =~ " rocketnvme " ]]; then
+     #Install RocketNVMe
+    echo -e "${BLUE}Kernel Compile Module${NC}    -----    Install RocketNVMe"
+    mkdir -p /usr/src/drivers/highpoint
+    cd /usr/src/drivers/highpoint
+    wget http://www.highpoint-tech.com/BIOS_Driver/NVMe/RocketNVMe_Linux_Src_v${RN}.tar.gz
+    tar xf RocketNVMe_Linux_Src_v${RN}.tar.gz
+    echo -e "${BLUE}Kernel Compile Module${NC}    -----    Build out of tree driver: RocketNVMe"
+    ( cd /usr/src/drivers/highpoint
+      ./rsnvme_linux_src_v${RN}.bin --keep --noexec --target rsnvme_linux_src_v${RNSHORT} )
+    ( cd /usr/src/drivers/highpoint/rsnvme_linux_src_v${RNSHORT}/product/rsnvme/linux/
+      make KERNELDIR=${D}/kernel
+      xz -f rsnvme.ko
+      install -m 644 -o root -g root rsnvme.ko.xz -D -t /lib/modules/$(uname -r)/kernel/drivers/scsi/ )
+fi
+
+
 if [[ " ${oot_drivers[@]} " =~ " tehuti " ]]; then
      #Install Tehuti Drivers
      echo -e "${BLUE}Kernel Compile Module${NC}    -----    Installing Tehuti 10GB drivers"
      mkdir -p /usr/src/drivers/tehuti/tn40xx-${TEHUTI}
      cd /usr/src/drivers/tehuti
-     wget --content-disposition https://github.com/acooks/tn40xx-driver/tarball/vendor-drop/v${TEHUTI} -O tn40xx-${TEHUTI}.tar.gz
+     wget --content-disposition https://github.com/chbmb/tn40xx-driver/tarball/vendor-drop/v${TEHUTI} -O tn40xx-${TEHUTI}.tar.gz
      tar xf tn40xx-${TEHUTI}.tar.gz -C /usr/src/drivers/tehuti/tn40xx-${TEHUTI} --strip 1
      KERNEL_VERSION=$(uname -r)
      echo "Build out of tree driver: Tehuti 10Gbit Ethernet"
@@ -152,12 +165,13 @@ if [[ " ${oot_drivers[@]} " =~ " tehuti " ]]; then
        install -m 644 -o root -g root tn40xx.ko.xz -t /lib/modules/${KERNEL_VERSION}/kernel/drivers/net/ )
 fi
 
+
 if [[ " ${oot_drivers[@]} " =~ " ixgbe " ]]; then
-     ##Install Intel 10GB drivers - Do Not Remove hash out if not required
+     ##Install Intel 10GB drivers
      echo -e "${BLUE}Kernel Compile Module${NC}    -----    Installing Intel 10GB drivers"
      mkdir -p /usr/src/drivers/intel
      cd /usr/src/drivers/intel
-     wget https://downloadmirror.intel.com/14687/eng/ixgbe-${IXGBE}.tar.gz
+     wget https://downloadmirror.intel.com/${IXGBE_INTEL_NUMBER}/eng/ixgbe-${IXGBE}.tar.gz
      tar xf ixgbe-${IXGBE}.tar.gz
      KERNEL_VERSION=$(uname -r)
      echo "Build out of tree driver: Intel 10Gbit Ethernet"
@@ -167,12 +181,13 @@ if [[ " ${oot_drivers[@]} " =~ " ixgbe " ]]; then
      
 fi
 
+
 if [[ " ${oot_drivers[@]} " =~ " ixgbevf " ]]; then
-     #Install Intel 10GB virtual function drivers - Do Not Remove hash out if not required
+     #Install Intel 10GB virtual function drivers
      echo -e "${BLUE}Kernel Compile Module${NC}    -----    Installing Intel 10GB virtual function drivers"
      mkdir -p /usr/src/drivers/intel
      cd /usr/src/drivers/intel
-     wget https://downloadmirror.intel.com/18700/eng/ixgbevf-${IXGBEVF}.tar.gz
+     wget https://downloadmirror.intel.com/${IXGBEVF_INTEL_NUMBER}/eng/ixgbevf-${IXGBEVF}.tar.gz
      tar xf ixgbevf-${IXGBEVF}.tar.gz
      KERNEL_VERSION=$(uname -r)
      ( cd /usr/src/drivers/intel
@@ -180,6 +195,13 @@ if [[ " ${oot_drivers[@]} " =~ " ixgbevf " ]]; then
        BUILD_KERNEL=${KERNEL_VERSION} make install )
      
 fi
+
+
+if [[ " ${oot_drivers[@]} " =~ " unraidmd " ]]; then
+     #Install Unraid MD drivers
+     echo -e "${BLUE}Kernel Compile Module${NC}    -----    Installing Unraid MD drivers"   
+fi
+
 
 cd ${D}
 
@@ -206,16 +228,6 @@ cp -f ${D}/unraid/bzmodules ${D}/${UNRAID_VERSION}/stock/
 cp -f ${D}/unraid/bzfirmware ${D}/${UNRAID_VERSION}/stock/
 cp -f ${D}/kernel/.config ${D}/${UNRAID_VERSION}/stock/
 
-##Calculate md5 on stock files
-echo -e "${BLUE}Kernel Compile Module${NC}    -----    Calculate md5 on stock files"
-cd ${D}/${UNRAID_VERSION}/stock/
-md5sum bzimage > bzimage.md5
-md5sum bzroot > bzroot.md5
-md5sum bzroot-gui > bzroot-gui.md5
-md5sum bzmodules > bzmodules.md5
-md5sum bzfirmware > bzfirmware.md5
-md5sum .config > .config.md5
-
 ##Calculate sha256 on stock files - can then switch to SHA256 in the future
 echo -e "${BLUE}Kernel Compile Module${NC}    -----    Calculate sha256 on stock files"
 cd ${D}/${UNRAID_VERSION}/stock/
@@ -240,13 +252,6 @@ mkdir -p ${D}/backup/modules
 cp -r /lib/modules/ ${D}/backup/
 mkdir -p ${D}/backup/firmware
 cp -r /lib/firmware/ ${D}/backup/
-
-##Calculate md5 on new bzimage, bzfirmware & bzmodules
-echo -e "${BLUE}Kernel Compile Module${NC}    -----    Calculate md5 on new bzimage, bzfirmware & bzmodules"
-cd ${D}/${UNRAID_VERSION}/stock/
-md5sum bzimage-new > bzimage-new.md5
-md5sum bzmodules-new > bzmodules-new.md5
-md5sum bzfirmware-new > bzfirmware-new.md5
 
 ##Calculate sha256 on new bzimage, bzfirmware & bzmodules - can then switch to SHA256 in the future
 echo -e "${BLUE}Kernel Compile Module${NC}    -----    Calculate sha256 on new bzimage, bzfirmware & bzmodules"

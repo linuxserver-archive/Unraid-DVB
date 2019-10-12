@@ -51,12 +51,6 @@ cp ${D}/${UNRAID_VERSION}/stock/bzmodules-new ${D}/${UNRAID_VERSION}/libreelec/b
 #Package Up bzimage
 cp -f ${D}/kernel/arch/x86/boot/bzImage ${D}/${UNRAID_VERSION}/libreelec/bzimage
 
-#MD5 calculation of files
-cd ${D}/${UNRAID_VERSION}/libreelec/
-md5sum bzmodules > bzmodules.md5
-md5sum bzfirmware > bzfirmware.md5
-md5sum bzimage > bzimage.md5
-
 #SHA256 calculation of files
 cd ${D}/${UNRAID_VERSION}/libreelec/
 sha256sum bzmodules > bzmodules.sha256
