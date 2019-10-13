@@ -197,12 +197,6 @@ if [[ " ${oot_drivers[@]} " =~ " ixgbevf " ]]; then
 fi
 
 
-if [[ " ${oot_drivers[@]} " =~ " unraidmd " ]]; then
-     #Install Unraid MD drivers
-     echo -e "${BLUE}Kernel Compile Module${NC}    -----    Installing Unraid MD drivers"   
-fi
-
-
 cd ${D}
 
 ##Download Original Unraid And move it to stock
