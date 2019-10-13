@@ -70,12 +70,6 @@ mksquashfs /lib/firmware ${D}/${UNRAID_VERSION}/tbs-os/bzfirmware -noappend
 #Package Up bzimage
 cp -f ${D}/kernel/arch/x86/boot/bzImage ${D}/${UNRAID_VERSION}/tbs-os/bzimage
 
-#MD5 calculation of files
-cd ${D}/${UNRAID_VERSION}/tbs-os/
-md5sum bzmodules > bzmodules.md5
-md5sum bzfirmware > bzfirmware.md5
-md5sum bzimage > bzimage.md5
-
 #SHA256 calculation of files
 cd ${D}/${UNRAID_VERSION}/tbs-os/
 sha256sum bzmodules > bzmodules.sha256
