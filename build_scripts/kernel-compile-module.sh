@@ -192,8 +192,22 @@ if [[ " ${oot_drivers[@]} " =~ " ixgbevf " ]]; then
      KERNEL_VERSION=$(uname -r)
      ( cd /usr/src/drivers/intel
        cd ixgbevf-*/src
-       BUILD_KERNEL=${KERNEL_VERSION} make install )
-     
+       BUILD_KERNEL=${KERNEL_VERSION} make install )     
+fi
+
+
+if [[ " ${oot_drivers[@]} " =~ " realtek " ]]; then
+     #Install Realtek r8125
+    echo -e "${BLUE}Kernel Compile Module${NC}    -----    Install Realtek r8125"
+    mkdir -p /usr/src/drivers/realtek
+    cd /usr/src/drivers/realtek
+    wget https://github.com/ibmibmibm/r8125/archive/${REALTEK}.tar.gz
+    tar xf ${REALTEK}.tar.gz
+    echo -e "${BLUE}Kernel Compile Module${NC}    -----    Build out of tree driver: Realtek r8125"
+    cd usr/src/drivers/realtek/r8125-${REALTEK}
+    make KERNELDIR=${D}/kernel
+    xz -f r8125.ko
+    install -m 644 -o root r8125.ko.xz /lib/modules/$(uname -r)/kernel/drivers/net/ethernet/realtek/ )
 fi
 
 
