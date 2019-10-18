@@ -207,7 +207,7 @@ if [[ " ${oot_drivers[@]} " =~ " realtek " ]]; then
     cd usr/src/drivers/realtek/r8125-${REALTEK}
     make KERNELDIR=${D}/kernel
     xz -f r8125.ko
-    install -m 644 -o root r8125.ko.xz /lib/modules/$(uname -r)/kernel/drivers/net/ethernet/realtek/ )
+    install -m 644 -o root r8125.ko.xz /lib/modules/$(uname -r)/kernel/drivers/net/ethernet/realtek/
 fi
 
 
